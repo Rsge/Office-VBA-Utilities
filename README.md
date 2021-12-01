@@ -13,5 +13,5 @@ It's broken up by Office application, then Office file intention.
 * `MoveToCorrectSentFolder.cls` moves each sent email to the correct mailbox' Sent-elements-folder (Because per default they go into the main account's).<br>
 
 ### Word
-* For `Continual numbering  ` all three files need to be used to achieve a counter counting the amount of pages printed on the page with the ability to set on print.<br>
+* For `Continual numbering` all three files need to be used to achieve a counter counting the amount of pages printed on the page with the ability to set on print.<br>
   
