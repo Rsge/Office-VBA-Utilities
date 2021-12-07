@@ -1,4 +1,6 @@
 Attribute VB_Name = "Legacy"
+Option Explicit
+
 Private Function TextCurrentDate(CurrentDate As Date) As String
     TextCurrentDate = Format(CurrentDate, "dd.mm.yyyy")
 End Function

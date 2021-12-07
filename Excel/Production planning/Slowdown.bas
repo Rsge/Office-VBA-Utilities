@@ -1,5 +1,6 @@
 Attribute VB_Name = "Slowdown"
 Option Explicit
+
 Private Slowdowns As Object
 Public Running As Boolean
 

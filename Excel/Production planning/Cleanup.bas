@@ -1,4 +1,6 @@
 Attribute VB_Name = "Cleanup"
+Option Explicit
+
 Public Sub DeleteUpToDate()
     Dim WS As Worksheet
     Set WS = ActiveWorkbook.ActiveSheet

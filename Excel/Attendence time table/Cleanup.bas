@@ -1,5 +1,6 @@
 Attribute VB_Name = "Cleanup"
 Option Explicit
+
 Sub Clear()
     Dim Warning As String
     Warning = "Everything in this table will be deleted!"

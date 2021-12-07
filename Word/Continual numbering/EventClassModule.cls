@@ -9,6 +9,7 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Public WithEvents App As Word.Application
 Attribute App.VB_VarHelpID = -1
+Option Explicit
 
 Private Sub App_DocumentBeforePrint(ByVal Doc As Document, Cancel As Boolean)
     Dim i As Long

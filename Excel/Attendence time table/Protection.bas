@@ -1,5 +1,6 @@
 Attribute VB_Name = "Protection"
 Option Explicit
+
 Public Sub UnProtect()
     Dim WS As Worksheet
     Set WS = ActiveWorkbook.ActiveSheet

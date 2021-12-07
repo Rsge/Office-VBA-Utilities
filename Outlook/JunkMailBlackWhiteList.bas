@@ -1,5 +1,6 @@
 Attribute VB_Name = "JunkMailBlackWhitelist"
 Option Explicit
+
 Sub WhitelistMailsFromWebsite()
     Dim Namespace As Outlook.Namespace
     Dim Inbox As Outlook.Folder
