@@ -4,7 +4,7 @@ It's broken up by Office application, then Office file intention.
 
 ### Excel
 * `Attendence time table` has scripts for automated clearing of specific part with prior confirmation and un-/protecting the document via bindable macro.<br>
-* `Production planning has` lots of scripts for different calculations related to and needed for planning production, e.g. finding holidays and calculating production capacities.
+* `Production planning` has lots of scripts for different calculations related to and needed for planning production, e.g. finding holidays and calculating production capacities.
 
 ### Outlook
 * `BulkEditContacts.bas` allows for bulk-editing of contacts.<br>
