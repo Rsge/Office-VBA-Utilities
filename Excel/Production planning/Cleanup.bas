@@ -1,60 +1,84 @@
 Attribute VB_Name = "Cleanup"
+Attribute VB_Description = "Module for cleanup utils."
+'@Folder "Production planning"
+'@ModuleDescription "Module for cleanup utils."
 Option Explicit
 
+'String constants
+Private Const Notice As String = "Up to which date shall be deleted?" & vbNewLine & "(DD.MM.YYYY)"
+Private Const NoDateWarning As String = "Input can't be processed as a date." & vbNewLine & vbNewLine & Notice
+Private Const SlowdownChangeWarning As String = "Please check special slowdown!"
+Private Const InputLabel As String = "Input"
+Private Const WarningLabel As String = "Warning!"
+Private Const ProtectionLifted As String = "Protection lifted." & vbCrLf & "Changes now possible."
+Private Const ProtectionEnabled As String = "Protection reestablished."
+
+
+'@EntryPoint
+'@Description "Clear all cells up to a given date."
 Public Sub DeleteUpToDate()
+Attribute DeleteUpToDate.VB_Description = "Clear all cells up to a given date."
+    'Variables
     Dim WS As Worksheet
     Set WS = ActiveWorkbook.ActiveSheet
-    Dim StartingDate As Range
-    Set StartingDate = WS.Cells(2, 1)
-    Dim InputString As String
-    Dim Notice As String
-    Notice = "Up to which date shall be deleted??" & vbCrLf & "(DD.MM.YYYY)"
-    InputString = InputBox(Notice, "Input", StartingDate.Value)
-    Do While Not IsDate(InputString)
-        If InputString = "" Then Exit Sub
-        InputString = InputBox("Input can't be processed as a date." & vbCrLf & vbCrLf & Notice, "Input", StartingDate.Value)
-    Loop
-    WS.UnProtect
+    Dim StartingDateCell As Range
+    Set StartingDateCell = WS.Cells.Item(StartingDateRow, StartingDateColumn)
     Dim Data As Range
-    Set Data = WS.UsedRange.Columns("A:I")
+    Set Data = WS.UsedRange.Columns.Item(Chr$(DateColumn + ColumnLetterAscii) & Colon & Chr$(SlowdownsColumn + ColumnLetterAscii))
+    Dim Jobs As Range
+    Set Jobs = WS.UsedRange.Columns.Item(Chr$(JobsDefColumn + ColumnLetterAscii) & Colon & Chr$(JobsDueDatesColumn + ColumnLetterAscii))
+    
+    'Get input
+    Dim InputString As String
+    InputString = InputBox(Notice, InputLabel, StartingDateCell.Value)
+    Do While Not IsDate(InputString)
+        If LenB(InputString) = 0 Then Exit Sub
+        InputString = InputBox(NoDateWarning, InputLabel, StartingDateCell.Value)
+    Loop
     Dim InputDate As Date
     InputDate = CDate(InputString)
-    Dim DateCell As Range
     
-    Dim Jobs As Range
-    Set Jobs = WS.UsedRange.Columns("K:L")
+    'Delete data up to given date
+    WS.UnProtect
     Dim TempDate As Date
-    TempDate = InputDate
-    Dim i As Integer
-    For i = 0 To Abs(DateDiff("d", InputDate, StartingDate))
+    Dim i As Long
+    Dim DateCell As Range
+    For i = 0 To Abs(DateDiff("d", InputDate, StartingDateCell))
         TempDate = DateAdd("d", -i, InputDate)
-        Set DateCell = Jobs.Columns(2).Find(TempDate)
+        Set DateCell = Jobs.Columns.Item(2).Find(TempDate)
         Do Until DateCell Is Nothing
-            Jobs.Rows(DateCell.Row).Delete
-            Set DateCell = Jobs.Columns(2).FindNext
+            Jobs.Rows.Item(DateCell.Row).Delete
+            Set DateCell = Jobs.Columns.Item(2).FindNext
         Loop
         
     Next
-    Set DateCell = Data.Columns(1).Find(InputDate, Data.Cells(Data.Rows.Count - 1, 1), xlValues, SearchDirection:=xlPrevious)
+    Set DateCell = Data.Columns.Item(1).Find(InputDate, Data.Cells.Item(Data.Rows.Count - 1, DateColumn), xlValues, SearchDirection:=xlPrevious)
     If Not DateCell Is Nothing Then
-        Data.Rows("5:" & DateCell.Row).Delete
-        StartingDate.Value = DateAdd("d", 1, InputDate)
+        Data.Rows.Item(StartingRow & Colon & DateCell.Row).Delete
+        StartingDateCell.Value = DateAdd("d", 1, InputDate)
     End If
 
+    'Re-protect and confirm success
     WS.Protect
-    Dim Whatever
-    Whatever = MsgBox("Please check special slowdown!", vbExclamation, "Warning!")
+    '@Ignore VariableNotUsed
+    Dim Whatever As VbMsgBoxResult
+    '@Ignore AssignmentNotUsed
+    Whatever = MsgBox(SlowdownChangeWarning, vbExclamation, WarningLabel)
 End Sub
 
+'@EntryPoint
+'@Description "Toggle protection status of worksheet."
 Public Sub UnProtect()
+Attribute UnProtect.VB_Description = "Toggle protection status of worksheet."
     Dim WS As Worksheet
     Set WS = ActiveWorkbook.ActiveSheet
-    Dim Whatever
+    '@Ignore VariableNotUsed
+    Dim Whatever As VbMsgBoxResult
     If WS.ProtectContents = True Then
         WS.UnProtect
-        Whatever = MsgBox("Protection lifted." & vbCrLf & "Changes now possible.")
+        Whatever = MsgBox(ProtectionLifted)
     Else
         WS.Protect
-        Whatever = MsgBox("Protection reestablished.")
+        Whatever = MsgBox(ProtectionEnabled)
     End If
 End Sub
