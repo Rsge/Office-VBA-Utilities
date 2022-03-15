@@ -12,7 +12,7 @@ It's broken up by Office application, then Office file intention.
 * `MoveFromFolderToFolder.bas` moves all mails from one folder to another reliably one-by-one.
 * `MoveToCorrectSentFolder.cls` moves each sent email to the correct mailbox' Sent-elements-folder (Because per default they go into the main account's).
 
-### Speedtests
+### Speed tests
 * `AssignEmptyStringTest.bas` compares using `x = ""` and `x = vbNullString` to create an empty string.
 * `IsStringEmptyTest.bas` compares using `Len(x) = 0`, `LenB(x) = 0`, `x = ""` and `x = vbNullString` to determine if a string is empty.
 
