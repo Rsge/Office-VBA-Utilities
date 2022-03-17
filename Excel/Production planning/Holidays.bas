@@ -1,19 +1,29 @@
 Attribute VB_Name = "Holidays"
 Attribute VB_Description = "Module for methods related to finding holidays and other non-productive dates."
+'@IgnoreModule InvalidAnnotation
 '@Folder "Production planning"
 '@ModuleDescription "Module for methods related to finding holidays and other non-productive dates."
 Option Explicit
 
 'String constants
+'@VariableDescription "Label for weekends."
 Private Const WeekendLabel As String = "Weekend"
+'@VariableDescription "Label for bridging days (Days in between holidays and weekends)."
 Private Const BridgingDayLabel As String = "Bridging day"
+'@VariableDescription "Label for company-wide holidays."
 Private Const CompanyHolidaysLabel As String = "Company holidays"
+'@VariableDescription "Label for legal holidays."
 Private Const HolidaysWorksheetName As String = "Holidays"
+'@VariableDescription "Name of table containing the holidays."
 Private Const HolidaysTableName As String = "Holidays"
+'@VariableDescription "Name of table containing the briding days."
 Private Const BridgingDaysTableName As String = "BridgingDays"
+'@VariableDescription "Name of table containing company holidays."
 Private Const CompanyHolidaysTableName As String = "CompanyHolidays"
 'Column constants
+'@VariableDescription "Index of holidays' names' column."
 Private Const HolidayNameColumn As Long = 1
+'@VariableDescription "Index of holidays' dates' column."
 Private Const HolidayDateColumn As Long = 2
 
 

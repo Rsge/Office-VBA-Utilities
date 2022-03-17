@@ -1,6 +1,10 @@
 # Office VBA Utilities
 A collection of different VBA scripts for different applications in MS Office.\
-It's broken up by Office application, then Office file intention.
+It's broken up by Office application, then Office file intention.\
+A speed test section is also included to test different approaches' processing speeds.\
+\
+All documents contain annotations used by [Rubberduck](https://rubberduckvba.com), an addon to the VBA editor adding lots of useful functions.\
+I can also recommmend to make a few adjustments to the VBA editor's settings as seen in [this Stackoverflow comment](https://stackoverflow.com/a/667225/17239990).
 
 ### Excel
 * `Attendence time table` has scripts for automated clearing of specific part with prior confirmation and un-/protecting the document via bindable macro.
@@ -18,4 +22,3 @@ It's broken up by Office application, then Office file intention.
 
 ### Word
 * For `Continual numbering` all three files need to be used to achieve a counter counting the amount of pages printed on the page with the ability to set on print.
-  

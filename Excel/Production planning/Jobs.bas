@@ -1,14 +1,17 @@
 Attribute VB_Name = "Jobs"
 Attribute VB_Description = "Module for methods related to jobs."
-'@IgnoreModule IndexedUnboundDefaultMemberAccess
+'@IgnoreModule InvalidAnnotation, IndexedUnboundDefaultMemberAccess
 '@Folder "Production planning"
 '@ModuleDescription "Module for methods related to jobs."
 Option Explicit
 
 'String constant
+'@VariableDescription "Info string added to job on last day to indicate it'll finish in the future, beyond the current table's scopes."
 Private Const FutureInfo As String = "i.Z."
 'Column constants
+'@VariableDescription "Jobs' numeric identifiers' column."
 Private Const JobNumColumn As Long = 1
+'@VariableDescription "Jobs' dates' column."
 Private Const JobDueDateColumn As Long = 2
 
 

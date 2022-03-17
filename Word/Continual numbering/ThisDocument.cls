@@ -17,7 +17,6 @@ Private Sub Document_Open()
     Register_Event_Handler
 End Sub
 
-'@EntryPoint
 '@Description "Deletes all document variables."
 Public Sub DeleteVars()
     Dim Var As Variable

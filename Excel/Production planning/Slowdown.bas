@@ -6,8 +6,12 @@ Attribute VB_Description = "Module for methods related to updating the slowdown.
 Option Explicit
 
 'Variables
-Private Slowdowns As Object 'Dictionary
+'@VariableDescription "Dicionary of slowdowns keyed by their dates."
+Private Slowdowns As Object
+Attribute Slowdowns.VB_VarDescription = "Dicionary of slowdowns keyed by their dates."
+'@VariableDescription "Check if slowdown realignment is running atm."
 Private Running As Boolean
+Attribute Running.VB_VarDescription = "Check if slowdown realignment is running atm."
 
 
 '@Description "Get if the slowdown change is running atm."
@@ -39,7 +43,7 @@ End Sub
 
 '@Description "Update slowdowns so each one is applied at it's correct date. Gets a Range object where an update happened."
 Public Sub UpdateSlowdowns(ByVal where As String)
-Attribute UpdateSlowdowns.VB_Description = "Update slowdowns so each one is applied at it's correct date."
+Attribute UpdateSlowdowns.VB_Description = "Update slowdowns so each one is applied at it's correct date. Gets a Range object where an update happened."
     'Init slowdowns dictionary if it's not yet created
     If Slowdowns Is Nothing Then
         Set Slowdowns = CreateObject("Scripting.Dictionary")

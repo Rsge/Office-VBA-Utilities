@@ -1,16 +1,24 @@
 Attribute VB_Name = "Cleanup"
 Attribute VB_Description = "Module for cleanup utils."
+'@IgnoreModule InvalidAnnotation
 '@Folder "Production planning"
 '@ModuleDescription "Module for cleanup utils."
 Option Explicit
 
 'String constants
-Private Const Notice As String = "Up to which date shall be deleted?" & vbNewLine & "(DD.MM.YYYY)"
-Private Const NoDateWarning As String = "Input can't be processed as a date." & vbNewLine & vbNewLine & Notice
+'@VariableDescription "Question about up to which date the calculations should be cleared."
+Private Const DeletionQuestion As String = "Up to which date shall be deleted?" & vbNewLine & "(DD.MM.YYYY)"
+'@VariableDescription "Warning for input not being processable as a date."
+Private Const NoDateWarning As String = "Input can't be processed as a date." & vbNewLine & vbNewLine & DeletionQuestion
+'@VariableDescription "Warning to check special slowdown after making changes to dates etc."
 Private Const SlowdownChangeWarning As String = "Please check special slowdown!"
+'@VariableDescription "Title of input box to show it needs an input."
 Private Const InputLabel As String = "Input"
+'@VariableDescription "Title of MsgBox to show it contains a warning."
 Private Const WarningLabel As String = "Warning!"
+'@VariableDescription "Message for lifted worksheet protection."
 Private Const ProtectionLifted As String = "Protection lifted." & vbCrLf & "Changes now possible."
+'@VariableDescription "Message for enforced worksheet protection."
 Private Const ProtectionEnabled As String = "Protection reestablished."
 
 
@@ -30,7 +38,7 @@ Attribute DeleteUpToDate.VB_Description = "Clear all cells up to a given date."
     
     'Get input
     Dim InputString As String
-    InputString = InputBox(Notice, InputLabel, StartingDateCell.Value)
+    InputString = InputBox(DeletionQuestion, InputLabel, StartingDateCell.Value)
     Do While Not IsDate(InputString)
         If LenB(InputString) = 0 Then Exit Sub
         InputString = InputBox(NoDateWarning, InputLabel, StartingDateCell.Value)

@@ -1,11 +1,12 @@
 Attribute VB_Name = "Legacy"
 Attribute VB_Description = "Module for saving legacy code."
-'@IgnoreModule IndexedUnboundDefaultMemberAccess
+'@IgnoreModule InvalidAnnotation, IndexedUnboundDefaultMemberAccess
 '@Folder "Production planning"
 '@ModuleDescription "Module for saving legacy code."
 Option Explicit
 
 'String constant
+'@VariableDescription "Prefix for a date string to symbolize something happens on this day.
 Private Const DatePrefix As String = "On "
 
 

@@ -1,5 +1,6 @@
 Attribute VB_Name = "IsStringEmptyTest"
 Attribute VB_Description = "Module for testing string emptiness with different methods."
+'@IgnoreModule InvalidAnnotation
 '@Folder "Speed tests"
 '@ModuleDescription "Module for testing string emptiness with different methods."
 Option Explicit
@@ -9,15 +10,23 @@ Option Explicit
 'Using "" is much slower, using vbNullString is slowest by a bit
 
 'String constants
+'@VariableDescription "Label text for iteration count output."
 Private Const IterationCountLabel As String = "Number of iterations: "
+'@VariableDescription "Label text for first testing method."
 Private Const FirstMethodLabel As String = "Using Len: "
+'@VariableDescription "Label text for second testing method."
 Private Const SecondMethodLabel As String = "Using LenB: "
+'@VariableDescription "Label text for third testing method."
 Private Const ThirdMethodLabel As String = "Using '= vbNullString': "
+'@VariableDescription "Label text for fourth testing method."
 Private Const FourthMethodLabel As String = "Using '= """"': "
+'@VariableDescription "Format of decimal number string output."
 Private Const NumberFormat As String = "0.####"
+'@VariableDescription "Unit of measured time."
 Private Const Unit As String = " s"
 
 'Count
+'@VariableDescription "Amount of iterations to do for testing."
 Private Const IterationCount As Long = 100000000
 
 

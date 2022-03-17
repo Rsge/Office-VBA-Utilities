@@ -10,19 +10,26 @@ Attribute VB_Exposed = False
 Attribute VB_Description = "Event definition class. The actual functionality on what happens when the event is fired is implemented here."
 '@Folder "Continual numbering"
 '@ModuleDescription "Event definition class. The actual functionality on what happens when the event is fired is implemented here."
-'@IgnoreModule EncapsulatePublicField
+'@IgnoreModule InvalidAnnotation, EncapsulatePublicField
 '@MemberAttribute VB_VarHelpID, -1
 Public WithEvents App As Word.Application
 Attribute App.VB_VarHelpID = -1
 Option Explicit
 
 'Constants
+'@VariableDescription "Input window's title text."
 Private Const InputTitleText As String = "Number and print"
-Private Const NumPagesQuestion As String = "How many pages?"
+'@VariableDescription "Question for how many sheets should be printed."
+Private Const NumSheetsQuestion As String = "How many sheets?"
+'@VariableDescription "Question at which page to start."
 Private Const StartPagesQuestion As String = "At which page should be started?"
+'@VariableDescription "How many pages there are in a row on a sheet."
 Private Const PagesPerRow As Long = 2
+'@VariableDescription "How many pages there are in a column on a sheet."
 Private Const PagesPerColumn As Long = 2
+'@VariableDescription "How many pages there are on a sheet, total."
 Private Const PagesPerSheet As Long = PagesPerRow * PagesPerColumn
+'@VariableDescription "Copy number variable name."
 Private Const CopyNumberLabel As String = "CopyNum"
 
 
@@ -56,7 +63,7 @@ Attribute App_DocumentBeforePrint.VB_Description = "Before the document is print
     Next
 
     'Ask how many to print
-    NumCopiesToPrint = CLng(InputBox(NumPagesQuestion, InputTitleText, "1"))
+    NumCopiesToPrint = CLng(InputBox(NumSheetsQuestion, InputTitleText, "1"))
     'Ask where to start numbering
     StartAt = CLng(InputBox(StartPagesQuestion, InputTitleText, CStr(ActiveDocument.Variables.Item(CopyNumberLabel & PagesPerSheet).Value + 1)))
 
