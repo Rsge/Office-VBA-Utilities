@@ -11,10 +11,11 @@ Attribute VB_Description = "Event definition class. The actual functionality on 
 '@Folder "Continual numbering"
 '@ModuleDescription "Event definition class. The actual functionality on what happens when the event is fired is implemented here."
 '@IgnoreModule InvalidAnnotation, EncapsulatePublicField
+Option Explicit
+
 '@MemberAttribute VB_VarHelpID, -1
 Public WithEvents App As Word.Application
 Attribute App.VB_VarHelpID = -1
-Option Explicit
 
 'Constants
 '@VariableDescription "Input window's title text."
