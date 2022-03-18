@@ -1,6 +1,5 @@
 Attribute VB_Name = "Holidays"
 Attribute VB_Description = "Module for methods related to finding holidays and other non-productive dates."
-'@IgnoreModule InvalidAnnotation
 '@Folder "Production planning"
 '@ModuleDescription "Module for methods related to finding holidays and other non-productive dates."
 Option Explicit
@@ -8,23 +7,32 @@ Option Explicit
 'String constants
 '@VariableDescription "Label for weekends."
 Private Const WeekendLabel As String = "Weekend"
+Attribute WeekendLabel.VB_VarDescription = "Label for weekends."
 '@VariableDescription "Label for bridging days (Days in between holidays and weekends)."
 Private Const BridgingDayLabel As String = "Bridging day"
+Attribute BridgingDayLabel.VB_VarDescription = "Label for bridging days (Days in between holidays and weekends)."
 '@VariableDescription "Label for company-wide holidays."
 Private Const CompanyHolidaysLabel As String = "Company holidays"
+Attribute CompanyHolidaysLabel.VB_VarDescription = "Label for company-wide holidays."
 '@VariableDescription "Label for legal holidays."
 Private Const HolidaysWorksheetName As String = "Holidays"
+Attribute HolidaysWorksheetName.VB_VarDescription = "Label for legal holidays."
 '@VariableDescription "Name of table containing the holidays."
 Private Const HolidaysTableName As String = "Holidays"
+Attribute HolidaysTableName.VB_VarDescription = "Name of table containing the holidays."
 '@VariableDescription "Name of table containing the briding days."
 Private Const BridgingDaysTableName As String = "BridgingDays"
+Attribute BridgingDaysTableName.VB_VarDescription = "Name of table containing the briding days."
 '@VariableDescription "Name of table containing company holidays."
 Private Const CompanyHolidaysTableName As String = "CompanyHolidays"
+Attribute CompanyHolidaysTableName.VB_VarDescription = "Name of table containing company holidays."
 'Column constants
 '@VariableDescription "Index of holidays' names' column."
 Private Const HolidayNameColumn As Long = 1
+Attribute HolidayNameColumn.VB_VarDescription = "Index of holidays' names' column."
 '@VariableDescription "Index of holidays' dates' column."
 Private Const HolidayDateColumn As Long = 2
+Attribute HolidayDateColumn.VB_VarDescription = "Index of holidays' dates' column."
 
 
 '@Description "Shows if a given date is a weekend."

@@ -8,9 +8,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Attribute VB_Description = "Event definition class. The actual functionality on what happens when the event is fired is implemented here."
+'@IgnoreModule EncapsulatePublicField
 '@Folder "Continual numbering"
 '@ModuleDescription "Event definition class. The actual functionality on what happens when the event is fired is implemented here."
-'@IgnoreModule InvalidAnnotation, EncapsulatePublicField
 Option Explicit
 
 '@MemberAttribute VB_VarHelpID, -1
@@ -20,18 +20,25 @@ Attribute App.VB_VarHelpID = -1
 'Constants
 '@VariableDescription "Input window's title text."
 Private Const InputTitleText As String = "Number and print"
+Attribute InputTitleText.VB_VarDescription = "Input window's title text."
 '@VariableDescription "Question for how many sheets should be printed."
 Private Const NumSheetsQuestion As String = "How many sheets?"
+Attribute NumSheetsQuestion.VB_VarDescription = "Question for how many sheets should be printed."
 '@VariableDescription "Question at which page to start."
 Private Const StartPagesQuestion As String = "At which page should be started?"
+Attribute StartPagesQuestion.VB_VarDescription = "Question at which page to start."
 '@VariableDescription "How many pages there are in a row on a sheet."
 Private Const PagesPerRow As Long = 2
+Attribute PagesPerRow.VB_VarDescription = "How many pages there are in a row on a sheet."
 '@VariableDescription "How many pages there are in a column on a sheet."
 Private Const PagesPerColumn As Long = 2
+Attribute PagesPerColumn.VB_VarDescription = "How many pages there are in a column on a sheet."
 '@VariableDescription "How many pages there are on a sheet, total."
 Private Const PagesPerSheet As Long = PagesPerRow * PagesPerColumn
+Attribute PagesPerSheet.VB_VarDescription = "How many pages there are on a sheet, total."
 '@VariableDescription "Copy number variable name."
 Private Const CopyNumberLabel As String = "CopyNum"
+Attribute CopyNumberLabel.VB_VarDescription = "Copy number variable name."
 
 
 '@Description "Before the document is printed, ask for input and change document variables to achieve continuously numbered pages."

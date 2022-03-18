@@ -1,6 +1,6 @@
 Attribute VB_Name = "Legacy"
 Attribute VB_Description = "Module for saving legacy code."
-'@IgnoreModule InvalidAnnotation, IndexedUnboundDefaultMemberAccess
+'@IgnoreModule IndexedUnboundDefaultMemberAccess
 '@Folder "Production planning"
 '@ModuleDescription "Module for saving legacy code."
 Option Explicit

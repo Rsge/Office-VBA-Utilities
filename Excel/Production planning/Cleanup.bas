@@ -1,6 +1,5 @@
 Attribute VB_Name = "Cleanup"
 Attribute VB_Description = "Module for cleanup utils."
-'@IgnoreModule InvalidAnnotation
 '@Folder "Production planning"
 '@ModuleDescription "Module for cleanup utils."
 Option Explicit
@@ -8,18 +7,25 @@ Option Explicit
 'String constants
 '@VariableDescription "Question about up to which date the calculations should be cleared."
 Private Const DeletionQuestion As String = "Up to which date shall be deleted?" & vbNewLine & "(DD.MM.YYYY)"
+Attribute DeletionQuestion.VB_VarDescription = "Question about up to which date the calculations should be cleared."
 '@VariableDescription "Warning for input not being processable as a date."
 Private Const NoDateWarning As String = "Input can't be processed as a date." & vbNewLine & vbNewLine & DeletionQuestion
+Attribute NoDateWarning.VB_VarDescription = "Warning for input not being processable as a date."
 '@VariableDescription "Warning to check special slowdown after making changes to dates etc."
 Private Const SlowdownChangeWarning As String = "Please check special slowdown!"
+Attribute SlowdownChangeWarning.VB_VarDescription = "Warning to check special slowdown after making changes to dates etc."
 '@VariableDescription "Title of input box to show it needs an input."
 Private Const InputLabel As String = "Input"
+Attribute InputLabel.VB_VarDescription = "Title of input box to show it needs an input."
 '@VariableDescription "Title of MsgBox to show it contains a warning."
 Private Const WarningLabel As String = "Warning!"
+Attribute WarningLabel.VB_VarDescription = "Title of MsgBox to show it contains a warning."
 '@VariableDescription "Message for lifted worksheet protection."
-Private Const ProtectionLifted As String = "Protection lifted." & vbCrLf & "Changes now possible."
+Private Const ProtectionLifted As String = "Protection lifted." & vbNewLine & "Changes now possible."
+Attribute ProtectionLifted.VB_VarDescription = "Message for lifted worksheet protection."
 '@VariableDescription "Message for enforced worksheet protection."
 Private Const ProtectionEnabled As String = "Protection reestablished."
+Attribute ProtectionEnabled.VB_VarDescription = "Message for enforced worksheet protection."
 
 
 '@EntryPoint
@@ -60,6 +66,7 @@ Attribute DeleteUpToDate.VB_Description = "Clear all cells up to a given date."
         Loop
         
     Next
+    '@Ignore AssignmentNotUsed
     Set DateCell = Data.Columns.Item(1).Find(InputDate, Data.Cells.Item(Data.Rows.Count - 1, DateColumn), xlValues, SearchDirection:=xlPrevious)
     If Not DateCell Is Nothing Then
         Data.Rows.Item(StartingRow & Colon & DateCell.Row).Delete
