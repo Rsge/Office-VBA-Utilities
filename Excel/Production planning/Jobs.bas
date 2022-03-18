@@ -7,19 +7,27 @@ Option Explicit
 
 'String constant
 '@VariableDescription "Info string added to job on last day to indicate it'll finish in the future, beyond the current table's scopes."
-Private Const FutureInfo As String = "i.Z."
+Private Const FutureInfo As String = "Future:"
 'Column constants
 '@VariableDescription "Jobs' numeric identifiers' column."
 Private Const JobNumColumn As Long = 1
 '@VariableDescription "Jobs' dates' column."
 Private Const JobDueDateColumn As Long = 2
 
+'Variables
+'@VariableDescription "Dictionary of jobs due at their key's date."
+'@Ignore MoveFieldCloserToUsage
+Private DueJobs As Object
+Attribute DueJobs.VB_VarDescription = "Dictionary of jobs due at their key's date."
+'@VariableDescription "Dictionary of jobs probably done at their key's date."
+'@Ignore MoveFieldCloserToUsage
+Private DoneJobs As Object
+Attribute DoneJobs.VB_VarDescription = "Dictionary of jobs probably done at their key's date."
 
 '@EntryPoint
 '@Description "Shows due jobs in row of their deadline date."
 Public Function ShowDueJobs(ByVal Index As Long, ByVal Jobs As Range, ByVal Data As Range) As String
 Attribute ShowDueJobs.VB_Description = "Shows due jobs in row of their deadline date."
-    Dim DueJobs As Object
     'Get due jobs' info only on processing at first index
     If Index = 1 Then
         Set DueJobs = CreateObject("Scripting.Dictionary")
@@ -56,7 +64,6 @@ End Function
 Public Function EarliestJobCompletion(ByVal BaseCapacity As Long, ByVal Index As Long, ByVal Data As Range) As String
 Attribute EarliestJobCompletion.VB_Description = "Shows jobs in row of their respective earliest completion date according to current inputs."
     'Variables
-    Dim DoneJobs As Object
     If Index = 1 Then
         Set DoneJobs = CreateObject("Scripting.Dictionary")
     End If
