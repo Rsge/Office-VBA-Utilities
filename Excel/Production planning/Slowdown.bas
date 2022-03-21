@@ -50,7 +50,7 @@ Attribute UpdateSlowdowns.VB_Description = "Updates slowdowns so each one is app
     End If
     'Evaluating if the update occured in the slowdown column
     Dim Intersection As Range
-    Set Intersection = intersect(ActiveSheet.Range(where), ActiveSheet.Range(Chr$(SlowdownsColumn + ColumnLetterAscii) & Colon & Chr$(SlowdownsColumn + ColumnLetterAscii)))
+    Set Intersection = intersect(ActiveSheet.Range(where), ActiveSheet.Columns(SlowdownsColumn))
     If Not Intersection Is Nothing Then
         'If it did, change the slowdown dict accordingly...
         Dim SlowdownCell As Range
@@ -66,7 +66,7 @@ Attribute UpdateSlowdowns.VB_Description = "Updates slowdowns so each one is app
         Next
     Else
         'else evaluating if update occured in amount column
-        Set Intersection = intersect(ActiveSheet.Range(where), ActiveSheet.Range(Chr$(AmountColumn + ColumnLetterAscii) & Colon & Chr$(AmountColumn + ColumnLetterAscii)))
+        Set Intersection = intersect(ActiveSheet.Range(where), ActiveSheet.Columns(AmountColumn))
         If Not Intersection Is Nothing Then
             'If it did, updating the slowdown column according to (possibly) changed dates
             Dim CurrentDate As String
