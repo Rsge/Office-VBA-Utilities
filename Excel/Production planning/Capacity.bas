@@ -1,7 +1,7 @@
 Attribute VB_Name = "Capacity"
-Attribute VB_Description = "Module for methods related to production capacity."
+Attribute VB_Description = "Production capacity calculations."
 '@Folder "Production planning"
-'@ModuleDescription "Module for methods related to production capacity."
+'@ModuleDescription "Production capacity calculations."
 Option Explicit
 
 '@EntryPoint
@@ -14,7 +14,7 @@ Attribute CalculateCapacity.VB_Description = "Calculates the capacity for a spec
     If NoProduction(CurrentDate) Then
         CalculateCapacity = 0
     Else
-        'Get amount and slowdown
+        'Getting amount and slowdown
         Dim ProductAmount As Long
         ProductAmount = Data.Cells.Item(Index, AmountColumn)
         Dim Slowdown As Long
@@ -28,14 +28,14 @@ Attribute CalculateCapacity.VB_Description = "Calculates the capacity for a spec
             Dim RemainingCapacity As Long
             Dim i As Long
             i = 1
-            'Skip no-production-dates
+            'Skipping no-production-dates
             Do
                 PreviousDate = Data.Cells.Item(Index - i, DateColumn)
                 PreviousProductAmount = Data.Cells.Item(Index - i, AmountColumn)
                 RemainingCapacity = Data.Cells.Item(Index - i, RemainingCapacityColumn)
                 i = i + 1
             Loop While NoProduction(PreviousDate) And Index - i > 1
-            'Calculate remaining capacity for different scenarios
+            'Calculating remaining capacity for different scenarios
             If RemainingCapacity = BaseCapacity Or (PreviousProductAmount = 0 And RemainingCapacity >= 0) Then
                 CalculateCapacity = BaseCapacity - ProductAmount - Slowdown
             ElseIf CurrentDate = PreviousDate Then

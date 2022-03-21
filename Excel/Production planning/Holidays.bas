@@ -1,7 +1,7 @@
 Attribute VB_Name = "Holidays"
-Attribute VB_Description = "Module for methods related to finding holidays and other non-productive dates."
+Attribute VB_Description = "Finding of holidays and other non-productive dates."
 '@Folder "Production planning"
-'@ModuleDescription "Module for methods related to finding holidays and other non-productive dates."
+'@ModuleDescription "Finding of holidays and other non-productive dates."
 Option Explicit
 
 'String constants

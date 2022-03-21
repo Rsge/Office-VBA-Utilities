@@ -7,10 +7,10 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Attribute VB_Description = "Event definition class. The actual functionality on what happens when the event is fired is implemented here."
+Attribute VB_Description = "Event definition. Actual functionality of the event is implemented here."
 '@IgnoreModule EncapsulatePublicField
 '@Folder "Continual numbering"
-'@ModuleDescription "Event definition class. The actual functionality on what happens when the event is fired is implemented here."
+'@ModuleDescription "Event definition. Actual functionality of the event is implemented here."
 Option Explicit
 
 '@MemberAttribute VB_VarHelpID, -1

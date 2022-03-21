@@ -14,9 +14,9 @@ Attribute VB_Description = "Event-available class."
 '@ModuleDescription "Event-available class."
 Option Explicit
 
-'@Description "On each worksheet change, update the slowdowns."
+'@Description "On each worksheet change, updates the slowdowns."
 Private Sub Worksheet_Change(ByVal target As Range)
-Attribute Worksheet_Change.VB_Description = "On each worksheet change, update the slowdowns."
+Attribute Worksheet_Change.VB_Description = "On each worksheet change, updates the slowdowns."
     If Not Slowdown.IsRunning Then
         UpdateSlowdowns (target.Address)
     End If

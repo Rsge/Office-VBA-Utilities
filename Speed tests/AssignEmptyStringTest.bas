@@ -1,7 +1,7 @@
 Attribute VB_Name = "AssignEmptyStringTest"
-Attribute VB_Description = "Module for testing string emptiness with different methods."
+Attribute VB_Description = "String emptiness testing."
 '@Folder "Speed tests"
-'@ModuleDescription "Module for testing string emptiness with different methods."
+'@ModuleDescription "String emptiness testing."
 Option Explicit
 
 'Result:
@@ -31,9 +31,9 @@ Attribute IterationCount.VB_VarDescription = "Amount of iterations to do for tes
 
 
 '@EntryPoint
-'@Description "Method for testing string emptiness with different methods."
+'@Description "Tests string emptiness with different methods."
 Public Sub TestAssignEmptyString()
-Attribute TestAssignEmptyString.VB_Description = "Method for testing string emptiness with different methods."
+Attribute TestAssignEmptyString.VB_Description = "Tests string emptiness with different methods."
     Dim i As Long
     Dim StarttimeOne As Double
     Dim EndtimeOne As Double

@@ -1,7 +1,7 @@
 Attribute VB_Name = "Reference"
-Attribute VB_Description = "Module for general constants."
+Attribute VB_Description = "General constants."
 '@Folder "Production planning"
-'@ModuleDescription "Module for general constants."
+'@ModuleDescription "General constants."
 Option Explicit
 
 'Row constant

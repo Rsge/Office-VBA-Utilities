@@ -1,7 +1,7 @@
 Attribute VB_Name = "Cleanup"
-Attribute VB_Description = "Module for cleanup utils."
+Attribute VB_Description = "Cleanup utils."
 '@Folder "Production planning"
-'@ModuleDescription "Module for cleanup utils."
+'@ModuleDescription "Cleanup utils."
 Option Explicit
 
 'String constants
@@ -29,9 +29,9 @@ Attribute ProtectionEnabled.VB_VarDescription = "Message for enforced worksheet 
 
 
 '@EntryPoint
-'@Description "Clear all cells up to a given date."
+'@Description "Clears all cells up to a given date."
 Public Sub DeleteUpToDate()
-Attribute DeleteUpToDate.VB_Description = "Clear all cells up to a given date."
+Attribute DeleteUpToDate.VB_Description = "Clears all cells up to a given date."
     'Variables
     Dim WS As Worksheet
     Set WS = ActiveWorkbook.ActiveSheet
@@ -42,7 +42,7 @@ Attribute DeleteUpToDate.VB_Description = "Clear all cells up to a given date."
     Dim Jobs As Range
     Set Jobs = WS.UsedRange.Columns.Item(Chr$(JobsDefColumn + ColumnLetterAscii) & Colon & Chr$(JobsDueDatesColumn + ColumnLetterAscii))
     
-    'Get input
+    'Getting input
     Dim InputString As String
     InputString = InputBox(DeletionQuestion, InputLabel, StartingDateCell.Value)
     Do While Not IsDate(InputString)
@@ -52,7 +52,7 @@ Attribute DeleteUpToDate.VB_Description = "Clear all cells up to a given date."
     Dim InputDate As Date
     InputDate = CDate(InputString)
     
-    'Delete data up to given date
+    'Deleting data up to given date
     WS.UnProtect
     Dim TempDate As Date
     Dim i As Long
@@ -73,7 +73,7 @@ Attribute DeleteUpToDate.VB_Description = "Clear all cells up to a given date."
         StartingDateCell.Value = DateAdd("d", 1, InputDate)
     End If
 
-    'Re-protect and confirm success
+    'Re-protecting and confirming success
     WS.Protect
     '@Ignore VariableNotUsed
     Dim Whatever As VbMsgBoxResult
@@ -82,9 +82,9 @@ Attribute DeleteUpToDate.VB_Description = "Clear all cells up to a given date."
 End Sub
 
 '@EntryPoint
-'@Description "Toggle protection status of worksheet."
+'@Description "Toggles protection status of worksheet."
 Public Sub UnProtect()
-Attribute UnProtect.VB_Description = "Toggle protection status of worksheet."
+Attribute UnProtect.VB_Description = "Toggles protection status of worksheet."
     Dim WS As Worksheet
     Set WS = ActiveWorkbook.ActiveSheet
     '@Ignore VariableNotUsed

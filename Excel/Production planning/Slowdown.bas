@@ -1,8 +1,8 @@
 Attribute VB_Name = "Slowdown"
-Attribute VB_Description = "Module for methods related to updating the slowdown."
+Attribute VB_Description = "Slowdown updating."
 '@IgnoreModule IndexedUnboundDefaultMemberAccess
 '@Folder "Production planning"
-'@ModuleDescription "Module for methods related to updating the slowdown."
+'@ModuleDescription "Slowdown updating."
 Option Explicit
 
 'Variables
@@ -14,25 +14,25 @@ Private Running As Boolean
 Attribute Running.VB_VarDescription = "Check if slowdown realignment is running atm."
 
 
-'@Description "Get if the slowdown change is running atm."
+'@Description "Gets if the slowdown change is running atm."
 Public Property Get IsRunning() As Boolean
-Attribute IsRunning.VB_Description = "Get if the slowdown change is running atm."
+Attribute IsRunning.VB_Description = "Gets if the slowdown change is running atm."
     IsRunning = Running
 End Property
-'@Description "Set if the slowdown change is running atm."
+'@Description "Sets if the slowdown change is running atm."
 Public Property Let IsRunning(ByVal setRunning As Boolean)
-Attribute IsRunning.VB_Description = "Set if the slowdown change is running atm."
+Attribute IsRunning.VB_Description = "Sets if the slowdown change is running atm."
     Running = setRunning
 End Property
 
-'@Description "On worksheet opening, initialize slowdown change tracking."
+'@Description "On worksheet opening, initializes slowdown change tracking."
 Private Sub Auto_Open()
-Attribute Auto_Open.VB_Description = "On worksheet opening, initialize slowdown change tracking."
+Attribute Auto_Open.VB_Description = "On worksheet opening, initializes slowdown change tracking."
     IsRunning = False
     Set Slowdowns = CreateObject("Scripting.Dictionary")
     Dim i As Long
     i = StartingRow
-    'Get all slowdowns with their respective dates
+    'Getting all slowdowns with their respective dates
     Do While LenB(ActiveSheet.Cells(i, DateColumn).Value) > 0
         If LenB(ActiveSheet.Cells(i, SlowdownsColumn).Value) > 0 Then
             Slowdowns(ActiveSheet.Cells(i, DateColumn).Value) = ActiveSheet.Cells(i, SlowdownsColumn).Value
@@ -41,14 +41,14 @@ Attribute Auto_Open.VB_Description = "On worksheet opening, initialize slowdown 
     Loop
 End Sub
 
-'@Description "Update slowdowns so each one is applied at it's correct date. Gets a Range object where an update happened."
+'@Description "Updates slowdowns so each one is applied at it's correct date. Gets a Range object where an update happened."
 Public Sub UpdateSlowdowns(ByVal where As String)
-Attribute UpdateSlowdowns.VB_Description = "Update slowdowns so each one is applied at it's correct date. Gets a Range object where an update happened."
-    'Init slowdowns dictionary if it's not yet created
+Attribute UpdateSlowdowns.VB_Description = "Updates slowdowns so each one is applied at it's correct date. Gets a Range object where an update happened."
+    'Initing slowdowns dictionary if it's not yet created
     If Slowdowns Is Nothing Then
         Set Slowdowns = CreateObject("Scripting.Dictionary")
     End If
-    'See if the update occured in the slowdown column
+    'Evaluating if the update occured in the slowdown column
     Dim Intersection As Range
     Set Intersection = intersect(ActiveSheet.Range(where), ActiveSheet.Range(Chr$(SlowdownsColumn + ColumnLetterAscii) & Colon & Chr$(SlowdownsColumn + ColumnLetterAscii)))
     If Not Intersection Is Nothing Then
@@ -65,10 +65,10 @@ Attribute UpdateSlowdowns.VB_Description = "Update slowdowns so each one is appl
             End If
         Next
     Else
-        'else see, if update occured in amount column
+        'else evaluating if update occured in amount column
         Set Intersection = intersect(ActiveSheet.Range(where), ActiveSheet.Range(Chr$(AmountColumn + ColumnLetterAscii) & Colon & Chr$(AmountColumn + ColumnLetterAscii)))
         If Not Intersection Is Nothing Then
-            'If it did, update the slowdown column according to (possibly) changed dates
+            'If it did, updating the slowdown column according to (possibly) changed dates
             Dim CurrentDate As String
             Dim CurrentSlowdownCell As Range
             Dim i As Long
@@ -80,10 +80,10 @@ Attribute UpdateSlowdowns.VB_Description = "Update slowdowns so each one is appl
             Do While LenB(ActiveSheet.Cells(i, DateColumn)) > 0
                 CurrentDate = ActiveSheet.Cells(i, DateColumn)
                 Set CurrentSlowdownCell = ActiveSheet.Cells(i, SlowdownsColumn)
-                'If date has a slowdown, enforce it, otherwise clear the cell
+                'If date has a slowdown, enforcing it, otherwise clearing the cell
                 If Slowdowns.Exists(CurrentDate) Then
-                    'If previous cell's date is same as current's, clear current cell
-                    'Else, set slowdown to correct value
+                    'If previous cell's date is same as current's, clearing current cell
+                    'Else, setting slowdown to correct value
                     '(Slowdown is only needed once per date)
                     If CurrentDate = ActiveSheet.Cells(i - 1, DateColumn) Then
                         CurrentSlowdownCell.Value = vbNullString

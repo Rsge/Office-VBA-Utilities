@@ -1,8 +1,8 @@
 Attribute VB_Name = "Jobs"
-Attribute VB_Description = "Module for methods related to jobs."
+Attribute VB_Description = "Job calculations."
 '@IgnoreModule IndexedUnboundDefaultMemberAccess
 '@Folder "Production planning"
-'@ModuleDescription "Module for methods related to jobs."
+'@ModuleDescription "Job calculations."
 Option Explicit
 
 'String constant
@@ -31,7 +31,7 @@ Attribute DoneJobs.VB_VarDescription = "Dictionary of jobs probably done at thei
 '@Description "Shows due jobs in row of their deadline date."
 Public Function ShowDueJobs(ByVal Index As Long, ByVal Jobs As Range, ByVal Data As Range) As String
 Attribute ShowDueJobs.VB_Description = "Shows due jobs in row of their deadline date."
-    'Get due jobs' info only on processing at first index
+    'Getting due jobs' info only on processing at first index
     If Index = 1 Then
         Set DueJobs = CreateObject("Scripting.Dictionary")
         Dim JobRow As Range
@@ -45,7 +45,7 @@ Attribute ShowDueJobs.VB_Description = "Shows due jobs in row of their deadline 
             End If
         Next
     End If
-    'Show due job(s) on it's/their date
+    'Showing due job(s) on it's/their date
     Dim DueDate As Date
     DueDate = Data.Cells.Item(Index, DateColumn)
     If DueJobs.Exists(DueDate) Then
@@ -77,7 +77,7 @@ Attribute EarliestJobCompletion.VB_Description = "Shows jobs in row of their res
     Dim i As Long
     i = 1
     
-    'Calculate, when jobs will be done
+    'Calculating, when jobs will be done
     If Job <> vbNullString Then
         Do While (Index + i) <= Data.Rows.Count And LenB(Data.Cells.Item(Index + i, JobColumn)) = 0
             i = i + 1
@@ -96,7 +96,7 @@ Attribute EarliestJobCompletion.VB_Description = "Shows jobs in row of their res
                 RemainingProduction = Abs(RemainingCapacity)
                 Dim Ending As Boolean
                 Dim DoneDate As Date
-                'Find if a job can be done in the current timeframe of the data table or if it's later than that, using base capacity.
+                'Finding if a job can be done in the current timeframe of the data table or if it's later than that, using base capacity.
                 Do
                     i = i + 1
                     DoneDate = DateAdd("d", i, DueDate)
@@ -106,7 +106,7 @@ Attribute EarliestJobCompletion.VB_Description = "Shows jobs in row of their res
                     Ending = (Index + i) >= Data.Rows.Count
                 Loop While RemainingProduction > 0 And Not Ending
                 
-                'Add job at it's approximate date to the dictionary
+                'Adding job at it's approximate date to the dictionary
                 If RemainingProduction > 0 Or Index + i > Data.Rows.Count Then
                     DoneDate = Data.Cells.Item(Data.Rows.Count, 1)
                     If InStr(DoneJobs(DoneDate), FutureInfo) Then
@@ -121,7 +121,7 @@ Attribute EarliestJobCompletion.VB_Description = "Shows jobs in row of their res
         End If
     End If
     
-    'Show jobs on their potential completion dates or on end of table
+    'Showing jobs on their potential completion dates or on end of table
     If DoneJobs.Exists(DueDate) Then
         Dim NextDay As Date
         NextDay = Data.Cells.Item(Index + 1, DateColumn)

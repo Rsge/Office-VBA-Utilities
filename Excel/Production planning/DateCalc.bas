@@ -1,7 +1,7 @@
 Attribute VB_Name = "DateCalc"
-Attribute VB_Description = "Module for methods related to dates."
+Attribute VB_Description = "Date calculation."
 '@Folder "Production planning"
-'@ModuleDescription "Module for methods related to dates."
+'@ModuleDescription "Date calculation."
 Option Explicit
 
 '@EntryPoint

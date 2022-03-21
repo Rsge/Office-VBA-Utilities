@@ -1,7 +1,7 @@
 Attribute VB_Name = "Cleanup"
-Attribute VB_Description = "Module for cleanup utils."
+Attribute VB_Description = "Cleanup utils."
 '@Folder "Attendence time table"
-'@ModuleDescription "Module for cleanup utils."
+'@ModuleDescription "Cleanup utils."
 Option Explicit
 
 'String constants
@@ -17,9 +17,9 @@ Attribute DeletionWarning.VB_VarDescription = "Warning about the specified area 
 
 
 '@EntryPoint
-'@Description "Delete all cells' content in defined area."
+'@Description "Deletes all cells' content in defined area."
 Public Sub Clear()
-Attribute Clear.VB_Description = "Delete all cells' content in defined area."
+Attribute Clear.VB_Description = "Deletes all cells' content in defined area."
     Dim Check As Byte
     Check = MsgBox(DeletionWarning, vbOKCancel + vbExclamation, WarningLabel)
     If Check = 1 Then

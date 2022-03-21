@@ -1,7 +1,7 @@
 Attribute VB_Name = "Protection"
-Attribute VB_Description = "Module for protection utils."
+Attribute VB_Description = "Protection utils."
 '@Folder "Attendence time table"
-'@ModuleDescription "Module for protection utils."
+'@ModuleDescription "Protection utils."
 Option Explicit
 
 'String constants
@@ -14,9 +14,9 @@ Attribute ProtectionEnabled.VB_VarDescription = "Message for enforced worksheet 
 
 
 '@EntryPoint
-'@Description "Toggle protection status of worksheet."
+'@Description "Toggles protection status of worksheet."
 Public Sub UnProtect()
-Attribute UnProtect.VB_Description = "Toggle protection status of worksheet."
+Attribute UnProtect.VB_Description = "Toggles protection status of worksheet."
     Dim WS As Worksheet
     Set WS = ActiveWorkbook.ActiveSheet
     If WS.ProtectContents = True Then

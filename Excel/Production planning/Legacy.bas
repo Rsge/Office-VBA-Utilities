@@ -1,8 +1,8 @@
 Attribute VB_Name = "Legacy"
-Attribute VB_Description = "Module for saving legacy code."
+Attribute VB_Description = "Legacy code saving."
 '@IgnoreModule IndexedUnboundDefaultMemberAccess
 '@Folder "Production planning"
-'@ModuleDescription "Module for saving legacy code."
+'@ModuleDescription "Legacy code saving."
 Option Explicit
 
 'String constant
@@ -23,9 +23,9 @@ End Function
 
 
 '@EntryPoint
-'@Description "Calculated the point at which the production of an item would finish"
+'@Description "Calculates the point at which the production of an item would finish"
 Private Function ProductionFinish(ByVal Capacity As Long, ByVal Index As Long, ByVal Data As Range) As String
-Attribute ProductionFinish.VB_Description = "Calculated the point at which the production of an item would finish"
+Attribute ProductionFinish.VB_Description = "Calculates the point at which the production of an item would finish"
     'Variables
     Dim CurrentDate As Date
     CurrentDate = CDate(Data.Cells.Item(Index, DateColumn))
@@ -85,7 +85,7 @@ Attribute ProductionFinish.VB_Description = "Calculated the point at which the p
                         Loop Until Item <> vbNullString
                     End If
                 End If
-                'Format output
+                'Formatting output
                 RemainingCapacity = Data.Cells.Item(Index - i + 1, RemainingCapacityColumn)
                 If RemainingCapacity < 0 Then Output = Item & Comma & Output
                 If Right$(Output, Len(Comma)) = Comma Then Output = Left$(Output, Len(Output) - Len(Comma))
@@ -109,13 +109,13 @@ Attribute ProductionFinish.VB_Description = "Calculated the point at which the p
 End Function
 
 '@EntryPoint
-'@Description "Showed which items were due in repect to their jobs."
+'@Description "Shows which items were due in repect to their jobs."
 Private Function ShowDueItems(ByVal Index As Long, ByVal Jobs As Range, ByVal Data As Range) As String
-Attribute ShowDueItems.VB_Description = "Showed which items were due in repect to their jobs."
+Attribute ShowDueItems.VB_Description = "Shows which items were due in repect to their jobs."
     Dim JobData As Object
     Set JobData = CreateObject("Scripting.Dictionary")
     Dim CurrentRow As Range
-    'Get jobs and their dates
+    'Getting jobs and their dates
     For Each CurrentRow In Jobs.Rows
         Dim Item As String
         Const JobsItemColumn As Long = 1
@@ -125,7 +125,7 @@ Attribute ShowDueItems.VB_Description = "Showed which items were due in repect t
         JobData(Due) = JobData(Due) & Item & Comma
     Next
     
-    'Show due jobs at correct dates
+    'Showing due jobs at correct dates
     Dim CurrentDate As Date
     CurrentDate = Data.Cells.Item(Index, DateColumn)
     If JobData.Exists(CurrentDate) Then
