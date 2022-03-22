@@ -1,23 +1,31 @@
 Attribute VB_Name = "MoveFromFolderToFolder"
-Attribute VB_Description = "Module for methods related to moving all mails from one folder to another savely."
+Attribute VB_Description = "Save movement of mails from one folder to another."
 '@IgnoreModule DefaultMemberRequired
 '@Folder "Email moving"
-'@ModuleDescription "Module for methods related to moving all mails from one folder to another savely."
+'@ModuleDescription "Save movement of mails from one folder to another."
 Option Explicit
 
 'String constants
+'@VariableDescription "Name of mailbow to run this script on."
 Private Const MailboxName As String = "test@example.com"
+Attribute MailboxName.VB_VarDescription = "Name of mailbow to run this script on."
+'@VariableDescription "Name of folder from which to move emails."
 Private Const FromFolderName As String = "Archive"
+Attribute FromFolderName.VB_VarDescription = "Name of folder from which to move emails."
+'@VariableDescription "Name of folder to which to move emails."
 Private Const ToFolderName As String = "Test"
-Private Const MAPI As String = "MAPI"
+Attribute ToFolderName.VB_VarDescription = "Name of folder to which to move emails."
+'@VariableDescription "Name of namespace to use."
+Private Const NSName As String = "MAPI"
+Attribute NSName.VB_VarDescription = "Name of namespace to use."
 
 
 '@EntryPoint
-'@Description "Move all mails from one folder to another folder reliably."
+'@Description "Moves all mails from one folder to another folder reliably."
 Public Sub MoveAllMailsFromFolder()
-Attribute MoveAllMailsFromFolder.VB_Description = "Move all mails from one folder to another folder reliably."
+Attribute MoveAllMailsFromFolder.VB_Description = "Moves all mails from one folder to another folder reliably."
     Dim NS As Outlook.Namespace
-    Set NS = Application.GetNamespace(MAPI)
+    Set NS = Application.GetNamespace(NSName)
     Dim Mailbox As Outlook.Folder
     Set Mailbox = NS.Folders(MailboxName)(0)
     Dim InputFolder As Outlook.Folder

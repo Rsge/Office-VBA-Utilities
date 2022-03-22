@@ -1,11 +1,13 @@
 Attribute VB_Name = "BulkEditContacts"
-Attribute VB_Description = "Module for methods related to bulk-editing contacts."
+Attribute VB_Description = "Contact bulk-editing."
 '@Folder "Contact editing"
-'@ModuleDescription "Module for methods related to bulk-editing contacts."
+'@ModuleDescription "Contact bulk-editing."
 Option Explicit
 
 'String constant
-Private Const MAPI As String = "MAPI"
+'@VariableDescription "Name of namespace to use."
+Private Const NSName As String = "MAPI"
+Attribute NSName.VB_VarDescription = "Name of namespace to use."
 
 
 '@Description "Validates if a string starts with a given string."
@@ -15,17 +17,17 @@ Attribute StartsWith.VB_Description = "Validates if a string starts with a given
 End Function
 
 '@EntryPoint
-'@Description "Edit all contacts with changes specified in code."
+'@Description "Edits all contacts with changes specified in code."
 Public Sub EditContacts()
-Attribute EditContacts.VB_Description = "Edit all contacts with changes specified in code."
-    On Error GoTo ErrorHandler
+Attribute EditContacts.VB_Description = "Edits all contacts with changes specified in code."
     Dim NS As Outlook.Namespace
-    Set NS = GetNamespace(MAPI)
+    Set NS = GetNamespace(NSName)
     Dim ContactsFolder As Outlook.MAPIFolder
     Set ContactsFolder = NS.GetDefaultFolder(olFolderContacts)
     Dim Contacts As Outlook.Items
     Set Contacts = ContactsFolder.Items
     Dim Contact As Outlook.ContactItem
+    On Error Resume Next
     For Each Contact In Contacts
         'Make changes to contact
         With Contact
@@ -37,10 +39,5 @@ Attribute EditContacts.VB_Description = "Edit all contacts with changes specifie
             End If
         End With
     Next
-    Exit Sub
-ErrorHandler:
-    If Err.Number > 0 Then
-        Err.Clear
-        Resume Next
-    End If
+    On Error GoTo 0
 End Sub
