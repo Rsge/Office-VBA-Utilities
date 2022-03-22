@@ -6,7 +6,7 @@ Option Explicit
 
 'Result:
 'LenB is fastest, closely followed by Len
-'Using "" is much slower, using vbNullString is slowest by a bit
+'Using '= ""' is much slower, using '= vbNullString' is slowest by a bit
 
 'String constants
 '@VariableDescription "Label text for iteration count output."

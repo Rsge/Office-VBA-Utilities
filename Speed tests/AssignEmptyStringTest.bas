@@ -1,11 +1,11 @@
 Attribute VB_Name = "AssignEmptyStringTest"
 Attribute VB_Description = "String emptiness testing."
 '@Folder "Speed tests"
-'@ModuleDescription "String emptiness testing."
+'@ModuleDescription "Empty string asssignment testing."
 Option Explicit
 
 'Result:
-'Using vbNullString is much faster
+'Assigning vbNullString is much faster
 
 'String constants
 '@VariableDescription "Label text for iteration count output."

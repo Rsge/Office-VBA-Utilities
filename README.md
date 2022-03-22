@@ -19,6 +19,7 @@ I'd also recommmend making a few adjustments to the VBA editor's settings as see
 ### Speed tests
 * `AssignEmptyStringTest.bas` compares using `x = ""` and `x = vbNullString` to create an empty string.
 * `IsStringEmptyTest.bas` compares using `Len(x) = 0`, `LenB(x) = 0`, `x = ""` and `x = vbNullString` to determine if a string is empty.
+* `IsStringInString.bas` compares using `InStr(x, y) > 0`, `InStrB(x, y) > 0` and `x Like y` to determine if a string contains another string.
 
 ### Word
 * For `Continual numbering` all three files need to be used to achieve a counter counting the amount of pages printed on the page with the ability to set on print.
