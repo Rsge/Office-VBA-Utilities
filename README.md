@@ -1,14 +1,15 @@
 # Office VBA Utilities
-A collection of different VBA scripts for different applications in MS Office.\
+A collection of different VBA modules for different applications in MS Office.\
 It's broken up by Office application, then Office file intention.\
 A speed test section is also included to test different approaches' processing speeds.\
 \
-All documents contain annotations used by [Rubberduck](https://rubberduckvba.com), an addon to the VBA editor adding lots of useful features.\
+All documents contain annotations used by [Rubberduck](https://rubberduckvba.com), an addon to the VBA editor adding lots of useful features, therefore "bringing it into the 21st century".\
 I'd also recommmend making a few adjustments to the VBA editor's settings as seen in [this Stackoverflow comment](https://stackoverflow.com/a/667225/17239990).
 
 ### Excel
-* `Attendence time table` has scripts for automated clearing of specific part with prior confirmation and un-/protecting the document via bindable macro.
-* `Production planning` has lots of scripts for different calculations related to and needed for planning production, e.g. finding holidays and calculating production capacities.
+* `Attendence time table` contains methods for automated clearing of specific part with prior confirmation and un-/protecting the document via bindable macro.
+* `Inventory updating` contains methods for importing data from multiple CSV files with relevant data on the last line into a table in excel, creating a backup of the current worksheet before making changes.
+* `Production planning` contains methods for different calculations related to and needed for planning production, e.g. finding holidays and calculating production capacities.
 
 ### Outlook
 * `BulkEditContacts.bas` allows for bulk-editing of contacts.

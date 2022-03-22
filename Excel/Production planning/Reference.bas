@@ -28,9 +28,9 @@ Attribute ItemColumn.VB_VarDescription = "Index of items' column in data table."
 '@VariableDescription "Index of amounts' column in data table."
 Public Const AmountColumn As Long = 4
 Attribute AmountColumn.VB_VarDescription = "Index of amounts' column in data table."
-'[AT]VariableDescription "Index of completed jobs' column in data table."
+''@VariableDescription "Index of completed jobs' column in data table."
 'Public Const CompletedJobsColumn As Long = 5
-'[AT]VariableDescription "Index of due jobs' column in data table."
+''@VariableDescription "Index of due jobs' column in data table."
 'Public Const DueJobsColumn As Long = 6
 '@VariableDescription "Index of remaining capacities' column in data table."
 Public Const RemainingCapacityColumn As Long = 7
