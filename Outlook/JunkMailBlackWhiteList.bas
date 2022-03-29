@@ -63,7 +63,7 @@ Attribute WhitelistMailsWithSubject.VB_Description = "Removes all mails with a g
 End Sub
 
 '@EntryPoint
-'@Description "Moves all Emails on a specified TXT-List into Junk."
+'@Description "Moves all mails on a specified TXT-List into Junk."
 Public Sub JunkMailFilter()
 Attribute JunkMailFilter.VB_Description = "Moves all Emails on a specified TXT-List into Junk."
     Dim NS As Outlook.Namespace
@@ -83,7 +83,7 @@ Attribute JunkMailFilter.VB_Description = "Moves all Emails on a specified TXT-L
     Set MailList = CreateObject("System.Collections.ArrayList")
     Dim MailAddress As String
     
-    'Read File
+    'Reading file
     Open FileName For Input As FileNumber
     Do While Not EOF(FileNumber)
         Line Input #FileNumber, MailAddress
@@ -91,7 +91,7 @@ Attribute JunkMailFilter.VB_Description = "Moves all Emails on a specified TXT-L
     Loop
     Close FileName
     
-    'Determine if Junk and process accordingly
+    'Determining if Junk and processing accordingly
     For Each MailObject In Inbox.Items
         If (TypeOf MailObject Is Outlook.MailItem) Then
             Set Mail = MailObject

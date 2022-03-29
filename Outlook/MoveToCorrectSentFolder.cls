@@ -14,9 +14,9 @@ Attribute VB_Description = "Movement of emails into different Sent folder."
 Option Explicit
 
 'String constants
-'@VariableDescription "Name of mailbow in which to put sent emails from given sender."
+'@VariableDescription "Name of mailbox in which to put sent emails from given sender."
 Private Const MailboxName As String = "test@example.com"
-Attribute MailboxName.VB_VarDescription = "Name of mailbow in which to put sent emails from given sender."
+Attribute MailboxName.VB_VarDescription = "Name of mailbox in which to put sent emails from given sender."
 '@VariableDescription "Start of sender's email address for whom to move sent mails to given mailbox's 'Sent items' folder."
 Private Const SenderAddressStart As String = "test@"
 Attribute SenderAddressStart.VB_VarDescription = "Start of sender's email address for whom to move sent mails to given mailbox's 'Sent items' folder."

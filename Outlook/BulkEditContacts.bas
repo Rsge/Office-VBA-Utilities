@@ -29,7 +29,7 @@ Attribute EditContacts.VB_Description = "Edits all contacts with changes specifi
     Dim Contact As Outlook.ContactItem
     On Error Resume Next
     For Each Contact In Contacts
-        'Make changes to contact
+        'Making changes to contact
         With Contact
             Const SearchFor As String = "test@"
             Const ReplaceWith As String = "mailto:test@"
