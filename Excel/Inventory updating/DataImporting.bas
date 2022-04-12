@@ -66,7 +66,7 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
                 Diff = Math.Round(CurrentAmount - PreviousAmount, Decimals)
                 ActiveSheet.Cells(ItemRow, AmountDiffColumn).Value = Diff
             End If
-        ElseIf InStr(BlacklistedItems, Item) Then
+        ElseIf InStr(BlacklistedItems, Item) = 0 Then
             MissingItems.Add Item
         End If
     Next
