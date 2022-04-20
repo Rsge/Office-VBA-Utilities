@@ -33,6 +33,30 @@ Attribute NoFilesWarning.VB_VarDescription = "Warning if no files found at save 
 '    FormatString = Join(Out.ToArray, vbNullString)
 'End Function
 
+'@Description "Tests if a string starts with another string."
+Public Function StartsWith(ByVal str As String, ByVal start As String) As Boolean
+Attribute StartsWith.VB_Description = "Tests if a string starts with another string."
+    StartsWith = InStrB(str, start) = 1
+End Function
+
+'@Description "Tests if a string ends with another string."
+Public Function EndsWith(ByVal str As String, ByVal ending As String) As Boolean
+Attribute EndsWith.VB_Description = "Tests if a string ends with another string."
+    EndsWith = Right$(str, Len(ending)) = ending
+End Function
+
+'@Description "Tests if a string contains another string."
+Public Function Contains(ByVal str As String, ByVal match As String) As Boolean
+Attribute Contains.VB_Description = "Tests if a string contains another string."
+    Contains = InStr(str, match) > 0
+End Function
+
+'@Description "Tests if a string is empty."
+Public Function IsEmpty(ByVal str As String) As Boolean
+Attribute IsEmpty.VB_Description = "Tests if a string is empty."
+    IsEmpty = LenB(str) = 0
+End Function
+
 '@Description "Gets name of file without the extension."
 Public Function GetFileNameWithoutExtension(ByVal fileObject As Object) As String
 Attribute GetFileNameWithoutExtension.VB_Description = "Gets name of file without the extension."

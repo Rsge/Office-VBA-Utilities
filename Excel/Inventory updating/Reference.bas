@@ -25,26 +25,40 @@ Attribute KiloUnitPrefix.VB_VarDescription = "'Thousands' prefix of unit."
 '@VariableDescription "Format of date in Excel table."
 Public Const DateFormat As String = "dd.mm.yy"
 Attribute DateFormat.VB_VarDescription = "Format of date in Excel table."
+'@VariableDescription "Placeholder date in file data for non-existent BB-date."
+Public Const PlaceholderDate As String = "11.11.1111"
+Attribute PlaceholderDate.VB_VarDescription = "Placeholder date in file data for non-existent BB-date."
 '@VariableDescription "Label for worksheet backup."
 Public Const BackupLabel As String = "Backup "
 Attribute BackupLabel.VB_VarDescription = "Label for worksheet backup."
+'@VariableDescription "Items with special variants."
+Public Const SpecialItems As String = "12345"
+Attribute SpecialItems.VB_VarDescription = "Items with special variants."
+'@VariableDescription "Marker at end of file name of item(s) with a special variant."
+Public Const SpecialItemFileMarker As String = "S"
+Attribute SpecialItemFileMarker.VB_VarDescription = "Marker at end of file name of item(s) with a special variant."
+'@VariableDescription "Marker starting the description of item(s) with a special variant."
+Public Const SpecialItemDescriptionMarker As String = "Sample"
+Attribute SpecialItemDescriptionMarker.VB_VarDescription = "Marker starting the description of item(s) with a special variant."
 '@VariableDescription "Item blacklisted from being processed."
-Public Const BlacklistedItem As String = "WATER;12345"
-Attribute BlacklistedItem.VB_VarDescription = "Item blacklisted from being processed."
+Public Const BlacklistedItems As String = "WATER;12345"
+Attribute BlacklistedItems.VB_VarDescription = "Item blacklisted from being processed."
 
 'Row constants
 '@VariableDescription "Index of row of cell containing data file path."
 Public Const PathCellRow As Long = 2
 Attribute PathCellRow.VB_VarDescription = "Index of row of cell containing data file path."
-''@VariableDescription "Index of row with first data."
-'Public Const StartingRow As Long = 3
+'@VariableDescription "Index of row with first data."
+Public Const StartingRow As Long = 3
+Attribute StartingRow.VB_VarDescription = "Index of row with first data."
 
 'Excel table column constants (1-based)
 '@VariableDescription "Index of items' column in Excel table."
 Public Const ItemColumn As Long = 1
 Attribute ItemColumn.VB_VarDescription = "Index of items' column in Excel table."
-''@VariableDescription "Index of descriptions' column in Excel table."
-'Public Const DescriptionColumn As Long = 2
+'@VariableDescription "Index of descriptions' column in Excel table."
+Public Const DescriptionColumn As Long = 2
+Attribute DescriptionColumn.VB_VarDescription = "Index of descriptions' column in Excel table."
 '@VariableDescription "Index of BB dates' column in Excel table."
 Public Const BBDateColumn As Long = 3
 Attribute BBDateColumn.VB_VarDescription = "Index of BB dates' column in Excel table."
