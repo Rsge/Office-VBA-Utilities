@@ -6,7 +6,7 @@ Option Explicit
 
 'Result:
 'InStrB ist fastest, InStr slightly slower and Like a little slower again.
-'Left$ is much slower and Left again much slower, almost doubling Left and more than quintupling InStrB.
+'Left$ & Len is much slower and Left & Len again much slower, almost doubling Left$ & Len and more than quintupling InStrB.
 
 'String constants
 '@VariableDescription "Label text for iteration count output."
@@ -19,10 +19,10 @@ Attribute FirstMethodLabel.VB_VarDescription = "Label text for first testing met
 Private Const SecondMethodLabel As String = "Using InStrB: "
 Attribute SecondMethodLabel.VB_VarDescription = "Label text for second testing method."
 '@VariableDescription "Label text for third testing method."
-Private Const ThirdMethodLabel As String = "Using Left =: "
+Private Const ThirdMethodLabel As String = "Using Left & Len =: "
 Attribute ThirdMethodLabel.VB_VarDescription = "Label text for third testing method."
 '@VariableDescription "Label text for fourth testing method."
-Private Const FourthMethodLabel As String = "Using Left$ =: "
+Private Const FourthMethodLabel As String = "Using Left$ & Len =: "
 Attribute FourthMethodLabel.VB_VarDescription = "Label text for fourth testing method."
 '@VariableDescription "Label text for fith testing method."
 Private Const FithMethodLabel As String = "Using Like: "
@@ -79,7 +79,7 @@ Attribute TestStringStartsWith.VB_Description = "Tests if string starts with oth
     Next i
     EndtimeTwo = Timer
     
-    'Using Left =
+    'Using Left & Len =
     StarttimeThree = Timer
     For i = 1 To IterationCount
         '@Ignore UntypedFunctionUsage
@@ -87,10 +87,9 @@ Attribute TestStringStartsWith.VB_Description = "Tests if string starts with oth
     Next i
     EndtimeThree = Timer
     
-    'Using Left$ =
+    'Using Left$ & Len =
     StarttimeFour = Timer
     For i = 1 To IterationCount
-        '@Ignore UntypedFunctionUsage
         TestBool = Left$(TestStr, Len(TestForStr)) = TestForStr
     Next i
     EndtimeFour = Timer

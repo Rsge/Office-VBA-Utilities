@@ -5,9 +5,9 @@ Attribute VB_Description = "String contains string testing."
 Option Explicit
 
 'Result:
-'Right$ is fastest.
+'Right$ & Len is fastest.
 'InStrB & StrReverse is a lot slower, InStr & StrReverse a little slower than that and Like again a little slower.
-'Right is slowest by far, almost doubling Right$
+'Right & Len is slowest by far, almost doubling Right$
 
 'String constants
 '@VariableDescription "Label text for iteration count output."
@@ -20,10 +20,10 @@ Attribute FirstMethodLabel.VB_VarDescription = "Label text for first testing met
 Private Const SecondMethodLabel As String = "Using InStrB & StrReverse: "
 Attribute SecondMethodLabel.VB_VarDescription = "Label text for second testing method."
 '@VariableDescription "Label text for third testing method."
-Private Const ThirdMethodLabel As String = "Using Right =: "
+Private Const ThirdMethodLabel As String = "Using Right & Len =: "
 Attribute ThirdMethodLabel.VB_VarDescription = "Label text for third testing method."
 '@VariableDescription "Label text for fourth testing method."
-Private Const FourthMethodLabel As String = "Using Right$ =: "
+Private Const FourthMethodLabel As String = "Using Right$ & Len =: "
 Attribute FourthMethodLabel.VB_VarDescription = "Label text for fourth testing method."
 '@VariableDescription "Label text for fith testing method."
 Private Const FithMethodLabel As String = "Using Like: "
@@ -82,7 +82,7 @@ Attribute TestStringStartsWith.VB_Description = "Tests if string starts with oth
     Next i
     EndtimeTwo = Timer
     
-    'Using Left =
+    'Using Right & Len =
     StarttimeThree = Timer
     For i = 1 To IterationCount
         '@Ignore UntypedFunctionUsage
@@ -90,10 +90,9 @@ Attribute TestStringStartsWith.VB_Description = "Tests if string starts with oth
     Next i
     EndtimeThree = Timer
     
-    'Using Left$ =
+    'Using Right$ & Len =
     StarttimeFour = Timer
     For i = 1 To IterationCount
-        '@Ignore UntypedFunctionUsage
         TestBool = Right$(TestStr, Len(TestForStr)) = TestForStr
     Next i
     EndtimeFour = Timer
