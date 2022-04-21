@@ -20,6 +20,7 @@ I'd also recommmend making a few adjustments to the VBA editor's settings as see
 ### Speed tests
 * `AssignEmptyStringTest.bas` compares using `x = ""` and `x = vbNullString` to create an empty string.
 * `DoesStringStartWithTest.bas` compares using `InStr(x, y) = 1`, `InStrB(x, y) = 1`, `Left(x, Len(y)) = y`, `Left$(x, Len(y)) = y` and `x Like y*` to determine if a string starts with another string.
+* `DoesStringEndWithTest.bas` compares using `InStr(StrReverse(x), z) = 1`, `InStrB(StrReverse(x), z) = 1`, `Right(x, Len(y)) = y`, `Right$(x, Len(y)) = y` and `x Like *y` to determine if a string ends with another string.
 * `IsStringEmptyTest.bas` compares using `Len(x) = 0`, `LenB(x) = 0`, `x = ""` and `x = vbNullString` to determine if a string is empty.
 * `IsStringInStringTest.bas` compares using `InStr(x, y) > 0`, `InStrB(x, y) > 0` and `x Like *y*` to determine if a string contains another string.
 
