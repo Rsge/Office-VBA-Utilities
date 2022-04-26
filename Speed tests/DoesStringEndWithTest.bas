@@ -11,29 +11,29 @@ Option Explicit
 
 'String constants
 '@VariableDescription "Label text for iteration count output."
-Private Const IterationCountLabel As String = "Number of iterations: "
-Attribute IterationCountLabel.VB_VarDescription = "Label text for iteration count output."
+Private Const m_iterationCountLabel As String = "Number of iterations: "
+Attribute m_iterationCountLabel.VB_VarDescription = "Label text for iteration count output."
 '@VariableDescription "Label text for first testing method."
-Private Const FirstMethodLabel As String = "Using InStr & StrReverse: "
-Attribute FirstMethodLabel.VB_VarDescription = "Label text for first testing method."
+Private Const m_firstMethodLabel As String = "Using InStr & StrReverse: "
+Attribute m_firstMethodLabel.VB_VarDescription = "Label text for first testing method."
 '@VariableDescription "Label text for second testing method."
-Private Const SecondMethodLabel As String = "Using InStrB & StrReverse: "
-Attribute SecondMethodLabel.VB_VarDescription = "Label text for second testing method."
+Private Const m_secondMethodLabel As String = "Using InStrB & StrReverse: "
+Attribute m_secondMethodLabel.VB_VarDescription = "Label text for second testing method."
 '@VariableDescription "Label text for third testing method."
-Private Const ThirdMethodLabel As String = "Using Right & Len =: "
-Attribute ThirdMethodLabel.VB_VarDescription = "Label text for third testing method."
+Private Const m_thirdMethodLabel As String = "Using Right & Len =: "
+Attribute m_thirdMethodLabel.VB_VarDescription = "Label text for third testing method."
 '@VariableDescription "Label text for fourth testing method."
-Private Const FourthMethodLabel As String = "Using Right$ & Len =: "
-Attribute FourthMethodLabel.VB_VarDescription = "Label text for fourth testing method."
+Private Const m_fourthMethodLabel As String = "Using Right$ & Len =: "
+Attribute m_fourthMethodLabel.VB_VarDescription = "Label text for fourth testing method."
 '@VariableDescription "Label text for fith testing method."
-Private Const FithMethodLabel As String = "Using Like: "
-Attribute FithMethodLabel.VB_VarDescription = "Label text for fith testing method."
+Private Const m_fithMethodLabel As String = "Using Like: "
+Attribute m_fithMethodLabel.VB_VarDescription = "Label text for fith testing method."
 '@VariableDescription "Format of decimal number string output."
-Private Const NumberFormat As String = "0.####"
-Attribute NumberFormat.VB_VarDescription = "Format of decimal number string output."
+Private Const m_numberFormat As String = "0.####"
+Attribute m_numberFormat.VB_VarDescription = "Format of decimal number string output."
 '@VariableDescription "Unit of measured time."
-Private Const Unit As String = " s"
-Attribute Unit.VB_VarDescription = "Unit of measured time."
+Private Const m_unit As String = " s"
+Attribute m_unit.VB_VarDescription = "Unit of measured time."
 
 'Count
 '@VariableDescription "Amount of iterations to do for testing."
@@ -46,73 +46,73 @@ Attribute IterationCount.VB_VarDescription = "Amount of iterations to do for tes
 Public Sub TestStringStartsWith()
 Attribute TestStringStartsWith.VB_Description = "Tests if string starts with other string with different methods."
     Dim i As Long
-    Dim StarttimeOne As Double
-    Dim EndtimeOne As Double
-    Dim StarttimeTwo As Double
-    Dim EndtimeTwo As Double
-    Dim StarttimeThree As Double
-    Dim EndtimeThree As Double
-    Dim StarttimeFour As Double
-    Dim EndtimeFour As Double
-    Dim StarttimeFive As Double
-    Dim EndtimeFive As Double
-    Dim Msg As String
+    Dim starttimeOne As Double
+    Dim endtimeOne As Double
+    Dim starttimeTwo As Double
+    Dim endtimeTwo As Double
+    Dim starttimeThree As Double
+    Dim endtimeThree As Double
+    Dim starttimeFour As Double
+    Dim endtimeFour As Double
+    Dim starttimeFive As Double
+    Dim endtimeFive As Double
+    Dim msg As String
     '@Ignore VariableNotUsed
-    Dim TestBool As Boolean
+    Dim testBool As Boolean
 
     'Test-variable
-    Dim TestStr As String
-    TestStr = "ExampleStringThatsLongerThanUsualToHaveBetterGroundWorkForTheDifferentApplicationsTest"
-    Dim TestForStr As String
-    TestForStr = "Test"
-    Dim TestForStrRev As String
-    TestForStrRev = "tseT"
+    Dim testStr As String
+    testStr = "ExampleStringThatsLongerThanUsualToHaveBetterGroundWorkForTheDifferentApplicationsTest"
+    Dim testForStr As String
+    testForStr = "Test"
+    Dim testForStrRev As String
+    testForStrRev = "tseT"
 
     'Using InStr & StrReverse
-    StarttimeOne = Timer
+    starttimeOne = Timer
     For i = 1 To IterationCount
-        TestBool = InStr(StrReverse(TestStr), TestForStrRev) = 1
+        testBool = InStr(StrReverse(testStr), testForStrRev) = 1
     Next i
-    EndtimeOne = Timer
+    endtimeOne = Timer
 
     'Using InStrB & StrReverse
-    StarttimeTwo = Timer
+    starttimeTwo = Timer
     For i = 1 To IterationCount
-        TestBool = InStrB(StrReverse(TestStr), TestForStrRev) = 1
+        testBool = InStrB(StrReverse(testStr), testForStrRev) = 1
     Next i
-    EndtimeTwo = Timer
+    endtimeTwo = Timer
     
     'Using Right & Len =
-    StarttimeThree = Timer
+    starttimeThree = Timer
     For i = 1 To IterationCount
         '@Ignore UntypedFunctionUsage
-        TestBool = Right(TestStr, Len(TestForStr)) = TestForStr
+        testBool = Right(testStr, Len(testForStr)) = testForStr
     Next i
-    EndtimeThree = Timer
+    endtimeThree = Timer
     
     'Using Right$ & Len =
-    StarttimeFour = Timer
+    starttimeFour = Timer
     For i = 1 To IterationCount
-        TestBool = Right$(TestStr, Len(TestForStr)) = TestForStr
+        testBool = Right$(testStr, Len(testForStr)) = testForStr
     Next i
-    EndtimeFour = Timer
+    endtimeFour = Timer
 
     'Using Like
     '@Ignore AssignmentNotUsed
-    TestForStr = "*" & TestForStr
-    StarttimeFive = Timer
+    testForStr = "*" & testForStr
+    starttimeFive = Timer
     For i = 1 To IterationCount
-        TestBool = TestStr Like TestForStr
+        testBool = testStr Like testForStr
     Next i
-    EndtimeFive = Timer
+    endtimeFive = Timer
     
     
-    Msg = IterationCountLabel & "10^" & Log(IterationCount) / Log(10) & vbNewLine & _
+    msg = m_iterationCountLabel & "10^" & Log(IterationCount) / Log(10) & vbNewLine & _
           vbNewLine & _
-          FirstMethodLabel & Format$(EndtimeOne - StarttimeOne, NumberFormat) & Unit & vbNewLine & _
-          SecondMethodLabel & Format$(EndtimeTwo - StarttimeTwo, NumberFormat) & Unit & vbNewLine & _
-          ThirdMethodLabel & Format$(EndtimeThree - StarttimeThree, NumberFormat) & Unit & vbNewLine & _
-          FourthMethodLabel & Format$(EndtimeFour - StarttimeFour, NumberFormat) & Unit & vbNewLine & _
-          FithMethodLabel & Format$(EndtimeFive - StarttimeFive, NumberFormat) & Unit
-    MsgBox Msg
+          m_firstMethodLabel & Format$(endtimeOne - starttimeOne, m_numberFormat) & m_unit & vbNewLine & _
+          m_secondMethodLabel & Format$(endtimeTwo - starttimeTwo, m_numberFormat) & m_unit & vbNewLine & _
+          m_thirdMethodLabel & Format$(endtimeThree - starttimeThree, m_numberFormat) & m_unit & vbNewLine & _
+          m_fourthMethodLabel & Format$(endtimeFour - starttimeFour, m_numberFormat) & m_unit & vbNewLine & _
+          m_fithMethodLabel & Format$(endtimeFive - starttimeFive, m_numberFormat) & m_unit
+    MsgBox msg
 End Sub

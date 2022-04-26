@@ -6,26 +6,26 @@ Option Explicit
 
 'String constants
 '@VariableDescription "Question about up to which date the calculations should be cleared."
-Private Const DeletionQuestion As String = "Up to which date shall be deleted?" & vbNewLine & "(DD.MM.YYYY)"
-Attribute DeletionQuestion.VB_VarDescription = "Question about up to which date the calculations should be cleared."
+Private Const m_deletionQuestion As String = "Up to which date shall be deleted?" & vbNewLine & "(DD.MM.YYYY)"
+Attribute m_deletionQuestion.VB_VarDescription = "Question about up to which date the calculations should be cleared."
 '@VariableDescription "Warning for input not being processable as a date."
-Private Const NoDateWarning As String = "Input can't be processed as a date." & vbNewLine & vbNewLine & DeletionQuestion
-Attribute NoDateWarning.VB_VarDescription = "Warning for input not being processable as a date."
+Private Const m_noDateWarning As String = "Input can't be processed as a date." & vbNewLine & vbNewLine & DeletionQuestion
+Attribute m_noDateWarning.VB_VarDescription = "Warning for input not being processable as a date."
 '@VariableDescription "Warning to check special slowdown after making changes to dates etc."
-Private Const SlowdownChangeWarning As String = "Please check special slowdown!"
-Attribute SlowdownChangeWarning.VB_VarDescription = "Warning to check special slowdown after making changes to dates etc."
+Private Const m_slowdownChangeWarning As String = "Please check special slowdown!"
+Attribute m_slowdownChangeWarning.VB_VarDescription = "Warning to check special slowdown after making changes to dates etc."
 '@VariableDescription "Title of input box to show it needs an input."
-Private Const InputLabel As String = "Input"
-Attribute InputLabel.VB_VarDescription = "Title of input box to show it needs an input."
+Private Const m_inputLabel As String = "Input"
+Attribute m_inputLabel.VB_VarDescription = "Title of input box to show it needs an input."
 '@VariableDescription "Title of MsgBox to show it contains a warning."
-Private Const WarningLabel As String = "Warning!"
-Attribute WarningLabel.VB_VarDescription = "Title of MsgBox to show it contains a warning."
+Private Const m_warningLabel As String = "Warning!"
+Attribute m_warningLabel.VB_VarDescription = "Title of MsgBox to show it contains a warning."
 '@VariableDescription "Message for lifted worksheet protection."
-Private Const ProtectionLifted As String = "Protection lifted." & vbNewLine & "Changes now possible."
-Attribute ProtectionLifted.VB_VarDescription = "Message for lifted worksheet protection."
+Private Const m_protectionLifted As String = "Protection lifted." & vbNewLine & "Changes now possible."
+Attribute m_protectionLifted.VB_VarDescription = "Message for lifted worksheet protection."
 '@VariableDescription "Message for enforced worksheet protection."
-Private Const ProtectionEnabled As String = "Protection reestablished."
-Attribute ProtectionEnabled.VB_VarDescription = "Message for enforced worksheet protection."
+Private Const m_protectionEnabled As String = "Protection reestablished."
+Attribute m_protectionEnabled.VB_VarDescription = "Message for enforced worksheet protection."
 
 
 '@EntryPoint
@@ -33,67 +33,67 @@ Attribute ProtectionEnabled.VB_VarDescription = "Message for enforced worksheet 
 Public Sub DeleteUpToDate()
 Attribute DeleteUpToDate.VB_Description = "Clears all cells up to a given date."
     'Variables
-    Dim WS As Worksheet
-    Set WS = ActiveWorkbook.ActiveSheet
-    Dim StartingDateCell As Range
-    Set StartingDateCell = WS.Cells.Item(StartingDateRow, StartingDateColumn)
-    Dim Data As Range
-    Set Data = WS.UsedRange.Columns.Item(Chr$(DateColumn + ColumnLetterAscii) & Colon & Chr$(SlowdownsColumn + ColumnLetterAscii))
-    Dim Jobs As Range
-    Set Jobs = WS.UsedRange.Columns.Item(Chr$(JobsDefColumn + ColumnLetterAscii) & Colon & Chr$(JobsDueDatesColumn + ColumnLetterAscii))
+    Dim ws As Worksheet
+    Set ws = ActiveWorkbook.ActiveSheet
+    Dim startingDateCell As Range
+    Set startingDateCell = ws.Cells.Item(StartingDateRow, StartingDateColumn)
+    Dim data As Range
+    Set data = ws.UsedRange.Columns.Item(Chr$(DateColumn + ColumnLetterAscii) & Colon & Chr$(SlowdownsColumn + ColumnLetterAscii))
+    Dim jobs As Range
+    Set jobs = ws.UsedRange.Columns.Item(Chr$(JobsDefColumn + ColumnLetterAscii) & Colon & Chr$(JobsDueDatesColumn + ColumnLetterAscii))
     
     'Getting input
-    Dim InputString As String
-    InputString = InputBox(DeletionQuestion, InputLabel, StartingDateCell.Value)
-    Do While Not IsDate(InputString)
-        If LenB(InputString) = 0 Then Exit Sub
-        InputString = InputBox(NoDateWarning, InputLabel, StartingDateCell.Value)
+    Dim inputString As String
+    inputString = InputBox(m_deletionQuestion, m_inputLabel, startingDateCell.Value)
+    Do While Not IsDate(inputString)
+        If LenB(inputString) = 0 Then Exit Sub
+        inputString = InputBox(m_noDateWarning, m_inputLabel, startingDateCell.Value)
     Loop
-    Dim InputDate As Date
-    InputDate = CDate(InputString)
+    Dim inputDate As Date
+    inputDate = CDate(inputString)
     
     'Deleting data up to given date
-    WS.UnProtect
-    Dim TempDate As Date
+    ws.UnProtect
+    Dim tempDate As Date
     Dim i As Long
-    Dim DateCell As Range
-    For i = 0 To Abs(DateDiff("d", InputDate, StartingDateCell))
-        TempDate = DateAdd("d", -i, InputDate)
-        Set DateCell = Jobs.Columns.Item(2).Find(TempDate)
-        Do Until DateCell Is Nothing
-            Jobs.Rows.Item(DateCell.Row).Delete
-            Set DateCell = Jobs.Columns.Item(2).FindNext
+    Dim dateCell As Range
+    For i = 0 To Abs(DateDiff("d", inputDate, startingDateCell))
+        tempDate = DateAdd("d", -i, inputDate)
+        Set dateCell = jobs.Columns.Item(2).Find(tempDate)
+        Do Until dateCell Is Nothing
+            jobs.Rows.Item(dateCell.Row).Delete
+            Set dateCell = jobs.Columns.Item(2).FindNext
         Loop
         
     Next
     '@Ignore AssignmentNotUsed
-    Set DateCell = Data.Columns.Item(1).Find(InputDate, Data.Cells.Item(Data.Rows.Count - 1, DateColumn), xlValues, SearchDirection:=xlPrevious)
-    If Not DateCell Is Nothing Then
-        Data.Rows.Item(StartingRow & Colon & DateCell.Row).Delete
-        StartingDateCell.Value = DateAdd("d", 1, InputDate)
+    Set dateCell = data.Columns.Item(1).Find(inputDate, data.Cells.Item(data.Rows.Count - 1, DateColumn), xlValues, SearchDirection:=xlPrevious)
+    If Not dateCell Is Nothing Then
+        data.Rows.Item(StartingRow & Colon & dateCell.Row).Delete
+        startingDateCell.Value = DateAdd("d", 1, inputDate)
     End If
 
     'Re-protecting and confirming success
-    WS.Protect
+    ws.Protect
     '@Ignore VariableNotUsed
-    Dim Whatever As VbMsgBoxResult
+    Dim whatever As VbMsgBoxResult
     '@Ignore AssignmentNotUsed
-    Whatever = MsgBox(SlowdownChangeWarning, vbExclamation, WarningLabel)
+    whatever = MsgBox(m_slowdownChangeWarning, vbExclamation, m_warningLabel)
 End Sub
 
 '@EntryPoint
 '@Description "Toggles protection status of worksheet."
 Public Sub UnProtect()
 Attribute UnProtect.VB_Description = "Toggles protection status of worksheet."
-    Dim WS As Worksheet
-    Set WS = ActiveWorkbook.ActiveSheet
+    Dim ws As Worksheet
+    Set ws = ActiveWorkbook.ActiveSheet
     '@Ignore VariableNotUsed
-    Dim Whatever As VbMsgBoxResult
-    If WS.ProtectContents = True Then
-        WS.UnProtect
-        Whatever = MsgBox(ProtectionLifted)
+    Dim whatever As VbMsgBoxResult
+    If ws.ProtectContents = True Then
+        ws.UnProtect
+        whatever = MsgBox(m_protectionLifted)
     Else
-        WS.Protect
-        Whatever = MsgBox(ProtectionEnabled)
+        ws.Protect
+        whatever = MsgBox(m_protectionEnabled)
     End If
 End Sub

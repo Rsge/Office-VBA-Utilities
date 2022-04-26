@@ -7,36 +7,42 @@ Option Explicit
 
 'String constants
 '@VariableDescription "Name of mailbow to run this script on."
-Private Const MailboxName As String = "test@example.com"
-Attribute MailboxName.VB_VarDescription = "Name of mailbow to run this script on."
+Private Const m_mailboxName As String = "test@example.com"
+Attribute m_mailboxName.VB_VarDescription = "Name of mailbow to run this script on."
+'@VariableDescription "Name of superfolder to the folder to move from."
+Private Const m_superFolderName As String = "Inbox"
+Attribute m_superFolderName.VB_VarDescription = "Name of superfolder to the folder to move from."
 '@VariableDescription "Name of folder from which to move emails."
-Private Const FromFolderName As String = "Archive"
-Attribute FromFolderName.VB_VarDescription = "Name of folder from which to move emails."
+Private Const m_fromFolderName As String = "Test"
+Attribute m_fromFolderName.VB_VarDescription = "Name of folder from which to move emails."
 '@VariableDescription "Name of folder to which to move emails."
-Private Const ToFolderName As String = "Test"
-Attribute ToFolderName.VB_VarDescription = "Name of folder to which to move emails."
+Private Const m_toFolderName As String = "Archive"
+Attribute m_toFolderName.VB_VarDescription = "Name of folder to which to move emails."
 '@VariableDescription "Name of namespace to use."
-Private Const NSName As String = "MAPI"
-Attribute NSName.VB_VarDescription = "Name of namespace to use."
+Private Const m_nsName As String = "MAPI"
+Attribute m_nsName.VB_VarDescription = "Name of namespace to use."
 
 
 '@EntryPoint
 '@Description "Moves all mails from one folder to another folder reliably."
 Public Sub MoveAllMailsFromFolder()
 Attribute MoveAllMailsFromFolder.VB_Description = "Moves all mails from one folder to another folder reliably."
-    Dim NS As Outlook.Namespace
-    Set NS = Application.GetNamespace(NSName)
-    Dim Mailbox As Outlook.Folder
-    Set Mailbox = NS.Folders(MailboxName)(0)
-    Dim InputFolder As Outlook.Folder
-    Set InputFolder = Mailbox.Folders(FromFolderName)(0)
-    Dim OutputFolder As Outlook.Folder
-    Set OutputFolder = Mailbox.Folders(ToFolderName)(0)
-    Dim Mails As Outlook.Items
-    Set Mails = InputFolder.Items
-    Dim i As Long
+    Dim ns As Outlook.Namespace
+    Set ns = Application.GetNamespace(m_nsName)
+    Dim mailbox As Outlook.Folder
+    '@Ignore SetAssignmentWithIncompatibleObjectType
+    Set mailbox = ns.Folders(m_mailboxName)
+    Dim inputFolder As Outlook.Folder
+    '@Ignore SetAssignmentWithIncompatibleObjectType
+    Set inputFolder = mailbox.Folders(m_superFolderName).Folders(m_fromFolderName)
+    Dim outputFolder As Outlook.Folder
+    '@Ignore SetAssignmentWithIncompatibleObjectType
+    Set outputFolder = mailbox.Folders(m_toFolderName)
+    Dim mails As Outlook.Items
+    Set mails = inputFolder.Items
+    Dim i As LongLong
 
-    For i = Mails.Count To 1 Step -1
-        Mails.Item(i).Move OutputFolder
+    For i = mails.Count To 1 Step -1
+        mails.Item(i).Move outputFolder
     Next
 End Sub

@@ -6,23 +6,23 @@ Option Explicit
 
 '@EntryPoint
 '@Description "Calculates the date for a specific cell given a starting date."
-Public Function CalculateDate(ByVal StartingDate As Date, ByVal Index As Long, ByVal Data As Range) As Date
+Public Function CalculateDate(ByVal startingDate As Date, ByVal index As Long, ByVal data As Range) As Date
 Attribute CalculateDate.VB_Description = "Calculates the date for a specific cell given a starting date."
     'On first day, date is just starting date, after that it needs calculation.
-    If Index = 1 Then
-        CalculateDate = StartingDate
+    If index = 1 Then
+        CalculateDate = startingDate
     Else
         'Date is dependent on remaining capacity, as with leftover capacity, new products can be started on the same day.
-        Dim PreviousDate As Date
-        PreviousDate = Data.Cells.Item(Index - 1, DateColumn)
-        Dim PreviousProductAmount As Long
-        PreviousProductAmount = Data.Cells.Item(Index - 1, AmountColumn)
-        Dim RemainingCapacity As Long
-        RemainingCapacity = Data.Cells.Item(Index - 1, RemainingCapacityColumn)
-        If PreviousProductAmount <> 0 And RemainingCapacity > 0 Then
-            CalculateDate = PreviousDate
+        Dim previousDate As Date
+        previousDate = data.Cells.Item(index - 1, DateColumn)
+        Dim previousProductAmount As Long
+        previousProductAmount = data.Cells.Item(index - 1, AmountColumn)
+        Dim remainingCapacity As Long
+        remainingCapacity = data.Cells.Item(index - 1, RemainingCapacityColumn)
+        If previousProductAmount <> 0 And remainingCapacity > 0 Then
+            CalculateDate = previousDate
         Else
-            CalculateDate = DateAdd("d", 1, PreviousDate)
+            CalculateDate = DateAdd("d", 1, previousDate)
         End If
     End If
 End Function

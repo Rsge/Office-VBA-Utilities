@@ -6,42 +6,42 @@ Option Explicit
 
 '@EntryPoint
 '@Description "Calculates the capacity for a specified date and slowdown and the amount to produce."
-Public Function CalculateCapacity(ByVal BaseCapacity As Long, ByVal Index As Long, ByVal Data As Range) As Long
+Public Function CalculateCapacity(ByVal baseCapacity As Long, ByVal index As Long, ByVal data As Range) As Long
 Attribute CalculateCapacity.VB_Description = "Calculates the capacity for a specified date and slowdown and the amount to produce."
-    Dim CurrentDate As Date
-    CurrentDate = Data.Cells.Item(Index, DateColumn)
+    Dim currentDate As Date
+    currentDate = data.Cells.Item(index, DateColumn)
     'On no-production-dates, capacity is zero, otherwise it needs to be calculated
-    If NoProduction(CurrentDate) Then
+    If NoProduction(currentDate) Then
         CalculateCapacity = 0
     Else
         'Getting amount and slowdown
-        Dim ProductAmount As Long
-        ProductAmount = Data.Cells.Item(Index, AmountColumn)
-        Dim Slowdown As Long
-        Slowdown = Data.Cells.Item(Index, SlowdownsColumn)
+        Dim productAmount As Long
+        productAmount = data.Cells.Item(index, AmountColumn)
+        Dim slowdown As Long
+        slowdown = data.Cells.Item(index, SlowdownsColumn)
         'On first index, only base values matter, otherwise previous data has to be accounted for
-        If Index = 1 Then
-            CalculateCapacity = BaseCapacity - ProductAmount - Slowdown
+        If index = 1 Then
+            CalculateCapacity = baseCapacity - productAmount - slowdown
         Else
-            Dim PreviousDate As Date
-            Dim PreviousProductAmount As Long
-            Dim RemainingCapacity As Long
+            Dim previousDate As Date
+            Dim previousProductAmount As Long
+            Dim remainingCapacity As Long
             Dim i As Long
             i = 1
             'Skipping no-production-dates
             Do
-                PreviousDate = Data.Cells.Item(Index - i, DateColumn)
-                PreviousProductAmount = Data.Cells.Item(Index - i, AmountColumn)
-                RemainingCapacity = Data.Cells.Item(Index - i, RemainingCapacityColumn)
+                previousDate = data.Cells.Item(index - i, DateColumn)
+                previousProductAmount = data.Cells.Item(index - i, AmountColumn)
+                remainingCapacity = data.Cells.Item(index - i, RemainingCapacityColumn)
                 i = i + 1
-            Loop While NoProduction(PreviousDate) And Index - i > 1
+            Loop While NoProduction(previousDate) And index - i > 1
             'Calculating remaining capacity for different scenarios
-            If RemainingCapacity = BaseCapacity Or (PreviousProductAmount = 0 And RemainingCapacity >= 0) Then
-                CalculateCapacity = BaseCapacity - ProductAmount - Slowdown
-            ElseIf CurrentDate = PreviousDate Then
-                CalculateCapacity = RemainingCapacity - ProductAmount - Slowdown
+            If remainingCapacity = baseCapacity Or (previousProductAmount = 0 And remainingCapacity >= 0) Then
+                CalculateCapacity = baseCapacity - productAmount - slowdown
+            ElseIf currentDate = previousDate Then
+                CalculateCapacity = remainingCapacity - productAmount - slowdown
             Else
-                CalculateCapacity = BaseCapacity + RemainingCapacity - ProductAmount - Slowdown
+                CalculateCapacity = baseCapacity + remainingCapacity - productAmount - slowdown
             End If
         End If
     End If

@@ -10,31 +10,31 @@ Option Explicit
 
 'String constants
 '@VariableDescription "Label text for iteration count output."
-Private Const IterationCountLabel As String = "Number of iterations: "
-Attribute IterationCountLabel.VB_VarDescription = "Label text for iteration count output."
+Private Const m_iterationCountLabel As String = "Number of iterations: "
+Attribute m_iterationCountLabel.VB_VarDescription = "Label text for iteration count output."
 '@VariableDescription "Label text for first testing method."
-Private Const FirstMethodLabel As String = "Using Len: "
-Attribute FirstMethodLabel.VB_VarDescription = "Label text for first testing method."
+Private Const m_firstMethodLabel As String = "Using Len: "
+Attribute m_firstMethodLabel.VB_VarDescription = "Label text for first testing method."
 '@VariableDescription "Label text for second testing method."
-Private Const SecondMethodLabel As String = "Using LenB: "
-Attribute SecondMethodLabel.VB_VarDescription = "Label text for second testing method."
+Private Const m_secondMethodLabel As String = "Using LenB: "
+Attribute m_secondMethodLabel.VB_VarDescription = "Label text for second testing method."
 '@VariableDescription "Label text for third testing method."
-Private Const ThirdMethodLabel As String = "Using '= vbNullString': "
-Attribute ThirdMethodLabel.VB_VarDescription = "Label text for third testing method."
+Private Const m_thirdMethodLabel As String = "Using '= vbNullString': "
+Attribute m_thirdMethodLabel.VB_VarDescription = "Label text for third testing method."
 '@VariableDescription "Label text for fourth testing method."
-Private Const FourthMethodLabel As String = "Using '= """"': "
-Attribute FourthMethodLabel.VB_VarDescription = "Label text for fourth testing method."
+Private Const m_fourthMethodLabel As String = "Using '= """"': "
+Attribute m_fourthMethodLabel.VB_VarDescription = "Label text for fourth testing method."
 '@VariableDescription "Format of decimal number string output."
-Private Const NumberFormat As String = "0.####"
-Attribute NumberFormat.VB_VarDescription = "Format of decimal number string output."
+Private Const m_numberFormat As String = "0.####"
+Attribute m_numberFormat.VB_VarDescription = "Format of decimal number string output."
 '@VariableDescription "Unit of measured time."
-Private Const Unit As String = " s"
-Attribute Unit.VB_VarDescription = "Unit of measured time."
+Private Const m_unit As String = " s"
+Attribute m_unit.VB_VarDescription = "Unit of measured time."
 
 'Count
 '@VariableDescription "Amount of iterations to do for testing."
-Private Const IterationCount As Long = 100000000
-Attribute IterationCount.VB_VarDescription = "Amount of iterations to do for testing."
+Private Const m_iterationCount As Long = 100000000
+Attribute m_iterationCount.VB_VarDescription = "Amount of iterations to do for testing."
 
 
 '@EntryPoint
@@ -42,56 +42,56 @@ Attribute IterationCount.VB_VarDescription = "Amount of iterations to do for tes
 Public Sub TestIsStringEmpty()
 Attribute TestIsStringEmpty.VB_Description = "Tests string emptiness with different methods."
     Dim i As Long
-    Dim StarttimeOne As Double
-    Dim EndtimeOne As Double
-    Dim StarttimeTwo As Double
-    Dim EndtimeTwo As Double
-    Dim StarttimeThree As Double
-    Dim EndtimeThree As Double
-    Dim StarttimeFour As Double
-    Dim EndtimeFour As Double
-    Dim Msg As String
+    Dim starttimeOne As Double
+    Dim endtimeOne As Double
+    Dim starttimeTwo As Double
+    Dim endtimeTwo As Double
+    Dim starttimeThree As Double
+    Dim endtimeThree As Double
+    Dim starttimeFour As Double
+    Dim endtimeFour As Double
+    Dim msg As String
     '@Ignore VariableNotUsed
-    Dim TestBool As Boolean
+    Dim testBool As Boolean
 
     'Test-variable
-    Dim TestStr As String
-    TestStr = vbNullString
+    Dim testStr As String
+    testStr = vbNullString
 
     'Using Len
-    StarttimeOne = Timer
-    For i = 1 To IterationCount
-        TestBool = Len(TestStr) > 0
+    starttimeOne = Timer
+    For i = 1 To m_iterationCount
+        testBool = Len(testStr) > 0
     Next i
-    EndtimeOne = Timer
+    endtimeOne = Timer
 
     'Using LenB
-    StarttimeTwo = Timer
-    For i = 1 To IterationCount
-        TestBool = LenB(TestStr) > 0
+    starttimeTwo = Timer
+    For i = 1 To m_iterationCount
+        testBool = LenB(testStr) > 0
     Next i
-    EndtimeTwo = Timer
+    endtimeTwo = Timer
 
     'Using '= vbNullString'
-    StarttimeThree = Timer
-    For i = 1 To IterationCount
-        TestBool = TestStr = vbNullString
+    starttimeThree = Timer
+    For i = 1 To m_iterationCount
+        testBool = testStr = vbNullString
     Next i
-    EndtimeThree = Timer
+    endtimeThree = Timer
     
     'Using '= ""'
-    StarttimeFour = Timer
-    For i = 1 To IterationCount
+    starttimeFour = Timer
+    For i = 1 To m_iterationCount
         '@Ignore EmptyStringLiteral
-        TestBool = TestStr = ""
+        testBool = testStr = ""
     Next i
-    EndtimeFour = Timer
+    endtimeFour = Timer
     
-    Msg = IterationCountLabel & "10^" & Log(IterationCount) / Log(10) & vbNewLine & _
+    msg = m_iterationCountLabel & "10^" & Log(m_iterationCount) / Log(10) & vbNewLine & _
           vbNewLine & _
-          FirstMethodLabel & Format$(EndtimeOne - StarttimeOne, NumberFormat) & Unit & vbNewLine & _
-          SecondMethodLabel & Format$(EndtimeTwo - StarttimeTwo, NumberFormat) & Unit & vbNewLine & _
-          ThirdMethodLabel & Format$(EndtimeThree - StarttimeThree, NumberFormat) & Unit & vbNewLine & _
-          FourthMethodLabel & Format$(EndtimeFour - StarttimeFour, NumberFormat) & Unit
-    MsgBox Msg
+          m_firstMethodLabel & Format$(endtimeOne - starttimeOne, m_numberFormat) & m_unit & vbNewLine & _
+          m_secondMethodLabel & Format$(endtimeTwo - starttimeTwo, m_numberFormat) & m_unit & vbNewLine & _
+          m_thirdMethodLabel & Format$(endtimeThree - starttimeThree, m_numberFormat) & m_unit & vbNewLine & _
+          m_fourthMethodLabel & Format$(endtimeFour - starttimeFour, m_numberFormat) & m_unit
+    MsgBox msg
 End Sub

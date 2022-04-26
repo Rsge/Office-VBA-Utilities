@@ -5,32 +5,32 @@ Attribute VB_Description = "General, often used methods."
 Option Explicit
 
 '@VariableDescription "Warning if no save location specified."
-Private Const NoSaveLocationWarning As String = "No save location configured or" & vbNewLine & _
-                                                "save location does not exist." & vbNewLine & _
-                                                "Please specify a save location."
-Attribute NoSaveLocationWarning.VB_VarDescription = "Warning if no save location specified."
+Private Const m_noSaveLocationWarning As String = "No save location configured or" & vbNewLine & _
+                                                  "save location does not exist." & vbNewLine & _
+                                                  "Please specify a save location."
+Attribute m_noSaveLocationWarning.VB_VarDescription = "Warning if no save location specified."
 '@VariableDescription "Warning if no files found at save location."
-Private Const NoFilesWarning As String = "No files found at specified location." & vbNewLine & _
-                                         "Please specify a different folder or abort and add files first."
-Attribute NoFilesWarning.VB_VarDescription = "Warning if no files found at save location."
+Private Const m_noFilesWarning As String = "No files found at specified location." & vbNewLine & _
+                                           "Please specify a different folder or abort and add files first."
+Attribute m_noFilesWarning.VB_VarDescription = "Warning if no files found at save location."
 
 
 ''@Description "Replaces occurences of {} in a string with the specified replacements."
 'Public Function FormatString(ByVal str As String, ParamArray replacements() As Variant) As String
-'    Dim StrArray() As String
-'    StrArray = Split(str, "{}")
-'    Dim Out As Object
-'    Set Out = CreateObject("System.Collections.ArrayList")
+'    Dim strArray() As String
+'    strArray = Split(str, "{}")
+'    Dim out As Object
+'    Set out = CreateObject("System.Collections.ArrayList")
 '    Dim i As Long
 '    i = 0
-'    Dim Replacement As Variant
-'    For Each Replacement In replacements
-'        Out.Add StrArray(i)
-'        Out.Add Replacement
+'    Dim replacement As Variant
+'    For Each replacement In replacements
+'        out.Add strArray(i)
+'        out.Add replacement
 '        i = i + 1
 '    Next
-'    Out.Add StrArray(i)
-'    FormatString = Join(Out.ToArray, vbNullString)
+'    out.Add strArray(i)
+'    FormatString = Join(out.ToArray, vbNullString)
 'End Function
 
 '@Description "Tests if a string starts with another string."
@@ -66,79 +66,79 @@ End Function
 '@Description "Gets number of last lines of file at path (default 2)."
 Public Function GetLastLine(ByVal filePath As String, Optional ByVal lineCount As Long = 1) As String()
 Attribute GetLastLine.VB_Description = "Gets number of last lines of file at path (default 2)."
-    Dim FileNumber As Long
+    Dim fileNumber As Long
     'Using first unused file number
-    FileNumber = FreeFile
-    Dim Pointer As Long
+    fileNumber = FreeFile
+    Dim pointer As Long
     'String of fixed length 1
-    Dim Char As String * 1
-    Dim CurrentLineNumber As Long
-    CurrentLineNumber = 0
-    Dim LastLines() As String
-    ReDim LastLines(0 To lineCount - 1)
+    Dim char As String * 1
+    Dim currentLineNumber As Long
+    currentLineNumber = 0
+    Dim lastLines() As String
+    ReDim lastLines(0 To lineCount - 1)
 
     'Opening file
-    Open filePath For Binary As FileNumber
+    Open filePath For Binary As fileNumber
     'Setting pointer to last position in file
-    Pointer = LOF(FileNumber)
+    pointer = LOF(fileNumber)
     Do
         'Reading char at position "Pointer" into "Char"
-        Get FileNumber, Pointer, Char
-        If Char = vbCr Then
+        Get fileNumber, pointer, char
+        If char = vbCr Then
             'Simply skipping CRs for Linux compat
-            Pointer = Pointer - 1
-        ElseIf Char = vbLf Then
+            pointer = pointer - 1
+        ElseIf char = vbLf Then
             'Reading Count last lines of file
-            If CurrentLineNumber < lineCount - 1 Then
-                CurrentLineNumber = CurrentLineNumber + 1
-                Pointer = Pointer - 1
+            If currentLineNumber < lineCount - 1 Then
+                currentLineNumber = currentLineNumber + 1
+                pointer = pointer - 1
             Else
                 Exit Do
             End If
         Else
-            Pointer = Pointer - 1
+            pointer = pointer - 1
             'Adding char to result String
-            LastLines(CurrentLineNumber) = Char & LastLines(CurrentLineNumber)
+            lastLines(currentLineNumber) = char & lastLines(currentLineNumber)
         End If
     Loop
-    Close FileNumber
+    Close fileNumber
     
-    GetLastLine = LastLines
+    GetLastLine = lastLines
 End Function
 
 '@Description "Gets save location of data files and determines if files are available."
 Public Function GetDataFilePath(ByVal pathCell As Range) As String
 Attribute GetDataFilePath.VB_Description = "Gets save location of data files and determines if files are available."
     'Variables
-    Dim Path As String
-    Path = pathCell.Value
-    Dim NoFilesRepeat As Boolean
+    Dim path As String
+    path = pathCell.Value
+    Dim noFilesRepeat As Boolean
 
     Do
-        If LenB(Path) = 0 Or LenB(Dir(Path, vbDirectory)) = 0 Then
+        If LenB(path) = 0 Or LenB(Dir(path, vbDirectory)) = 0 Then
             'Defining path
-            If Not NoFilesRepeat Then
+            If Not noFilesRepeat Then
                 'MsgBox to cancel folder dialog
-                If MsgBox(NoSaveLocationWarning, vbOKCancel) = vbCancel Then Exit Function
+                If MsgBox(m_noSaveLocationWarning, vbOKCancel) = vbCancel Then Exit Function
                 'Opening folder dialog
                 Dim FolderDialog As FileDialog
                 Set FolderDialog = Application.FileDialog(msoFileDialogFolderPicker)
                 If FolderDialog.Show = 0 Then Exit Function
                 'Getting path
-                Path = FolderDialog.SelectedItems.Item(1)
-                pathCell.Value = Path
+                path = FolderDialog.SelectedItems.Item(1)
+                pathCell.Value = path
             End If
 
             'Checking file existence
-            If Len(Dir(Path & Application.PathSeparator & Ext)) <> 0 Then
-                NoFilesRepeat = False
+            If Len(Dir(path & Application.PathSeparator & Ext)) <> 0 Then
+                noFilesRepeat = False
             Else
-                If MsgBox(NoFilesWarning, vbOKCancel) = vbCancel Then Exit Function
-                Path = vbNullString
-                NoFilesRepeat = True
+                If MsgBox(m_noFilesWarning, vbOKCancel) = vbCancel Then Exit Function
+                path = vbNullString
+                noFilesRepeat = True
             End If
         End If
-    Loop While NoFilesRepeat
+    Loop While noFilesRepeat
 
-    GetDataFilePath = Path
+    GetDataFilePath = path
 End Function

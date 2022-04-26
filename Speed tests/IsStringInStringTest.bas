@@ -1,4 +1,4 @@
-Attribute VB_Name = "IsStringInString"
+Attribute VB_Name = "IsStringInStringTest"
 Attribute VB_Description = "String contains string testing."
 '@Folder "Speed tests"
 '@ModuleDescription "String contains string testing."
@@ -10,28 +10,28 @@ Option Explicit
 
 'String constants
 '@VariableDescription "Label text for iteration count output."
-Private Const IterationCountLabel As String = "Number of iterations: "
-Attribute IterationCountLabel.VB_VarDescription = "Label text for iteration count output."
+Private Const m_iterationCountLabel As String = "Number of iterations: "
+Attribute m_iterationCountLabel.VB_VarDescription = "Label text for iteration count output."
 '@VariableDescription "Label text for first testing method."
-Private Const FirstMethodLabel As String = "Using InStr: "
-Attribute FirstMethodLabel.VB_VarDescription = "Label text for first testing method."
+Private Const m_firstMethodLabel As String = "Using InStr: "
+Attribute m_firstMethodLabel.VB_VarDescription = "Label text for first testing method."
 '@VariableDescription "Label text for second testing method."
-Private Const SecondMethodLabel As String = "Using InStrB: "
-Attribute SecondMethodLabel.VB_VarDescription = "Label text for second testing method."
+Private Const m_secondMethodLabel As String = "Using InStrB: "
+Attribute m_secondMethodLabel.VB_VarDescription = "Label text for second testing method."
 '@VariableDescription "Label text for third testing method."
-Private Const ThirdMethodLabel As String = "Using Like: "
-Attribute ThirdMethodLabel.VB_VarDescription = "Label text for third testing method."
+Private Const m_thirdMethodLabel As String = "Using Like: "
+Attribute m_thirdMethodLabel.VB_VarDescription = "Label text for third testing method."
 '@VariableDescription "Format of decimal number string output."
-Private Const NumberFormat As String = "0.####"
-Attribute NumberFormat.VB_VarDescription = "Format of decimal number string output."
+Private Const m_numberFormat As String = "0.####"
+Attribute m_numberFormat.VB_VarDescription = "Format of decimal number string output."
 '@VariableDescription "Unit of measured time."
-Private Const Unit As String = " s"
-Attribute Unit.VB_VarDescription = "Unit of measured time."
+Private Const m_unit As String = " s"
+Attribute m_unit.VB_VarDescription = "Unit of measured time."
 
 'Count
 '@VariableDescription "Amount of iterations to do for testing."
-Private Const IterationCount As Long = 100000000
-Attribute IterationCount.VB_VarDescription = "Amount of iterations to do for testing."
+Private Const m_iterationCount As Long = 100000000
+Attribute m_iterationCount.VB_VarDescription = "Amount of iterations to do for testing."
 
 
 '@EntryPoint
@@ -39,50 +39,50 @@ Attribute IterationCount.VB_VarDescription = "Amount of iterations to do for tes
 Public Sub TestIsStringInString()
 Attribute TestIsStringInString.VB_Description = "Tests if string contains other string with different methods."
     Dim i As Long
-    Dim StarttimeOne As Double
-    Dim EndtimeOne As Double
-    Dim StarttimeTwo As Double
-    Dim EndtimeTwo As Double
-    Dim StarttimeThree As Double
-    Dim EndtimeThree As Double
-    Dim Msg As String
+    Dim starttimeOne As Double
+    Dim endtimeOne As Double
+    Dim starttimeTwo As Double
+    Dim endtimeTwo As Double
+    Dim starttimeThree As Double
+    Dim endtimeThree As Double
+    Dim msg As String
     '@Ignore VariableNotUsed
-    Dim TestBool As Boolean
+    Dim testBool As Boolean
 
     'Test-variable
-    Dim TestStr As String
-    TestStr = "Example,Test"
-    Dim TestForStr As String
-    TestForStr = ","
+    Dim testStr As String
+    testStr = "Example,Test"
+    Dim testForStr As String
+    testForStr = ","
 
     'Using InStr
-    StarttimeOne = Timer
-    For i = 1 To IterationCount
-        TestBool = InStr(TestStr, TestForStr) > 0
+    starttimeOne = Timer
+    For i = 1 To m_iterationCount
+        testBool = InStr(testStr, testForStr) > 0
     Next i
-    EndtimeOne = Timer
+    endtimeOne = Timer
 
     'Using InStrB
-    StarttimeTwo = Timer
-    For i = 1 To IterationCount
-        TestBool = InStrB(TestStr, TestForStr) > 0
+    starttimeTwo = Timer
+    For i = 1 To m_iterationCount
+        testBool = InStrB(testStr, testForStr) > 0
     Next i
-    EndtimeTwo = Timer
+    endtimeTwo = Timer
 
     'Using Like
     '@Ignore AssignmentNotUsed
-    TestForStr = "*" & TestForStr & "*"
-    StarttimeThree = Timer
-    For i = 1 To IterationCount
-        TestBool = TestStr Like TestForStr
+    testForStr = "*" & testForStr & "*"
+    starttimeThree = Timer
+    For i = 1 To m_iterationCount
+        testBool = testStr Like testForStr
     Next i
-    EndtimeThree = Timer
+    endtimeThree = Timer
     
     
-    Msg = IterationCountLabel & "10^" & Log(IterationCount) / Log(10) & vbNewLine & _
+    msg = m_iterationCountLabel & "10^" & Log(m_iterationCount) / Log(10) & vbNewLine & _
           vbNewLine & _
-          FirstMethodLabel & Format$(EndtimeOne - StarttimeOne, NumberFormat) & Unit & vbNewLine & _
-          SecondMethodLabel & Format$(EndtimeTwo - StarttimeTwo, NumberFormat) & Unit & vbNewLine & _
-          ThirdMethodLabel & Format$(EndtimeThree - StarttimeThree, NumberFormat) & Unit
-    MsgBox Msg
+          m_firstMethodLabel & Format$(endtimeOne - starttimeOne, m_numberFormat) & m_unit & vbNewLine & _
+          m_secondMethodLabel & Format$(endtimeTwo - starttimeTwo, m_numberFormat) & m_unit & vbNewLine & _
+          m_thirdMethodLabel & Format$(endtimeThree - starttimeThree, m_numberFormat) & m_unit
+    MsgBox msg
 End Sub

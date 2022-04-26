@@ -8,6 +8,6 @@ Option Explicit
 '@Description "Registers the event class for handling."
 Public Sub Register_Event_Handler()
 Attribute Register_Event_Handler.VB_Description = "Registers the event class for handling."
-    Dim WordEvent As New EventClassModule
-    Set WordEvent.App = Word.Application
+    Dim wordEvent As New EventClassModule
+    Set wordEvent.App = Word.Application
 End Sub

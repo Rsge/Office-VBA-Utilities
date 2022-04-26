@@ -6,14 +6,14 @@ Option Explicit
 
 'String constants
 '@VariableDescription "Area in active worksheet which is to clear."
-Private Const AreaToClear As String = "A1:B2,C1:D2"
-Attribute AreaToClear.VB_VarDescription = "Area in active worksheet which is to clear."
+Private Const m_areaToClear As String = "A1:B2,C1:D2"
+Attribute m_areaToClear.VB_VarDescription = "Area in active worksheet which is to clear."
 '@VariableDescription "Title of MsgBox to show it contains a warning."
-Private Const WarningLabel As String = "Warning!"
-Attribute WarningLabel.VB_VarDescription = "Title of MsgBox to show it contains a warning."
+Private Const m_warningLabel As String = "Warning!"
+Attribute m_warningLabel.VB_VarDescription = "Title of MsgBox to show it contains a warning."
 '@VariableDescription "Warning about the specified area being deleted if accepted."
-Private Const DeletionWarning As String = "Everything in this table will be deleted!"
-Attribute DeletionWarning.VB_VarDescription = "Warning about the specified area being deleted if accepted."
+Private Const m_deletionWarning As String = "Everything in this table will be deleted!"
+Attribute m_deletionWarning.VB_VarDescription = "Warning about the specified area being deleted if accepted."
 
 
 '@EntryPoint
@@ -21,14 +21,14 @@ Attribute DeletionWarning.VB_VarDescription = "Warning about the specified area 
 Public Sub Clear()
 Attribute Clear.VB_Description = "Deletes all cells' content in defined area."
     Dim Check As Byte
-    Check = MsgBox(DeletionWarning, vbOKCancel + vbExclamation, WarningLabel)
+    Check = MsgBox(m_deletionWarning, vbOKCancel + vbExclamation, m_warningLabel)
     If Check = 1 Then
-        Dim WS As Worksheet
-        Set WS = ActiveWorkbook.ActiveSheet
-        WS.UnProtect
+        Dim ws As Worksheet
+        Set ws = ActiveWorkbook.ActiveSheet
+        ws.UnProtect
         Dim CellsToDelete As Range
-        Set CellsToDelete = ActiveSheet.Range(AreaToClear)
+        Set CellsToDelete = ActiveSheet.Range(m_areaToClear)
         CellsToDelete.ClearContents
-        WS.Protect
+        ws.Protect
     End If
 End Sub
