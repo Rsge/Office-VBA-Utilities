@@ -5,6 +5,11 @@ Attribute VB_Description = "Save movement of mails from one folder to another."
 '@ModuleDescription "Save movement of mails from one folder to another."
 Option Explicit
 
+'Sleep
+'@Description "Pauses the program for specified amount of milliseconds."
+Public Declare PtrSafe Sub Sleep Lib "kernel32" (ByVal milliseconds As LongPtr)
+Attribute Sleep.VB_Description = "Pauses the program for specified amount of milliseconds."
+
 'String constants
 '@VariableDescription "Name of mailbow to run this script on."
 Private Const m_mailboxName As String = "test@example.com"
@@ -13,7 +18,7 @@ Attribute m_mailboxName.VB_VarDescription = "Name of mailbow to run this script 
 Private Const m_superFolderName As String = "Inbox"
 Attribute m_superFolderName.VB_VarDescription = "Name of superfolder to the folder to move from."
 '@VariableDescription "Name of folder from which to move emails."
-Private Const m_fromFolderName As String = "Test"
+Private Const m_fromFolderName As String = "Example"
 Attribute m_fromFolderName.VB_VarDescription = "Name of folder from which to move emails."
 '@VariableDescription "Name of folder to which to move emails."
 Private Const m_toFolderName As String = "Archive"
@@ -44,5 +49,7 @@ Attribute MoveAllMailsFromFolder.VB_Description = "Moves all mails from one fold
 
     For i = mails.Count To 1 Step -1
         mails.Item(i).Move outputFolder
+        Sleep 500
+        DoEvents
     Next
 End Sub
