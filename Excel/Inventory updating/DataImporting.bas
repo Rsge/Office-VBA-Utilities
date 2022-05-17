@@ -78,7 +78,9 @@ Retry:
             'Accounting for kilo-unit
             Dim currentAmount As Double
             currentAmount = Replace(ImportData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
-            If Contains(ActiveSheet.Cells(itemRow, UnitColumn).Value, KiloUnitPrefix) Then
+            Dim unit As String
+            unit = ActiveSheet.Cells(itemRow, UnitColumn).Value
+            If Contains(unit, KiloUnitPrefix) Or unit = LitersUnit Then
                 currentAmount = currentAmount / 1000
             End If
             'Changing data in Excel table only if imported data is newer
