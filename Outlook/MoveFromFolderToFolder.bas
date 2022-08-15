@@ -49,7 +49,7 @@ Attribute MoveAllMailsFromFolder.VB_Description = "Moves all mails from one fold
 
     For i = mails.Count To 1 Step -1
         mails.Item(i).Move outputFolder
-        Sleep 500
+        Sleep 200
         DoEvents
     Next
 End Sub
