@@ -18,7 +18,7 @@ Private Const m_infoColumn As Long = 3
 
 '@EntryPoint
 '@Description "Imports string data for items from txt file."
-Public Sub ImportItemData()
+Public Sub ImportStringItemData()
 Attribute ImportItemData.VB_Description = "Imports string data for items from txt file."
     'Variables
     Dim fileNumber As Long

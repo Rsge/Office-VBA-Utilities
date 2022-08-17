@@ -1,5 +1,6 @@
 Attribute VB_Name = "ImportTxtData"
 Attribute VB_Description = "Importing boolean data from text file to excel table."
+'@IgnoreModule IndexedUnboundDefaultMemberAccess
 '@Folder "Import"
 '@ModuleDescription "Importing boolean data from text file to excel table."
 Option Explicit
@@ -26,7 +27,7 @@ Private Const m_infoColumn As Long = 5
 
 '@EntryPoint
 '@Description "Imports boolean data for items from txt file."
-Public Sub ImportItemData()
+Public Sub ImportBooleanItemData()
 Attribute ImportItemData.VB_Description = "Imports boolean data for items from txt file."
     'Variables
     Dim fileNumber As Long
@@ -50,7 +51,6 @@ Attribute ImportItemData.VB_Description = "Imports boolean data for items from t
     Do While LenB(ActiveSheet.Cells(i, m_itemColumn)) <> 0
         itemData(0) = ActiveSheet.Cells(i, m_itemColumn)
         If items.Exists(itemData(0)) Then
-            '@Ignore IndexedUnboundDefaultMemberAccess
             If Not CBool(items(itemData(0))) Then
                 If InStrB(ActiveSheet.Cells(i, m_infoColumn), m_hasNoEntry) > 0 Then
                     ActiveSheet.Cells(i, m_infoColumn) = m_hasNoEntry & " & " & m_hasNoSpecific
