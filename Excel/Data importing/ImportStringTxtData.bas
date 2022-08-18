@@ -41,12 +41,13 @@ Attribute ImportItemData.VB_Description = "Imports string data for items from tx
     'Import data to excel table
     Do While LenB(ActiveSheet.Cells(i, m_itemColumn)) <> 0
         itemData(0) = ActiveSheet.Cells(i, m_itemColumn)
-        If items.Exists(itemData(0)) Then
+        If items.Exists(itemData(0)) Then 'And LenB(ActiveSheet.Cells(i, m_infoColumn)) = 0 Then 'For updating import after change
             ActiveSheet.Cells(i, m_infoColumn) = items(itemData(0))
             items.Remove (itemData(0))
         End If
         i = i + 1
     Loop
+	'For updating import after change comment out this part
     Dim item As Variant
     For Each item In items.Keys
         ActiveSheet.Cells(i, m_itemColumn) = "'" & item
