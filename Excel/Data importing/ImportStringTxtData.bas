@@ -38,7 +38,7 @@ Attribute ImportItemData.VB_Description = "Imports string data for items from tx
         items.Add itemData(0), itemData(1)
     Loop
     
-    'Import data to excel table
+    'Import data to Excel table
     Do While LenB(ActiveSheet.Cells(i, m_itemColumn)) <> 0
         itemData(0) = ActiveSheet.Cells(i, m_itemColumn)
         If items.Exists(itemData(0)) Then 'And LenB(ActiveSheet.Cells(i, m_infoColumn)) = 0 Then 'For updating import after change

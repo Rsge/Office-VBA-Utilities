@@ -47,7 +47,7 @@ Attribute ImportItemData.VB_Description = "Imports boolean data for items from t
         items.Add itemData(0), itemData(1)
     Loop
     
-    'Import data to excel table
+    'Import data to Excel table
     Do While LenB(ActiveSheet.Cells(i, m_itemColumn)) <> 0
         itemData(0) = ActiveSheet.Cells(i, m_itemColumn)
         If items.Exists(itemData(0)) Then
