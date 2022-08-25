@@ -10,7 +10,7 @@ I'd also recommmend making a few adjustments to the VBA editor's settings as see
 * `Attendence time table` contains methods for automated clearing of specific part with prior confirmation and un-/protecting the document via bindable macro.
 * `Inventory updating` contains methods for importing data from multiple CSV files with relevant data on the last line into a table in excel, creating a backup of the current worksheet before making changes.
 * `Production planning` contains methods for different calculations related to and needed for planning production, e.g. finding holidays and calculating production capacities.
-* `Data importing` contains methods for importing boolean or string values as text info for entries in an Excel sheet from a text file.
+* `Data importing` contains methods for importing boolean or string values as text info for entries in an Excel sheet from a text or excel file.
 
 ### Outlook
 * `BulkEditContacts.bas` allows for bulk-editing of contacts.
