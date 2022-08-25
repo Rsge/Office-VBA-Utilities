@@ -57,6 +57,7 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
     Set lineWS = ThisWorkbook.Sheets.[_Default](m_lineSheetName)
     Dim i As Long
     Dim j As Long
+    Dim k As Long
     Dim itemNum As String
     Dim langCode As String
     Dim found(1) As Boolean
@@ -122,22 +123,32 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
                     'Look if additional lines need to be localized
                     langCode = lineWS.Cells.Item(j, m_dataLangCodeColumn)
                     If LenB(langCode) = 0 Then
-                        CreateNewRow lineWS, j
-                        lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_englishLangCode
-                        lineWS.Cells.Item(j, m_lineTextColumn) = importWS.Cells.Item(i, m_importEnglishColumn)
-                        CreateNewRow lineWS, j
-                        lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_germanLangCode
-                        lineWS.Cells.Item(j, m_lineTextColumn) = importWS.Cells.Item(i, m_importGermanColumn)
+                        k = j
                         Do
-                            j = j + 2
+                            k = k + 1
+                            If LenB(lineWS.Cells.Item(k, m_dataLangCodeColumn)) > 0 _
+                                And lineWS.Cells.Item(k, m_dataItemColumn) = itemNum Then
+                                found(0) = True
+                            End If
+                        Loop While LenB(lineWS.Cells.Item(k, m_dataLangCodeColumn)) = 0
+                        If Not found(0) Then
+                            CreateNewRow lineWS, j
                             lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_englishLangCode
-                            lineWS.Cells.Item(j, m_lineLineNumColumn) = lineWS.Cells.Item(j, m_lineLineNumColumn) + m_baseLineNum
+                            lineWS.Cells.Item(j, m_lineTextColumn) = importWS.Cells.Item(i, m_importEnglishColumn)
                             CreateNewRow lineWS, j
                             lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_germanLangCode
-                        Loop While lineWS.Cells.Item(j + 2, m_dataItemColumn) = itemNum _
-                            And LenB(lineWS.Cells.Item(j + 2, m_dataLangCodeColumn)) = 0
-                        found(0) = True
-                        found(1) = True
+                            lineWS.Cells.Item(j, m_lineTextColumn) = importWS.Cells.Item(i, m_importGermanColumn)
+                            Do
+                                j = j + 2
+                                lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_englishLangCode
+                                lineWS.Cells.Item(j, m_lineLineNumColumn) = lineWS.Cells.Item(j, m_lineLineNumColumn) + m_baseLineNum
+                                CreateNewRow lineWS, j
+                                lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_germanLangCode
+                            Loop While lineWS.Cells.Item(j + 2, m_dataItemColumn) = itemNum _
+                                And LenB(lineWS.Cells.Item(j + 2, m_dataLangCodeColumn)) = 0
+                            found(0) = True
+                            found(1) = True
+                        End If
                     'Check which lang code is used and if correct packing unit is already input
                     'If not, import localized packing unit and increase all following line numbers of same locale
                     ElseIf langCode = m_englishLangCode Then
