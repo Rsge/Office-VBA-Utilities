@@ -93,10 +93,9 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
                         CreateNewRow headerWS, j
                         SetHeaderCells headerWS, j
                     End If
-                ElseIf headerWS.Cells.Item(j, m_headerAllLangColumn) = m_trueLabel Then
+                ElseIf headerWS.Cells.Item(j, m_headerAllLangColumn) = m_trueLabel And _
+                    headerWS.Cells.Item(j + 2, m_dataItemColumn) <> itemNum Then
                     SetHeaderCells headerWS, j
-                ElseIf headerWS.Cells.Item(j + 1, m_headerAllLangColumn) = m_trueLabel Then
-                    SetHeaderCells headerWS, j + 1
                 End If
                 found(0) = True
                 Exit Do
