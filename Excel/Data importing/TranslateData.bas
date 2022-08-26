@@ -14,11 +14,15 @@ Private Const m_keepBeforeThis As String = "yy"
 Attribute m_keepBeforeThis.VB_VarDescription = "Keep packing unit before this string, cut rest."
 
 'Int constants
-'@VariableDescription "Column
+'@VariableDescription "The column containing the item number."
 Private Const m_itemColumn As Long = 1
-Private Const m_germanColumn As Long = 3
+Attribute m_itemColumn.VB_VarDescription = "The column containing the item number."
+'@VariableDescription "The column containing english localization."
 Private Const m_englishColumn As Long = 4
-
+Attribute m_englishColumn.VB_VarDescription = "The column containing english localization."
+'@VariableDescription "The column containing german localization."
+Private Const m_germanColumn As Long = 3
+Attribute m_germanColumn.VB_VarDescription = "The column containing german localization."
 
 '@EntryPoint
 '@Description "Translates data between languages in different columns."
