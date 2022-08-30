@@ -147,6 +147,7 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
                                 And LenB(lineWS.Cells.Item(j + 2, m_dataLangCodeColumn)) = 0
                             found(0) = True
                             found(1) = True
+							j = j + 1
                         End If
                     'Check which lang code is used and if correct packing unit is already input
                     'If not, import localized packing unit and increase all following line numbers of same locale
