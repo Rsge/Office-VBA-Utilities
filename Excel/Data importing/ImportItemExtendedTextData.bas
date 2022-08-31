@@ -1,4 +1,4 @@
-Attribute VB_Name = "ImportExtendedTextData"
+Attribute VB_Name = "ImportItemExtendedTextData"
 '@Folder("Import")
 Option Explicit
 
@@ -14,6 +14,8 @@ Private Const m_headerSheetName As String = "ExtendedTextHeader"
 Attribute m_headerSheetName.VB_VarDescription = "Name of sheet with header data to import into."
 '@VariableDescription "Name of sheet with lines data to import into.
 Private Const m_lineSheetName As String = "ExtendedTextLine"
+'@VariableDescription "Name of sheet with item data to import into.
+Private Const m_itemSheetName As String = "Item"
 '@VariableDescription "Localized label of True state."
 Private Const m_trueLabel As String = "Yes"
 Attribute m_trueLabel.VB_VarDescription = "Localized label of True state."
@@ -41,12 +43,14 @@ Private Const m_headerEndDateColumn As Long = 6
 Private Const m_headerAllLangColumn As Long = 7
 Private Const m_lineLineNumColumn As Long = 5
 Private Const m_lineTextColumn As Long = 6
+Private Const m_itemItemColumn As Long = 1
+Private Const m_itemAutoTextBoolColumn As Long = 2
 Private Const m_baseLineNum As Long = 10000
 
 '@EntryPoint
 '@Description "Imports data for items from another excel workbook."
-Public Sub ImportExtendedText()
-Attribute ImportExtendedText.VB_Description = "Imports data for items from another excel workbook."
+Public Sub ImportItemExtendedText()
+Attribute ImportItemExtendedText.VB_Description = "Imports data for items from another excel workbook."
     Dim importWB As Workbook
     Set importWB = Workbooks.Open(m_wbPath)
     Dim importWS As Worksheet
@@ -55,6 +59,9 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
     Set headerWS = ThisWorkbook.Sheets.[_Default](m_headerSheetName)
     Dim lineWS As Worksheet
     Set lineWS = ThisWorkbook.Sheets.[_Default](m_lineSheetName)
+    Dim itemWS As Worksheet
+    Set itemWS = ThisWorkbook.Sheets.[_Default](m_itemSheetName)
+    
     Dim i As Long
     Dim j As Long
     Dim k As Long
@@ -117,9 +124,9 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
             If itemNum = lineWS.Cells.Item(j, m_dataItemColumn) Then
                 Do
                     'Get lang code and check if it's given
-                    'If not, import localized packing units
-                    'Then localize the given text to one lang and copy it to the other
+                    'If not, localize the given text to one lang and copy it to the other
                     'Look if additional lines need to be localized
+                    'Then import localized info
                     langCode = lineWS.Cells.Item(j, m_dataLangCodeColumn)
                     If LenB(langCode) = 0 Then
                         k = j
@@ -131,46 +138,48 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
                             End If
                         Loop While LenB(lineWS.Cells.Item(k, m_dataLangCodeColumn)) = 0
                         If Not found(0) Then
-                            CreateNewRow lineWS, j
+                            Do
+                                lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_englishLangCode
+                                CreateNewRow lineWS, j
+                                lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_germanLangCode
+                                j = j + 2
+                            Loop While lineWS.Cells.Item(j, m_dataItemColumn) = itemNum _
+                                And LenB(lineWS.Cells.Item(j, m_dataLangCodeColumn)) = 0
+                            CreateNewRow lineWS, j - 1
                             lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_englishLangCode
                             lineWS.Cells.Item(j, m_lineTextColumn) = importWS.Cells.Item(i, m_importEnglishColumn)
+                            lineWS.Cells.Item(j, m_lineLineNumColumn) = lineWS.Cells.Item(j, m_lineLineNumColumn) + m_baseLineNum
                             CreateNewRow lineWS, j
                             lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_germanLangCode
                             lineWS.Cells.Item(j, m_lineTextColumn) = importWS.Cells.Item(i, m_importGermanColumn)
-                            Do
-                                j = j + 2
-                                lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_englishLangCode
-                                lineWS.Cells.Item(j, m_lineLineNumColumn) = lineWS.Cells.Item(j, m_lineLineNumColumn) + m_baseLineNum
-                                CreateNewRow lineWS, j
-                                lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_germanLangCode
-                            Loop While lineWS.Cells.Item(j + 2, m_dataItemColumn) = itemNum _
-                                And LenB(lineWS.Cells.Item(j + 2, m_dataLangCodeColumn)) = 0
                             found(0) = True
                             found(1) = True
                             j = j + 1
                         End If
-                    'Check which lang code is used and if correct packing unit is already input
-                    'If not, import localized packing unit and increase all following line numbers of same locale
+                    'Check which lang code is used and if correct info is already input
+                    'If not, import localized info
                     ElseIf langCode = m_englishLangCode Then
+                        Do While lineWS.Cells.Item(j + 1, m_dataItemColumn) = itemNum _
+                            And lineWS.Cells.Item(j + 1, m_dataLangCodeColumn) = langCode
+                            j = j + 1
+                        Loop
                         If lineWS.Cells.Item(j, m_lineTextColumn) <> importWS.Cells.Item(i, m_importEnglishColumn) Then
                             CreateNewRow lineWS, j
+                            j = j + 1
                             lineWS.Cells.Item(j, m_lineTextColumn) = importWS.Cells.Item(i, m_importEnglishColumn)
-                            Do
-                                j = j + 1
-                                lineWS.Cells.Item(j, m_lineLineNumColumn) = lineWS.Cells.Item(j, m_lineLineNumColumn) + m_baseLineNum
-                            Loop While lineWS.Cells.Item(j + 1, m_dataItemColumn) = itemNum _
-                                And lineWS.Cells.Item(j + 1, m_dataLangCodeColumn) = langCode
+                            lineWS.Cells.Item(j, m_lineLineNumColumn) = lineWS.Cells.Item(j, m_lineLineNumColumn) + m_baseLineNum
                         End If
                         found(0) = True
                     ElseIf langCode = m_germanLangCode Then
+                        Do While lineWS.Cells.Item(j + 1, m_dataItemColumn) = itemNum _
+                            And lineWS.Cells.Item(j + 1, m_dataLangCodeColumn) = langCode
+                            j = j + 1
+                        Loop
                         If lineWS.Cells.Item(j, m_lineTextColumn) <> importWS.Cells.Item(i, m_importGermanColumn) Then
                             CreateNewRow lineWS, j
+                            j = j + 1
                             lineWS.Cells.Item(j, m_lineTextColumn) = importWS.Cells.Item(i, m_importGermanColumn)
-                            Do
-                                j = j + 1
-                                lineWS.Cells.Item(j, m_lineLineNumColumn) = lineWS.Cells.Item(j, m_lineLineNumColumn) + m_baseLineNum
-                            Loop While lineWS.Cells.Item(j + 1, m_dataItemColumn) = itemNum _
-                                And lineWS.Cells.Item(j + 1, m_dataLangCodeColumn) = langCode
+                            lineWS.Cells.Item(j, m_lineLineNumColumn) = lineWS.Cells.Item(j, m_lineLineNumColumn) + m_baseLineNum
                         End If
                         found(1) = True
                     End If
@@ -189,6 +198,23 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
             AddNewLocalizedTextLine importWS, lineWS, i, j, itemNum, m_germanLangCode, m_importGermanColumn
         End If
         found(1) = False
+        'Find item in item data
+        j = m_dataStartingRow
+        Do While LenB(itemWS.Cells.Item(j, m_itemItemColumn)) <> 0
+            'If item is found, process it and exit item loop
+            If itemNum = itemWS.Cells.Item(j, m_itemItemColumn) Then
+                itemWS.Cells.Item(j, m_itemAutoTextBoolColumn) = m_trueLabel
+                found(0) = True
+                Exit Do
+            End If
+            j = j + 1
+        Loop
+        If Not found(0) Then
+            CreateNewRow itemWS, j - 1
+            itemWS.Cells.Item(j, m_itemItemColumn) = itemNum
+            itemWS.Cells.Item(j, m_itemAutoTextBoolColumn) = m_trueLabel
+        End If
+        found(0) = False
         i = i + 1
         DoEvents
     Loop
