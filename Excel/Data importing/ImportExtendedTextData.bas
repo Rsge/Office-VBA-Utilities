@@ -76,8 +76,8 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
     i = m_importStartingRow
     Do While LenB(importWS.Cells.Item(i, m_importItemColumn)) <> 0
         itemNum = importWS.Cells.Item(i, m_importItemColumn)
-        j = m_dataStartingRow
         'Find item in header data
+        j = m_dataStartingRow
         Do While LenB(headerWS.Cells.Item(j, m_dataItemColumn)) <> 0
             'If item is found, process it and exit header loop
             If itemNum = headerWS.Cells.Item(j, m_dataItemColumn) Then
