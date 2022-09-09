@@ -7,10 +7,11 @@ All documents contain annotations used by [Rubberduck](https://rubberduckvba.com
 I'd also recommmend making a few adjustments to the VBA editor's settings as seen in [this Stackoverflow comment](https://stackoverflow.com/a/667225/17239990).
 
 ### Excel
-* `Attendence time table` contains methods for automated clearing of specific part with prior confirmation and un-/protecting the document via bindable macro.
+* `Cleanup & protection` contains methods for automated clearing of specific part with prior confirmation and un-/protecting the document via bindable macro.
 * `Inventory updating` contains methods for importing data from multiple CSV files with relevant data on the last line into a table in excel, creating a backup of the current worksheet before making changes.
 * `Production planning` contains methods for different calculations related to and needed for planning production, e.g. finding holidays and calculating production capacities.
 * `Data importing` contains methods for importing boolean or string values as text info for entries in an Excel sheet from a text or excel file.
+* `FindingUsedColumns.bas` lists all columns' headers in a text file, whose content isn't the same in every cell.
 
 ### Outlook
 * `BulkEditContacts.bas` allows for bulk-editing of contacts.
