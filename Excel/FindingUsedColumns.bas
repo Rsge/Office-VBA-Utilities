@@ -71,7 +71,7 @@ Attribute FindUsedColumns.VB_Description = "Finds columns with at least one diff
         Loop While j < m_checkAmount
         'If the first few entries are the same, check if the last entry differs.
         If Not usedColumns.Contains(columnName) Then
-            lastRow = table.Range.SpecialCells(xlCellTypeLastCell).Row
+            lastRow = table.Range.SpecialCells(xlCellTypeLastCell).Row - 1
             If ws.Cells.Item(lastRow, i) <> previousContent Then
                 usedColumns.Add columnName
             End If
