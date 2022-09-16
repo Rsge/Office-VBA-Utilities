@@ -1,5 +1,5 @@
 Attribute VB_Name = "ImportItemExtendedTextData"
-'@Folder("Import")
+'@Folder "Import"
 Option Explicit
 
 'String constants

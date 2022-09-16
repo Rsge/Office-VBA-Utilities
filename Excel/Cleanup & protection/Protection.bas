@@ -1,6 +1,6 @@
 Attribute VB_Name = "Protection"
 Attribute VB_Description = "Protection utils."
-'@Folder "Attendence time table"
+'@Folder "Cleanup & Protection"
 '@ModuleDescription "Protection utils."
 Option Explicit
 

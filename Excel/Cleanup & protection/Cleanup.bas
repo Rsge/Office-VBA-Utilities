@@ -1,6 +1,6 @@
 Attribute VB_Name = "Cleanup"
 Attribute VB_Description = "Cleanup utils."
-'@Folder "Attendence time table"
+'@Folder "Cleanup & Protection"
 '@ModuleDescription "Cleanup utils."
 Option Explicit
 

@@ -12,6 +12,7 @@ I'd also recommmend making a few adjustments to the VBA editor's settings as see
 * `Production planning` contains methods for different calculations related to and needed for planning production, e.g. finding holidays and calculating production capacities.
 * `Data importing` contains methods for importing boolean or string values as text info for entries in an Excel sheet from a text or excel file.
 * `FindingUsedColumns.bas` lists all columns' headers in a text file, whose content isn't the same in every cell.
+* `FixingZipCodes.bas` fixes the US state abbreviation letters being put in front of the zip code instead of after the city in a table with column names.
 
 ### Outlook
 * `BulkEditContacts.bas` allows for bulk-editing of contacts.

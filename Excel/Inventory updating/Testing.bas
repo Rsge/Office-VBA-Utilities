@@ -1,5 +1,5 @@
 Attribute VB_Name = "Testing"
-'@Folder("Inventory updating")
+'@Folder "Inventory updating"
 Option Explicit
 
 'Excel table column constants (1-based)

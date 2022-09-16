@@ -1,5 +1,5 @@
 Attribute VB_Name = "FindingUsedColumns"
-'@Folder("ColumnFinding")
+'@Folder "ColumnFinding"
 Option Explicit
 
 '@VariableDescription "Path to file for saving used column names."
