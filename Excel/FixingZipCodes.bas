@@ -9,7 +9,7 @@ Attribute m_savePath.VB_VarDescription = "Path to file for saving names of chang
 Private Const m_nameColumnName As String = "Name"
 Attribute m_nameColumnName.VB_VarDescription = "Column with company name."
 '@VariableDescription "Country to check data of."
-Private Const m_countryToCheck As String = "U.S.A."
+Private Const m_countryToCheck As String = "CANADA"
 Attribute m_countryToCheck.VB_VarDescription = "Country to check data of."
 '@VariableDescription "Name of column with country entries."
 Private Const m_countryColumnName As String = "Country"
@@ -62,7 +62,7 @@ Attribute FixZipCodes.VB_Description = "Goes through entries of a specific count
             checkInColumn = table.ListColumns.Item(m_checkInColumnName).Index
             cutPart = Left$(ws.Cells.Item(i, checkInColumn), m_checkLength)
             name = ws.Cells.Item(i, tableNameColumn) & " " & ws.Cells.Item(i, tableNameColumn + 1)
-            If Not IsNumeric(cutPart) Then
+            If Not IsNumeric(Right$(cutPart, 1)) Then
                 ws.Cells.Item(i, checkInColumn).NumberFormat = "@"
                 ws.Cells.Item(i, checkInColumn) = Trim$(Replace(ws.Cells.Item(i, checkInColumn), cutPart, vbNullString))
                 transferToColumn = table.ListColumns.Item(m_transferToColumnName).Index
@@ -74,7 +74,7 @@ Attribute FixZipCodes.VB_Description = "Goes through entries of a specific count
             parts = Split(ws.Cells.Item(i, checkInColumn), m_separatingSymbol)
             If UBound(parts) > 0 Then
                 cutPart = Left$(parts(1), m_checkLength)
-                If Not IsNumeric(cutPart) Then
+                If Not IsNumeric(Right$(cutPart, 1)) Then
                     ws.Cells.Item(i, checkInColumn) = Replace(ws.Cells.Item(i, checkInColumn), cutPart & " ", vbNullString) _
                                                         & m_separatingSymbol & cutPart
                     If Not fixedEntries.Contains(name) Then
