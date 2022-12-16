@@ -26,7 +26,6 @@ Attribute FindUsedColumns.VB_Description = "Finds columns with at least one diff
     Dim i As Long
     i = m_startingColumn
     Dim j As Long
-    j = m_startingRow
     Dim ws As Worksheet
     Set ws = ActiveSheet
     Dim table As ListObject
@@ -61,6 +60,7 @@ Attribute FindUsedColumns.VB_Description = "Finds columns with at least one diff
                 Then GoTo Continue
         End If
         'Check if one of the first entries is different from the last one checked.
+        j = m_startingRow
         previousContent = ws.Cells.Item(j, i)
         Do
             j = j + 1
