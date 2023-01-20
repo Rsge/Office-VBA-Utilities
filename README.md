@@ -11,6 +11,7 @@ I'd also recommmend making a few adjustments to the VBA editor's settings as see
 * `Inventory updating` contains methods for importing data from multiple CSV files with relevant data on the last line into a table in excel, creating a backup of the current worksheet before making changes.
 * `Production planning` contains methods for different calculations related to and needed for planning production, e.g. finding holidays and calculating production capacities.
 * `Data importing` contains methods for importing boolean or string values as text info for entries in an Excel sheet from a text or excel file.
+* `FindingUnmatchingEntries.bas` lists all entries in a selected sheet's first column that aren't present in the first sheet's first column. Also copys results to clipboard.
 * `FindingUsedColumns.bas` lists all columns' headers in a text file, whose content isn't the same in every cell.
 * `FixingZipCodes.bas` fixes the US state abbreviation letters being put in front of the zip code instead of after the city in a table with column names.
 
