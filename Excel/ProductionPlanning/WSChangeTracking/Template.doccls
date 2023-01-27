@@ -1,0 +1,10 @@
+﻿'@Folder("ProductionPlanning.WSChangeTracking")
+'@ModuleDescription("Event-available class.")
+Option Explicit
+
+'@Description("On each worksheet change, updates the slowdowns.")
+Private Sub Worksheet_Change(ByVal target As Range)
+    If Not SlowdownUpdate.IsRunning Then
+        UpdateSlowdowns (target.Address)
+    End If
+End Sub

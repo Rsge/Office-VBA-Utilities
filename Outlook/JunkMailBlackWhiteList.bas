@@ -1,21 +1,23 @@
 Attribute VB_Name = "JunkMailBlackWhitelist"
-'@Folder "Junk mail handling"
-'@ModuleDescription "More extensive whitelisting and blacklisting of emails.
+'@Folder("Mail.JunkHandling")
+'@ModuleDescription("More extensive whitelisting and blacklisting of emails.")
 Option Explicit
 
-'String constants
-'@VariableDescription "Subject of mail which warrants it a whitelist."
+' String constants
+'@VariableDescription("Subject of mail which warrants it a whitelist.")
 Private Const m_whitelistSubject As String = "Test"
 Attribute m_whitelistSubject.VB_VarDescription = "Subject of mail which warrants it a whitelist."
-'@VariableDescription "Path to text file with list of junk-sending email addresses."
+'@VariableDescription("Path to text file with list of junk-sending email addresses.")
 Private Const m_junkMailListPath As String = "C:\Path\To\List\List.txt"
 Attribute m_junkMailListPath.VB_VarDescription = "Path to text file with list of junk-sending email addresses."
-'@VariableDescription "Name of namespace to use."
+'@VariableDescription("Name of namespace to use.")
 Private Const m_nsName As String = "MAPI"
 Attribute m_nsName.VB_VarDescription = "Name of namespace to use."
 
+' ————————————————————————————————————————————————————— '
 
-'@Description "Finds the mail address of a given mail item."
+
+'@Description("Finds the mail address of a given mail item.")
 Private Function FindMailAddress(ByVal mail As Outlook.MailItem) As String
 Attribute FindMailAddress.VB_Description = "Finds the mail address of a given mail item."
     If mail.SenderEmailType = "EX" Then
@@ -42,7 +44,7 @@ Attribute FindMailAddress.VB_Description = "Finds the mail address of a given ma
 End Function
 
 '@EntryPoint
-'@Description "Removes all mails with a given subject from Junk."
+'@Description("Removes all mails with a given subject from Junk.")
 Public Sub WhitelistMailsWithSubject()
 Attribute WhitelistMailsWithSubject.VB_Description = "Removes all mails with a given subject from Junk."
     Dim ns As Outlook.Namespace
@@ -63,7 +65,7 @@ Attribute WhitelistMailsWithSubject.VB_Description = "Removes all mails with a g
 End Sub
 
 '@EntryPoint
-'@Description "Moves all mails on a specified TXT-List into Junk."
+'@Description("Moves all mails on a specified TXT-List into Junk.")
 Public Sub JunkMailFilter()
 Attribute JunkMailFilter.VB_Description = "Moves all mails on a specified TXT-List into Junk."
     Dim ns As Outlook.Namespace
@@ -83,7 +85,7 @@ Attribute JunkMailFilter.VB_Description = "Moves all mails on a specified TXT-Li
     Set mailList = CreateObject("System.Collections.ArrayList")
     Dim mailAddress As String
     
-    'Reading file
+    ' Read file.
     Open fileName For Input As fileNumber
     Do While Not EOF(fileNumber)
         Line Input #fileNumber, mailAddress
@@ -91,7 +93,7 @@ Attribute JunkMailFilter.VB_Description = "Moves all mails on a specified TXT-Li
     Loop
     Close fileName
     
-    'Determining if Junk and processing accordingly
+    ' Determe if Junk and process accordingly.
     For Each mailObject In inbox.Items
         If (TypeOf mailObject Is Outlook.MailItem) Then
             Set mail = mailObject

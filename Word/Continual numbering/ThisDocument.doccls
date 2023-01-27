@@ -1,14 +1,13 @@
-﻿'@IgnoreModule ImplementedInterfaceMember
-'@Folder "Continual numbering"
-'@ModuleDescription "Event handler registration & variable clearing."
+﻿'@Folder("ContinualNumbering")
+'@ModuleDescription("Event handler registration & variable clearing.")
 Option Explicit
 
-'@Description "Registers event handler on document opening."
+'@Description("Registers event handler on document opening.")
 Private Sub Document_Open()
     Register_Event_Handler
 End Sub
 
-'@Description "Deletes all document variables."
+'@Description("Deletes all document variables.")
 Public Sub DeleteVars()
     Dim var As Variable
     For Each var In ActiveDocument.Variables
