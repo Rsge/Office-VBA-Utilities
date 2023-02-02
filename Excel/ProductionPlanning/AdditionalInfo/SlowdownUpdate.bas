@@ -74,10 +74,10 @@ Attribute UpdateSlowdowns.VB_Description = "Updates slowdowns so each one is app
             Dim currentDate As String
             Dim currentSlowdownCell As Range
             Dim i As Long
-            i = ActiveSheet.Range(where).Row - 1
-            If i <= StartingRow Then
-                i = StartingRow
-            End If
+            i = ActiveSheet.Range(where).Row
+            Do While ActiveSheet.Cells(i - 1, DateColumn).Value = ActiveSheet.Cells(i, DateColumn).Value
+                i = i - 1
+            Loop
             IsRunning = True
             Do While LenB(ActiveSheet.Cells(i, DateColumn)) > 0
                 currentDate = ActiveSheet.Cells(i, DateColumn)
