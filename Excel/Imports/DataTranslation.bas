@@ -5,11 +5,14 @@ Attribute VB_Description = "Translates data between languages using a pre-define
 Option Explicit
 
 ' String constants
+'@VariableDescription("The first row with data.")
+Private Const m_startingRow As Long = 2
+Attribute m_startingRow.VB_VarDescription = "The first row with data."
 '@VariableDescription("Remove this string from front of packing unit.")
-Private Const m_removeThis As String = "xx "
+Private Const m_removeThis As String = "-"
 Attribute m_removeThis.VB_VarDescription = "Remove this string from front of packing unit."
 '@VariableDescription("Keep packing unit before this string, cut rest.")
-Private Const m_keepBeforeThis As String = "yy"
+Private Const m_keepBeforeThis As String = "+"
 Attribute m_keepBeforeThis.VB_VarDescription = "Keep packing unit before this string, cut rest."
 
 ' Integer constants
@@ -33,55 +36,55 @@ Public Sub Translate()
 Attribute Translate.VB_Description = "Translates data between languages in different columns."
 Attribute Translate.VB_ProcData.VB_Invoke_Func = "T\n14"
     ' Variables
-    Dim dictDeEn1 As Object
-    Set dictDeEn1 = CreateObject("Scripting.Dictionary")
-    Dim dictEnDe1 As Object
-    Set dictEnDe1 = CreateObject("Scripting.Dictionary")
-    Dim dictDeEn2 As Object
-    Set dictDeEn2 = CreateObject("Scripting.Dictionary")
-    Dim dictEnDe2 As Object
-    Set dictEnDe2 = CreateObject("Scripting.Dictionary")
+    Dim dictEnDeP As Object
+    Set dictEnDeP = CreateObject("Scripting.Dictionary")
+    Dim dictDeEnP As Object
+    Set dictDeEnP = CreateObject("Scripting.Dictionary")
+    Dim dictEnDePU As Object
+    Set dictEnDePU = CreateObject("Scripting.Dictionary")
+    Dim dictDeEnPU As Object
+    Set dictDeEnPU = CreateObject("Scripting.Dictionary")
     Dim i As Long
-    i = 2
+    i = m_startingRow
 
     ' Add translations.
     Dim key As Variant
-    dictDeEn1.Add "Example", "Beispiel"
-    For Each key In dictDeEn1.keys()
-        dictEnDe1.Add dictDeEn1.Item(key), key
+    dictEnDeP.Add "Example", "Beispiel"
+    For Each key In dictEnDeP.Keys()
+        dictDeEnP.Add dictEnDeP.Item(key), key
     Next
-    dictDeEn2.Add "Fortytwo", "Zweiundvierzig"
-    For Each key In dictDeEn2.keys()
-        dictEnDe2.Add dictDeEn2.Item(key), key
+    dictEnDePU.Add "Fortytwo", "Zweiundvierzig"
+    For Each key In dictEnDePU.Keys()
+        dictDeEnPU.Add dictEnDePU.Item(key), key
     Next
     ' Translate data in Excel table.
-    Dim german As String
-    Dim english As String
-    Do While LenB(ActiveSheet.Cells(i, m_itemColumn)) <> 0
-        english = ActiveSheet.Cells(i, m_englishColumn)
-        german = ActiveSheet.Cells(i, m_germanColumn)
-        If LenB(english) > 0 And LenB(german) = 0 Then
-            ActiveSheet.Cells(i, m_germanColumn) = GetPackagingTranslation(english, dictEnDe1, dictEnDe2)
-        ElseIf LenB(german) > 0 And LenB(english) = 0 Then
-            ActiveSheet.Cells(i, m_englishColumn) = GetPackagingTranslation(german, dictDeEn1, dictDeEn2)
+    Dim englishCell As Range
+    Dim germanCell As Range
+    Do Until LenB(ActiveSheet.Cells.Item(i, m_itemColumn).Value) = 0
+        Set englishCell = ActiveSheet.Cells.Item(i, m_englishColumn)
+        Set germanCell = ActiveSheet.Cells.Item(i, m_germanColumn)
+        If LenB(englishCell.Value) = 0 And LenB(germanCell.Value) > 0 Then
+            englishCell.Value = GetPackagingTranslation(germanCell.Value, dictDeEnP, dictDeEnPU)
+        ElseIf LenB(germanCell.Value) = 0 And LenB(englishCell.Value) > 0 Then
+            germanCell.Value = GetPackagingTranslation(englishCell.Value, dictEnDeP, dictEnDePU)
         End If
         i = i + 1
     Loop
 End Sub
 
 '@Description("Translates string using dictionaries.")
-Private Function GetPackagingTranslation(ByVal str As String, ByVal dict1 As Object, ByVal dict2 As Object) As String
+Private Function GetPackagingTranslation(ByVal str As String, ByVal dictP As Object, ByVal dictPu As Object) As String
 Attribute GetPackagingTranslation.VB_Description = "Translates string using dictionaries."
     Dim packaging As String
     Dim translation As String
     packaging = Replace(Left$(str, InStr(str, m_keepBeforeThis) - 1), m_removeThis, vbNullString)
-    translation = Replace(str, packaging, dict1.Item(packaging))
+    translation = Replace(str, packaging, dictP.Item(packaging))
     Dim packingUnit As String
     Dim trans As Variant
     packingUnit = Right$(str, Len(str) - InStr(str, m_keepBeforeThis) - Len(m_keepBeforeThis))
-    For Each trans In dict2.keys()
-        If InStrB(packingUnit, trans) > 0 Then
-            translation = Replace(translation, packingUnit, Replace(packingUnit, trans, dict2.Item(trans)))
+    For Each trans In dictPu.Keys()
+        If InStr(packingUnit, trans) > 0 Then
+            translation = Replace(translation, packingUnit, Replace(packingUnit, trans, dictPu.Item(trans)))
             Exit For
         End If
     Next

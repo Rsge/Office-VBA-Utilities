@@ -38,11 +38,11 @@ Attribute FindDifferingEntries.VB_Description = "Finds entries in active sheet's
     Dim check As Boolean
     Dim differing As String
     differing = vbNullString
-    Do Until LenB(ActiveSheet.Cells.Item(i, m_searchColumnActive)) = 0
+    Do Until LenB(ActiveSheet.Cells.Item(i, m_searchColumnActive).Value) = 0
         j = z
         check = False
-        Do Until LenB(ws.Cells.Item(j, m_searchColumnFirst)) = 0
-            If ActiveSheet.Cells.Item(i, m_searchColumnActive) = ws.Cells.Item(j, m_searchColumnFirst) Then
+        Do Until LenB(ws.Cells.Item(j, m_searchColumnFirst).Value) = 0
+            If ActiveSheet.Cells.Item(i, m_searchColumnActive).Value = ws.Cells.Item(j, m_searchColumnFirst).Value Then
                 check = True
                 z = z + 1
                 Exit Do
@@ -50,10 +50,10 @@ Attribute FindDifferingEntries.VB_Description = "Finds entries in active sheet's
             j = j + 1
         Loop
         If Not check Then
-            differing = differing & ActiveSheet.Cells.Item(i, m_searchColumnActive) & vbNewLine
+            differing = differing & ActiveSheet.Cells.Item(i, m_searchColumnActive).Value & vbNewLine
         End If
-'        If ActiveSheet.Cells.Item(i, m_searchColumnActive) <> ws.Cells.Item(i, m_searchColumnFirst) Then
-'            unmatched = unmatched & ActiveSheet.Cells.Item(i, m_searchColumnActive) & vbNewLine
+'        If ActiveSheet.Cells.Item(i, m_searchColumnActive).Value <> ws.Cells.Item(i, m_searchColumnFirst).Value Then
+'            differing = differing & ActiveSheet.Cells.Item(i, m_searchColumnActive).Value & vbNewLine
 '        End If
         i = i + 1
         DoEvents

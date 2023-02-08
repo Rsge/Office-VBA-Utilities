@@ -39,6 +39,26 @@ Attribute m_checkLength.VB_VarDescription = "How many chars of check cell should
 ' ————————————————————————————————————————————————————— '
 
 
+'@Description("Gets the cell on a worksheet at a position.")
+Private Function GetCell(ByVal sheet As Worksheet, ByVal row As Long, ByVal column As Long) As Range
+Attribute GetCell.VB_Description = "Gets the cell on a worksheet at a position."
+    Set GetCell = sheet.Cells.Item(row, column)
+End Function
+
+'@Description("Gets the value of a cell on a worksheet at a position.")
+Private Function GetCellValue(ByVal sheet As Worksheet, ByVal row As Long, ByVal column As Long) As Variant
+Attribute GetCellValue.VB_Description = "Gets the value of a cell on a worksheet at a position."
+    GetCellValue = GetCell(sheet, row, column).Value
+End Function
+
+'@Description("Gets the column in a table from it's name.")
+Private Function GetTableColumnFromName(ByVal table As ListObject, ByVal columnName As String) As Long
+Attribute GetTableColumnFromName.VB_Description = "Gets the column in a table from it's name."
+    GetTableColumnFromName = table.ListColumns.Item(columnName).Index
+End Function
+
+' ————————————————————————————————————————————————————— '
+
 '@EntryPoint
 '@Description("Iterates through entries of a specific country, checks if the zip code is formatted wrongly and corrects it.")
 Public Sub FixZipCodes()
@@ -50,37 +70,42 @@ Attribute FixZipCodes.VB_Description = "Iterates through entries of a specific c
     Dim table As ListObject
     Set table = ws.ListObjects.[_Default](1)
     Dim tableNameColumn As Long
-    tableNameColumn = table.ListColumns.Item(m_nameColumnName).Index
+    tableNameColumn = GetTableColumnFromName(table, m_nameColumnName)
     Dim name As String
     Dim checkInColumn As Long
+    Dim checkInCell As Range
     Dim cutPart As String
     Dim transferToColumn As Long
+    Dim transferToCell As Range
     Dim fixedEntries As Object
     Set fixedEntries = CreateObject("System.Collections.ArrayList")
     Dim parts() As String
     
     ' Iterate through all columns.
-    Do Until LenB(ws.Cells.Item(i, tableNameColumn)) = 0
-        If ws.Cells.Item(i, table.ListColumns.Item(m_countryColumnName).Index) = m_countryToCheck Then
+    Do Until LenB(GetCellValue(ws, i, tableNameColumn)) = 0
+        If GetCellValue(ws, i, GetTableColumnFromName(table, m_countryColumnName)) = m_countryToCheck Then
             ' Zip code and city field
-            checkInColumn = table.ListColumns.Item(m_checkInColumnName).Index
-            cutPart = Left$(ws.Cells.Item(i, checkInColumn), m_checkLength)
-            name = ws.Cells.Item(i, tableNameColumn) & " " & ws.Cells.Item(i, tableNameColumn + 1)
+            checkInColumn = GetTableColumnFromName(table, m_checkInColumnName)
+            Set checkInCell = GetCell(ws, i, checkInColumn)
+            cutPart = Left$(checkInCell.Value, m_checkLength)
+            name = GetCellValue(ws, i, tableNameColumn) & " " & GetCellValue(ws, i, tableNameColumn + 1)
             If Not IsNumeric(Right$(cutPart, 1)) Then
-                ws.Cells.Item(i, checkInColumn).NumberFormat = "@"
-                ws.Cells.Item(i, checkInColumn) = Trim$(Replace(ws.Cells.Item(i, checkInColumn), cutPart, vbNullString))
+                checkInCell.NumberFormat = "@"
+                checkInCell.Value = Trim$(Replace(checkInCell.Value, cutPart, vbNullString))
                 transferToColumn = table.ListColumns.Item(m_transferToColumnName).Index
-                ws.Cells.Item(i, transferToColumn) = ws.Cells.Item(i, transferToColumn) & m_separatingSymbol & cutPart
+                Set transferToCell = ws.Cells.Item(i, transferToColumn)
+                transferToCell.Value = transferToCell.Value & m_separatingSymbol & cutPart
                 fixedEntries.Add name
             End If
             ' Post box field
-            checkInColumn = table.ListColumns.Item(m_checkAndTransferColumnName).Index
-            parts = Split(ws.Cells.Item(i, checkInColumn), m_separatingSymbol)
+            checkInColumn = GetTableColumnFromName(table, m_checkAndTransferColumnName)
+            Set checkInCell = ws.Cells.Item(i, checkInColumn)
+            parts = Split(checkInCell.Value, m_separatingSymbol)
             If UBound(parts) > 0 Then
                 cutPart = Left$(parts(1), m_checkLength)
                 If Not IsNumeric(Right$(cutPart, 1)) Then
-                    ws.Cells.Item(i, checkInColumn) = Replace(ws.Cells.Item(i, checkInColumn), cutPart & " ", vbNullString) _
-                                                        & m_separatingSymbol & cutPart
+                    checkInCell.Value = Replace(checkInCell.Value, cutPart & " ", vbNullString) _
+                                        & m_separatingSymbol & cutPart
                     If Not fixedEntries.Contains(name) Then
                         fixedEntries.Add name
                     End If

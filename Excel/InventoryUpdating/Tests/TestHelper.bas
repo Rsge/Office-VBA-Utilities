@@ -53,9 +53,9 @@ Attribute DeleteUnchanged.VB_Description = "Deletes all entries who's automatic 
     i = StartingRow
     Do Until LenB(ActiveSheet.Cells(i, ItemColumn).Value) = 0
         Dim manWasChanged As Boolean
-        manWasChanged = ActiveSheet.Cells(i, m_manChangeDateColumn).Value = m_checkupDate
+        manWasChanged = GetCellValue(ActiveSheet, i, m_manChangeDateColumn) = m_checkupDate
         Dim autoWasChanged As Boolean
-        autoWasChanged = ActiveSheet.Cells(i, m_autoChangeDateColumn).Value = m_checkupDate
+        autoWasChanged = GetCellValue(ActiveSheet, i, m_autoChangeDateColumn) = m_checkupDate
         If manWasChanged Or autoWasChanged Then
             i = i + 1
         Else
@@ -70,13 +70,13 @@ Public Sub DeleteEquals()
 Attribute DeleteEquals.VB_Description = "Deletes all entries without difference in BB-date and (significant to a threshold) difference in automatic and manual new amount."
     Dim i As Long
     i = StartingRow
-    Do Until LenB(ActiveSheet.Cells(i, ItemColumn).Value) = 0
+    Do Until LenB(GetCellValue(ActiveSheet, i, ItemColumn)) = 0
         Dim bbDateMatch As Boolean
-        bbDateMatch = CDate(ActiveSheet.Cells(i, m_autoBBDateColumn).Value) = CDate(ActiveSheet.Cells(i, m_manBBDateColumn).Value)
+        bbDateMatch = CDate(GetCellValue(ActiveSheet, i, m_autoBBDateColumn)) = CDate(GetCellValue(ActiveSheet, i, m_manBBDateColumn))
         Dim diff As Double
-        diff = Abs(CDbl(ActiveSheet.Cells(i, m_autoNewAmountColumn).Value) - CDbl(ActiveSheet.Cells(i, m_manNewAmountColumn).Value))
+        diff = Abs(CDbl(GetCellValue(ActiveSheet, i, m_autoNewAmountColumn)) - CDbl(GetCellValue(ActiveSheet, i, m_manNewAmountColumn)))
         Dim diffThreshold As Double
-        diffThreshold = ActiveSheet.Cells(i, m_autoNewAmountColumn).Value * (m_diffThresholdPercent / 100)
+        diffThreshold = GetCellValue(ActiveSheet, i, m_autoNewAmountColumn) * (m_diffThresholdPercent / 100)
         Dim diffMatch As Boolean
         diffMatch = diff < diffThreshold
         If bbDateMatch And diffMatch Then

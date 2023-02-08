@@ -8,6 +8,7 @@ Option Explicit
 '@VariableDescription("Info string added to job on last day to indicate it'll finish in the future, beyond the current table's scopes.")
 Private Const m_futureInfo As String = "Future:"
 Attribute m_futureInfo.VB_VarDescription = "Info string added to job on last day to indicate it'll finish in the future, beyond the current table's scopes."
+
 ' Column constants
 '@VariableDescription("Jobs' numeric identifiers' column.")
 Private Const m_jobNumColumn As Long = 1
@@ -31,43 +32,43 @@ Attribute m_doneJobs.VB_VarDescription = "Dictionary of jobs probably done at th
 
 '@EntryPoint
 '@Description("Shows due jobs in row of their deadline date.")
-Public Function ZeigeFaelligeAuftraege(ByVal index As Long, ByVal jobs As Range, ByVal data As Range) As String
-Attribute ZeigeFaelligeAuftraege.VB_Description = "Shows due jobs in row of their deadline date."
+Public Function ShowDueJobs(ByVal index As Long, ByVal jobs As Range, ByVal data As Range) As String
+Attribute ShowDueJobs.VB_Description = "Shows due jobs in row of their deadline date."
     ' Get due jobs' info only on processing at first index.
     If index = 1 Then
         Set m_dueJobs = CreateObject("Scripting.Dictionary")
         Dim jobRow As Range
         For Each jobRow In jobs.Rows
-            If jobRow.Cells.Item(1, m_jobNumColumn) <> vbNullString Then
+            If GetCellValue(jobRow, 1, m_jobNumColumn) <> vbNullString Then
                 Dim job As String
-                job = jobRow.Cells.Item(1, m_jobNumColumn)
+                job = GetCellValue(jobRow, 1, m_jobNumColumn)
                 Dim due As Date
-                due = jobRow.Cells.Item(1, m_jobDueDateColumn)
+                due = GetCellValue(jobRow, 1, m_jobDueDateColumn)
                 m_dueJobs.Item(due) = m_dueJobs.Item(due) & job & Comma
             End If
         Next
     End If
     ' Show due job(s) on its/their date.
     Dim dueDate As Date
-    dueDate = data.Cells.Item(index, DateColumn)
+    dueDate = CDate(GetCellValue(data, index, DateColumn))
     If m_dueJobs.Exists(dueDate) Then
         Dim nextDay As Date
         nextDay = data.Cells.Item(index + 1, DateColumn)
         If nextDay <> dueDate Then
-            ZeigeFaelligeAuftraege = Left$(m_dueJobs.Item(dueDate), Len(m_dueJobs.Item(dueDate)) - 2)
+            ShowDueJobs = Left$(m_dueJobs.Item(dueDate), Len(m_dueJobs.Item(dueDate)) - 2)
         Else
-            ZeigeFaelligeAuftraege = vbNullString
+            ShowDueJobs = vbNullString
         End If
     Else
-        ZeigeFaelligeAuftraege = vbNullString
+        ShowDueJobs = vbNullString
     End If
 End Function
 
 
 '@EntryPoint
 '@Description("Shows jobs in row of their respective earliest completion date according to current inputs.")
-Public Function FruehesteAuftragsfertigstellung(ByVal baseCapacity As Long, ByVal index As Long, ByVal data As Range) As String
-Attribute FruehesteAuftragsfertigstellung.VB_Description = "Shows jobs in row of their respective earliest completion date according to current inputs."
+Public Function EarliestJobCompletion(ByVal baseCapacity As Long, ByVal index As Long, ByVal data As Range) As String
+Attribute EarliestJobCompletion.VB_Description = "Shows jobs in row of their respective earliest completion date according to current inputs."
     ' Variables
     If index = 1 Then
         Set m_doneJobs = CreateObject("Scripting.Dictionary")
@@ -81,12 +82,12 @@ Attribute FruehesteAuftragsfertigstellung.VB_Description = "Shows jobs in row of
     
     ' Calculate when jobs will be done.
     If job <> vbNullString Then
-        Do While (index + i) <= data.Rows.Count And LenB(data.Cells.Item(index + i, JobColumn)) = 0
+        Do While (index + i) <= data.Rows.Count And LenB(GetCellValue(data, index + i, JobColumn)) = 0
             i = i + 1
         Loop
-        If data.Cells.Item(index + i, 2) <> job Then
+        If GetCellValue(data, index + i, 2) <> job Then
             Dim remainingCapacity As Long
-            remainingCapacity = data.Cells.Item(index, RemainingCapacityColumn)
+            remainingCapacity = GetCellValue(data, index, RemainingCapacityColumn)
             ' If there is remaining capacity, the job is done and can be added, otherwise further calculation is needed.
             If remainingCapacity >= 0 Then
                 If Not InStr(m_doneJobs.Item(dueDate), job) Then
@@ -110,7 +111,7 @@ Attribute FruehesteAuftragsfertigstellung.VB_Description = "Shows jobs in row of
                 
                 ' Add job at it's approximate date to the dictionary.
                 If remainingProduction > 0 Or index + i > data.Rows.Count Then
-                    doneDate = data.Cells.Item(data.Rows.Count, 1)
+                    doneDate = GetCellValue(data, data.Rows.Count, 1)
                     If InStr(m_doneJobs.Item(doneDate), m_futureInfo) Then
                         m_doneJobs.Item(doneDate) = m_doneJobs.Item(doneDate) & job & Comma
                     Else
@@ -128,11 +129,11 @@ Attribute FruehesteAuftragsfertigstellung.VB_Description = "Shows jobs in row of
         Dim nextDay As Date
         nextDay = data.Cells.Item(index + 1, DateColumn)
         If nextDay <> dueDate Then
-            FruehesteAuftragsfertigstellung = Left$(m_doneJobs.Item(dueDate), Len(m_doneJobs.Item(dueDate)) - 2)
+            EarliestJobCompletion = Left$(m_doneJobs.Item(dueDate), Len(m_doneJobs.Item(dueDate)) - 2)
         Else
-            FruehesteAuftragsfertigstellung = vbNullString
+            EarliestJobCompletion = vbNullString
         End If
     Else
-        FruehesteAuftragsfertigstellung = vbNullString
+        EarliestJobCompletion = vbNullString
     End If
 End Function

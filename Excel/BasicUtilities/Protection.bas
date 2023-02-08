@@ -21,7 +21,7 @@ Public Sub UnProtect()
 Attribute UnProtect.VB_Description = "Toggles protection status of worksheet."
     Dim ws As Worksheet
     Set ws = ActiveWorkbook.ActiveSheet
-    If ws.ProtectContents = True Then
+    If ws.ProtectContents Then
         ws.UnProtect
         MsgBox (m_protectionLifted)
     Else

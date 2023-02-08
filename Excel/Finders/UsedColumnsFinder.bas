@@ -51,12 +51,13 @@ Attribute FindUsedColumns.VB_ProcData.VB_Invoke_Func = "i\n14"
     Dim usedColumns As Object
     Set usedColumns = CreateObject("System.Collections.ArrayList")
     Dim lastRow As Long
+    Dim lastValue As String
     
     ' Save active workbook to update special cells.
     ActiveWorkbook.Save
     
     ' Iterate through all columns.
-    Do Until LenB(ws.Cells.Item(m_startingRow - 1, i)) = 0
+    Do Until LenB(ws.Cells.Item(m_startingRow - 1, i).Value) = 0
         ' Sort table by current column's values ascending.
         With table.Sort
             .SortFields.Clear
@@ -76,10 +77,10 @@ Attribute FindUsedColumns.VB_ProcData.VB_Invoke_Func = "i\n14"
         End If
         ' Check if one of the first entries is different from the last one checked.
         j = m_startingRow
-        previousContent = ws.Cells.Item(j, i)
+        previousContent = ws.Cells.Item(j, i).Value
         Do
             j = j + 1
-            If ws.Cells.Item(j, i) <> previousContent Then
+            If ws.Cells.Item(j, i).Value <> previousContent Then
                 usedColumns.Add columnName
                 Exit Do
             End If
@@ -87,8 +88,9 @@ Attribute FindUsedColumns.VB_ProcData.VB_Invoke_Func = "i\n14"
         ' If the first few entries are the same, check if the last entry differs.
         If Not usedColumns.Contains(columnName) Then
             lastRow = table.Range.SpecialCells(xlCellTypeLastCell).Row - 1
-            If ws.Cells.Item(lastRow, i) <> previousContent Then
-                If ws.Cells.Item(lastRow, i) = m_booleanMarker Then
+            lastValue = ws.Cells.Item(lastRow, i).Value
+            If lastValue <> previousContent Then
+                If lastValue = m_booleanMarker Then
                     columnName = columnName & m_booleanLabel
                 End If
                 usedColumns.Add columnName

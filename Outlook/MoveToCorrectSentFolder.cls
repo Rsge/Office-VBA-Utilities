@@ -87,7 +87,7 @@ End Sub
 '    Dim from As String
 '
 '    Set ns = Application.GetNamespace(NSName)
-'    Set mailbox = ns.Folders(MailboxName)
+'    Set mailbox = ns.Folders.Item(MailboxName)
 ''    Set Mailbox = Namespace.CreateRecipient(MailboxName)
 '    Set sentItemsFolder = mailbox.Folders(SentItemsFolderName)
 ''    Set SentItemsFolder = Namespace.GetSharedDefaultFolder(Mailbox, olFolderSentMail)

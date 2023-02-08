@@ -59,6 +59,18 @@ Attribute IsEmpty.VB_Description = "Tests if a string is empty."
     IsEmpty = LenB(str) = 0
 End Function
 
+'@Description("Gets the cell on a worksheet at a position.")
+Public Function GetCell(ByVal sheet As Worksheet, ByVal row As Long, ByVal column As Long) As Range
+Attribute GetCell.VB_Description = "Gets the cell on a worksheet at a position."
+    Set GetCell = sheet.Cells.Item(row, column)
+End Function
+
+'@Description("Gets the value of a cell on a worksheet at a position.")
+Public Function GetCellValue(ByVal sheet As Worksheet, ByVal row As Long, ByVal column As Long) As Variant
+Attribute GetCellValue.VB_Description = "Gets the value of a cell on a worksheet at a position."
+    GetCellValue = GetCell(sheet, row, column).Value
+End Function
+
 '@Description("Gets name of file without the extension.")
 Public Function GetFileNameWithoutExtension(ByVal fileObject As Object) As String
 Attribute GetFileNameWithoutExtension.VB_Description = "Gets name of file without the extension."

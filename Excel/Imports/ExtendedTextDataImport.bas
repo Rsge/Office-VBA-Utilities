@@ -14,8 +14,9 @@ Attribute m_importSheetName.VB_VarDescription = "Name of sheet to import from."
 '@VariableDescription("Name of sheet with header data to import into.")
 Private Const m_headerSheetName As String = "ExtendedTextHeader"
 Attribute m_headerSheetName.VB_VarDescription = "Name of sheet with header data to import into."
-'@VariableDescription("Name of sheet with lines data to import into.)
+'@VariableDescription("Name of sheet with lines data to import into.")
 Private Const m_lineSheetName As String = "ExtendedTextLine"
+Attribute m_lineSheetName.VB_VarDescription = "Name of sheet with lines data to import into."
 '@VariableDescription("Localized label of True state.")
 Private Const m_trueLabel As String = "Yes"
 Attribute m_trueLabel.VB_VarDescription = "Localized label of True state."
@@ -40,11 +41,11 @@ Attribute m_dataStartingRow.VB_VarDescription = "Row in which data starts in dat
 Private Const m_importItemColumn As Long = 1
 Attribute m_importItemColumn.VB_VarDescription = "Column of item number in import sheet."
 '@VariableDescription("Column of native phrase in import sheet.")
-Private Const m_importEnglishColumn As Long = 4
-Attribute m_importEnglishColumn.VB_VarDescription = "Column of native phrase in import sheet."
+Private Const m_importTranslatedColumn As Long = 4
+Attribute m_importTranslatedColumn.VB_VarDescription = "Column of native phrase in import sheet."
 '@VariableDescription("Column of translated phrase in import sheet.")
-Private Const m_importGermanColumn As Long = 3
-Attribute m_importGermanColumn.VB_VarDescription = "Column of translated phrase in import sheet."
+Private Const m_importNativeColumn As Long = 3
+Attribute m_importNativeColumn.VB_VarDescription = "Column of translated phrase in import sheet."
 '@VariableDescription("Column of item number in data sheets.")
 Private Const m_dataItemColumn As Long = 2
 Attribute m_dataItemColumn.VB_VarDescription = "Column of item number in data sheets."
@@ -76,6 +77,18 @@ Attribute m_baseLineNum.VB_VarDescription = "The base (= 1) line number in data 
 ' ————————————————————————————————————————————————————— '
 
 
+'@Description("Gets the cell on a worksheet at a position.")
+Private Function GetCell(ByVal sheet As Worksheet, ByVal row As Long, ByVal column As Long) As Range
+Attribute GetCell.VB_Description = "Gets the cell on a worksheet at a position."
+    Set GetCell = sheet.Cells.Item(row, column)
+End Function
+
+'@Description("Gets the value of a cell on a worksheet at a position.")
+Private Function GetCellValue(ByVal sheet As Worksheet, ByVal row As Long, ByVal column As Long) As Variant
+Attribute GetCellValue.VB_Description = "Gets the value of a cell on a worksheet at a position."
+    GetCellValue = GetCell(sheet, row, column).Value
+End Function
+
 '@Description("Inserts a new row at given position in table.")
 Private Sub CreateNewRow(ByVal ws As Worksheet, ByVal row As Long)
 Attribute CreateNewRow.VB_Description = "Inserts a new row at given position in table."
@@ -86,28 +99,38 @@ End Sub
 '@Description("Sets text header cells' values.")
 Private Sub SetHeaderCells(ByVal ws As Worksheet, ByVal row As Long)
 Attribute SetHeaderCells.VB_Description = "Sets text header cells' values."
-    ws.Cells.Item(row, m_headerAllLangColumn) = m_falseLabel
-    ws.Cells.Item(row, m_dataTxtNumColumn) = 0
-    If ws.Cells.Item(row + 1, m_dataLangCodeColumn) = m_translatedLangCode Then
-        ws.Cells.Item(row, m_dataLangCodeColumn) = m_nativeLangCode
+    ws.Cells.Item(row, m_headerAllLangColumn).Value = m_falseLabel
+    ws.Cells.Item(row, m_dataTxtNumColumn).Value = 0
+    Dim langCodeCell As Range
+    Set langCodeCell = ws.Cells.Item(row, m_dataLangCodeColumn)
+    If ws.Cells.Item(row + 1, m_dataLangCodeColumn).Value = m_translatedLangCode Then
+        langCodeCell.Value = m_nativeLangCode
     Else
-        ws.Cells.Item(row, m_dataLangCodeColumn) = m_translatedLangCode
+        langCodeCell.Value = m_translatedLangCode
     End If
-    If LenB(ws.Cells.Item(row, m_headerEndDateColumn)) > 0 Then
-        ws.Cells.Item(row, m_headerStartDateColumn) = vbNullString
-        ws.Cells.Item(row, m_headerEndDateColumn) = vbNullString
+    Dim headerEndDateCell As Range
+    Set headerEndDateCell = ws.Cells.Item(row, m_headerEndDateColumn)
+    If LenB(headerEndDateCell.Value) > 0 Then
+        ws.Cells.Item(row, m_headerStartDateColumn).Value = vbNullString
+        headerEndDateCell.Value = vbNullString
     End If
+End Sub
+
+'@Description("Adds an amount to a cell on a worksheet at a position.")
+Private Sub AddToCellValue(ByVal sheet As Worksheet, ByVal row As Long, ByVal column As Long, ByVal addition As Long)
+Attribute AddToCellValue.VB_Description = "Adds an amount to a cell on a worksheet at a position."
+    GetCell(sheet, row, column).Value = GetCellValue(sheet, row, column) + addition
 End Sub
 
 '@Description("Adds localized line text.")
 Private Sub AddNewLocalizedTextLine(ByVal importWS As Worksheet, ByVal lineWS As Worksheet, ByVal importRow As Long, ByVal lineRow As Long, ByVal itemNum As String, ByVal langCode As String, ByVal importColumn As Long)
-Attribute AddNewLocalizedTextLine.VB_Description = "Adds lozalized line text."
+Attribute AddNewLocalizedTextLine.VB_Description = "Adds localized line text."
     CreateNewRow lineWS, lineRow - 1
-    lineWS.Cells.Item(lineRow, m_dataItemColumn) = itemNum
-    lineWS.Cells.Item(lineRow, m_dataLangCodeColumn) = langCode
-    lineWS.Cells.Item(lineRow, m_dataTxtNumColumn) = 1
-    lineWS.Cells.Item(lineRow, m_lineLineNumColumn) = m_baseLineNum
-    lineWS.Cells.Item(lineRow, m_lineTextColumn) = importWS.Cells.Item(importRow, importColumn)
+    lineWS.Cells.Item(lineRow, m_dataItemColumn).Value = itemNum
+    lineWS.Cells.Item(lineRow, m_dataLangCodeColumn).Value = langCode
+    lineWS.Cells.Item(lineRow, m_dataTxtNumColumn).Value = 1
+    lineWS.Cells.Item(lineRow, m_lineLineNumColumn).Value = m_baseLineNum
+    lineWS.Cells.Item(lineRow, m_lineTextColumn).Value = importWS.Cells.Item(importRow, importColumn)
 End Sub
 
 ' ————————————————————————————————————————————————————— '
@@ -130,31 +153,33 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
     Dim itemNum As String
     Dim langCode As String
     Dim found(1) As Boolean
+    Dim dataLangCodeCell As Range
+    Dim lineTextCell As Range
     
     ' Delete start date if no end date exists.
     i = m_dataStartingRow
-    Do While LenB(headerWS.Cells.Item(i, m_dataItemColumn)) <> 0
-        If LenB(headerWS.Cells.Item(i, m_headerStartDateColumn)) > 0 _
-            And LenB(headerWS.Cells.Item(i, m_headerEndDateColumn)) = 0 Then
-            headerWS.Cells.Item(i, m_headerStartDateColumn) = vbNullString
+    Do Until LenB(GetCellValue(headerWS, i, m_dataItemColumn)) = 0
+        If LenB(GetCellValue(headerWS, i, m_headerStartDateColumn)) > 0 _
+            And LenB(GetCellValue(headerWS, i, m_headerEndDateColumn)) = 0 Then
+            GetCell(headerWS, i, m_headerStartDateColumn).Value = vbNullString
         End If
         i = i + 1
     Loop
 
     ' Go through import data item by item.
     i = m_importStartingRow
-    Do While LenB(importWS.Cells.Item(i, m_importItemColumn)) <> 0
-        itemNum = importWS.Cells.Item(i, m_importItemColumn)
+    Do Until LenB(GetCellValue(importWS, i, m_importItemColumn)) = 0
+        itemNum = GetCellValue(importWS, i, m_importItemColumn)
         ' Find item in header data.
         j = m_dataStartingRow
-        Do While LenB(headerWS.Cells.Item(j, m_dataItemColumn)) <> 0
+        Do Until LenB(GetCellValue(headerWS, j, m_dataItemColumn)) = 0
             ' If item is found, process it and exit header loop.
-            If itemNum = headerWS.Cells.Item(j, m_dataItemColumn) Then
+            If itemNum = GetCellValue(headerWS, j, m_dataItemColumn) Then
                 ' If next row isn't same item...
-                If headerWS.Cells.Item(j + 1, m_dataItemColumn) <> itemNum Then
+                If GetCellValue(headerWS, j + 1, m_dataItemColumn) <> itemNum Then
                     ' If for all langs, change to single lang and add copied row for other lang.
                     ' Else copy row and change to other lang afterwards.
-                    If headerWS.Cells.Item(j, m_headerAllLangColumn) = m_trueLabel Then
+                    If GetCellValue(headerWS, j, m_headerAllLangColumn) = m_trueLabel Then
                         SetHeaderCells headerWS, j
                         CreateNewRow headerWS, j
                         SetHeaderCells headerWS, j
@@ -162,8 +187,8 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
                         CreateNewRow headerWS, j
                         SetHeaderCells headerWS, j
                     End If
-                ElseIf headerWS.Cells.Item(j, m_headerAllLangColumn) = m_trueLabel And _
-                    headerWS.Cells.Item(j + 2, m_dataItemColumn) <> itemNum Then
+                ElseIf GetCellValue(headerWS, j, m_headerAllLangColumn) = m_trueLabel And _
+                    GetCellValue(headerWS, j + 2, m_dataItemColumn) <> itemNum Then
                     SetHeaderCells headerWS, j
                 End If
                 found(0) = True
@@ -174,46 +199,49 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
         If Not found(0) Then
             CreateNewRow headerWS, j - 1
             SetHeaderCells headerWS, j
-            headerWS.Cells.Item(j, m_dataItemColumn) = itemNum
+            GetCell(headerWS, j, m_dataItemColumn).Value = itemNum
             CreateNewRow headerWS, j
             SetHeaderCells headerWS, j
         End If
         found(0) = False
         ' Find item in line data.
         j = m_dataStartingRow
-        Do While LenB(lineWS.Cells.Item(j, m_dataItemColumn)) <> 0
+        Do Until LenB(GetCellValue(lineWS, j, m_dataItemColumn)) = 0
             ' If item is found, process it and exit line loop.
-            If itemNum = lineWS.Cells.Item(j, m_dataItemColumn) Then
+            If itemNum = GetCellValue(lineWS, j, m_dataItemColumn) Then
                 Do
                     ' Get lang code and check if it's given.
                     ' If not, import localized packing units.
                     ' Then localize the given text to one lang and copy it to the other.
                     ' Look if additional lines need to be localized.
-                    langCode = lineWS.Cells.Item(j, m_dataLangCodeColumn)
+                    Set dataLangCodeCell = GetCell(lineWS, j, m_dataLangCodeColumn)
+                    langCode = dataLangCodeCell.Value
+                    Set lineTextCell = GetCell(lineWS, j, m_lineTextColumn)
                     If LenB(langCode) = 0 Then
                         k = j
                         Do
                             k = k + 1
-                            If LenB(lineWS.Cells.Item(k, m_dataLangCodeColumn)) > 0 _
-                                And lineWS.Cells.Item(k, m_dataItemColumn) = itemNum Then
+                            If LenB(GetCellValue(lineWS, k, m_dataLangCodeColumn)) > 0 _
+                                And GetCellValue(lineWS, k, m_dataItemColumn) = itemNum Then
                                 found(0) = True
                             End If
-                        Loop While LenB(lineWS.Cells.Item(k, m_dataLangCodeColumn)) = 0
+                        Loop While LenB(GetCellValue(lineWS, k, m_dataLangCodeColumn)) = 0
                         If Not found(0) Then
                             CreateNewRow lineWS, j
-                            lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_translatedLangCode
-                            lineWS.Cells.Item(j, m_lineTextColumn) = importWS.Cells.Item(i, m_importEnglishColumn)
+                            dataLangCodeCell.Value = m_translatedLangCode
+                            lineTextCell.Value = GetCellValue(importWS, i, m_importTranslatedColumn)
                             CreateNewRow lineWS, j
-                            lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_nativeLangCode
-                            lineWS.Cells.Item(j, m_lineTextColumn) = importWS.Cells.Item(i, m_importGermanColumn)
+                            dataLangCodeCell.Value = m_nativeLangCode
+                            lineTextCell.Value = GetCellValue(importWS, i, m_importNativeColumn)
                             Do
                                 j = j + 2
-                                lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_translatedLangCode
-                                lineWS.Cells.Item(j, m_lineLineNumColumn) = lineWS.Cells.Item(j, m_lineLineNumColumn) + m_baseLineNum
+                                Set dataLangCodeCell = GetCell(lineWS, j, m_dataLangCodeColumn)
+                                dataLangCodeCell.Value = m_translatedLangCode
+                                AddToCellValue lineWS, j, m_lineLineNumColumn, m_baseLineNum
                                 CreateNewRow lineWS, j
-                                lineWS.Cells.Item(j, m_dataLangCodeColumn) = m_nativeLangCode
-                            Loop While lineWS.Cells.Item(j + 2, m_dataItemColumn) = itemNum _
-                                And LenB(lineWS.Cells.Item(j + 2, m_dataLangCodeColumn)) = 0
+                                dataLangCodeCell.Value = m_nativeLangCode
+                            Loop While GetCellValue(lineWS, j + 2, m_dataItemColumn) = itemNum _
+                                And LenB(GetCellValue(lineWS, j + 2, m_dataLangCodeColumn)) = 0
                             found(0) = True
                             found(1) = True
                             j = j + 1
@@ -221,41 +249,41 @@ Attribute ImportExtendedText.VB_Description = "Imports data for items from anoth
                     ' Check which lang code is used and if correct packing unit is already input.
                     ' If not, import localized packing unit and increase all following line numbers of same locale.
                     ElseIf langCode = m_translatedLangCode Then
-                        If lineWS.Cells.Item(j, m_lineTextColumn) <> importWS.Cells.Item(i, m_importEnglishColumn) Then
+                        If lineTextCell.Value <> GetCellValue(importWS, i, m_importTranslatedColumn) Then
                             CreateNewRow lineWS, j
-                            lineWS.Cells.Item(j, m_lineTextColumn) = importWS.Cells.Item(i, m_importEnglishColumn)
+                            lineTextCell.Value = GetCellValue(importWS, i, m_importTranslatedColumn)
                             Do
                                 j = j + 1
-                                lineWS.Cells.Item(j, m_lineLineNumColumn) = lineWS.Cells.Item(j, m_lineLineNumColumn) + m_baseLineNum
-                            Loop While lineWS.Cells.Item(j + 1, m_dataItemColumn) = itemNum _
-                                And lineWS.Cells.Item(j + 1, m_dataLangCodeColumn) = langCode
+                                AddToCellValue lineWS, j, m_lineLineNumColumn, m_baseLineNum
+                            Loop While GetCellValue(lineWS, j + 1, m_dataItemColumn) = itemNum _
+                                And GetCellValue(lineWS, j + 1, m_dataLangCodeColumn) = langCode
                         End If
                         found(0) = True
                     ElseIf langCode = m_nativeLangCode Then
-                        If lineWS.Cells.Item(j, m_lineTextColumn) <> importWS.Cells.Item(i, m_importGermanColumn) Then
+                        If lineTextCell.Value <> GetCellValue(importWS, i, m_importNativeColumn) Then
                             CreateNewRow lineWS, j
-                            lineWS.Cells.Item(j, m_lineTextColumn) = importWS.Cells.Item(i, m_importGermanColumn)
+                            lineTextCell.Value = GetCellValue(importWS, i, m_importNativeColumn)
                             Do
                                 j = j + 1
-                                lineWS.Cells.Item(j, m_lineLineNumColumn) = lineWS.Cells.Item(j, m_lineLineNumColumn) + m_baseLineNum
-                            Loop While lineWS.Cells.Item(j + 1, m_dataItemColumn) = itemNum _
-                                And lineWS.Cells.Item(j + 1, m_dataLangCodeColumn) = langCode
+                                AddToCellValue lineWS, j, m_lineLineNumColumn, m_baseLineNum
+                            Loop While GetCellValue(lineWS, j + 1, m_dataItemColumn) = itemNum _
+                                And GetCellValue(lineWS, j + 1, m_dataLangCodeColumn) = langCode
                         End If
                         found(1) = True
                     End If
                     j = j + 1
-                Loop While lineWS.Cells.Item(j, m_dataItemColumn) = itemNum
+                Loop While GetCell(lineWS, j, m_dataItemColumn).Value = itemNum
                 Exit Do
             End If
             j = j + 1
         Loop
         ' If an item was not found in a specific localization before, add it at the end.
         If Not found(0) Then
-            AddNewLocalizedTextLine importWS, lineWS, i, j, itemNum, m_translatedLangCode, m_importEnglishColumn
+            AddNewLocalizedTextLine importWS, lineWS, i, j, itemNum, m_translatedLangCode, m_importTranslatedColumn
         End If
         found(0) = False
         If Not found(1) Then
-            AddNewLocalizedTextLine importWS, lineWS, i, j, itemNum, m_nativeLangCode, m_importGermanColumn
+            AddNewLocalizedTextLine importWS, lineWS, i, j, itemNum, m_nativeLangCode, m_importNativeColumn
         End If
         found(1) = False
         i = i + 1

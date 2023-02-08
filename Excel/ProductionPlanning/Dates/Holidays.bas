@@ -26,10 +26,14 @@ Attribute m_bridgingDaysTableName.VB_VarDescription = "Name of table containing 
 '@VariableDescription("Name of table containing company holidays.")
 Private Const m_companyHolidaysTableName As String = "CompanyHolidays"
 Attribute m_companyHolidaysTableName.VB_VarDescription = "Name of table containing company holidays."
+
 ' Column constants
 '@VariableDescription("Index of holidays' names' column.")
 Private Const m_holidayNameColumn As Long = 1
 Attribute m_holidayNameColumn.VB_VarDescription = "Index of holidays' names' column."
+'@VariableDescription("Index of holidays' dates' column.")
+Private Const m_holidayFromDateColumn As Long = 1
+Attribute m_holidayFromDateColumn.VB_VarDescription = "Index of holidays' dates' column."
 '@VariableDescription("Index of holidays' dates' column.")
 Private Const m_holidayDateColumn As Long = 2
 Attribute m_holidayDateColumn.VB_VarDescription = "Index of holidays' dates' column."
@@ -56,8 +60,8 @@ Attribute ShowHolidays.VB_Description = "Shows if a given date is a legal holida
     Dim holidayName As String
     Dim holidayDate As Date
     For Each currentRow In holidays.Rows
-        holidayName = currentRow.Cells.Item(1, m_holidayNameColumn)
-        holidayDate = currentRow.Cells.Item(1, m_holidayDateColumn)
+        holidayName = GetCellValue(currentRow, 1, m_holidayNameColumn)
+        holidayDate = GetCellValue(currentRow, 1, m_holidayDateColumn)
         If currentDate = holidayDate Then
             ShowHolidays = holidayName
             Exit Function
@@ -90,8 +94,8 @@ Attribute ShowCompanyHolidays.VB_Description = "Shows if a given date is a compa
     Dim fromDate As Date
     Dim toDate As Date
     For Each currentRow In companyHolidays.Rows
-        fromDate = currentRow.Cells.Item(1, m_holidayNameColumn)
-        toDate = currentRow.Cells.Item(1, m_holidayDateColumn)
+        fromDate = GetCellValue(currentRow, 1, m_holidayFromDateColumn)
+        toDate = GetCellValue(currentRow, 1, m_holidayDateColumn)
         If fromDate <= currentDate And currentDate <= toDate Then
             ShowCompanyHolidays = m_companyHolidaysLabel
             Exit Function

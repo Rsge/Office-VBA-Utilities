@@ -38,16 +38,16 @@ Attribute DeleteUpToDate.VB_Description = "Clears all cells up to a given date."
     Dim ws As Worksheet
     Set ws = ActiveWorkbook.ActiveSheet
     Dim startingDateCell As Range
-    Set startingDateCell = ws.Cells.Item(StartingDateRow, StartingDateColumn)
+    Set startingDateCell = GetCell(ws.Cells, StartingDateRow, StartingDateColumn)
     Dim data As Range
-    Set data = ws.UsedRange.Columns.Item(Chr$(DateColumn + ColumnLetterAscii) & Colon & Chr$(SlowdownsColumn + ColumnLetterAscii))
+    Set data = GetColumn(ws.UsedRange, GetColumnRangeStr(DateColumn, SlowdownsColumn))
     Dim jobs As Range
-    Set jobs = ws.UsedRange.Columns.Item(Chr$(JobsDefColumn + ColumnLetterAscii) & Colon & Chr$(JobsDueDatesColumn + ColumnLetterAscii))
+    Set jobs = GetColumn(ws.UsedRange, GetColumnRangeStr(JobsDefColumn, JobsDueDatesColumn))
     
     ' Get input.
     Dim inputString As String
     inputString = InputBox(m_deletionQuestion, m_inputLabel, startingDateCell.Value)
-    Do While Not IsDate(inputString)
+    Do Until IsDate(inputString)
         If LenB(inputString) = 0 Then Exit Sub
         inputString = InputBox(m_noDateWarning, m_inputLabel, startingDateCell.Value)
     Loop
@@ -61,16 +61,16 @@ Attribute DeleteUpToDate.VB_Description = "Clears all cells up to a given date."
     Dim dateCell As Range
     For i = 0 To Abs(DateDiff("d", inputDate, startingDateCell))
         tempDate = DateAdd("d", -i, inputDate)
-        Set dateCell = jobs.Columns.Item(2).Find(tempDate)
+        Set dateCell = GetColumn(jobs, JobColumn).Find(tempDate)
         Do Until dateCell Is Nothing
-            jobs.Rows.Item(dateCell.Row).Delete
-            Set dateCell = jobs.Columns.Item(2).FindNext
+            jobs.Rows.Item(dateCell.row).Delete
+            Set dateCell = jobs.Columns.Item(JobColumn).FindNext
         Loop
     Next
     '@Ignore AssignmentNotUsed
-    Set dateCell = data.Columns.Item(1).Find(inputDate, data.Cells.Item(data.Rows.Count - 1, DateColumn), xlValues, SearchDirection:=xlPrevious)
+    Set dateCell = GetColumn(data, DateColumn).Find(inputDate, GetCell(data, data.Rows.Count - 1, DateColumn), xlValues, SearchDirection:=xlPrevious)
     If Not dateCell Is Nothing Then
-        data.Rows.Item(StartingRow & Colon & dateCell.Row).Delete
+        data.Rows.Item(StartingRow & Colon & dateCell.row).Delete
         startingDateCell.Value = DateAdd("d", 1, inputDate)
     End If
 
@@ -87,8 +87,7 @@ Public Sub UnProtect()
 Attribute UnProtect.VB_Description = "Toggles protection status of worksheet."
     Dim ws As Worksheet
     Set ws = ActiveWorkbook.ActiveSheet
-    '@Ignore VariableNotUsed
-    If ws.ProtectContents = True Then
+    If ws.ProtectContents Then
         ws.UnProtect
         MsgBox m_protectionLifted
     Else
