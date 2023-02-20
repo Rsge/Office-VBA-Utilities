@@ -47,6 +47,28 @@ Attribute SpecialItemDescriptionMarker.VB_VarDescription = "Marker starting the 
 Public Const BlacklistedItems As String = "WATER;12345"
 Attribute BlacklistedItems.VB_VarDescription = "Item blacklisted from being processed."
 
+' - Localized strings -
+' Library
+'@VariableDescription("Warning if no save location specified.")
+Public Const NoSaveLocationWarning As String = "No save location configured or" & vbNewLine & _
+                                               "save location does not exist." & vbNewLine & _
+                                               "Please specify a save location."
+Attribute NoSaveLocationWarning.VB_VarDescription = "Warning if no save location specified."
+'@VariableDescription("Warning if no files found at save location.")
+Public Const NoFilesWarning As String = "No files found at specified location." & vbNewLine & _
+                                        "Please specify a different folder or abort and add files first."
+Attribute NoFilesWarning.VB_VarDescription = "Warning if no files found at save location."
+' DataImport
+'@VariableDescription("Warning for a file's item number not being present in table.")
+Public Const EntryNotAvailableWarning As String = "No entry exists for the following items:" & vbNewLine
+Attribute EntryNotAvailableWarning.VB_VarDescription = "Warning for a file's item number not being present in table."
+'@VariableDescription("Info about successful import.")
+Public Const SuccessInfo As String = "Data import completed successfully."
+Attribute SuccessInfo.VB_VarDescription = "Info about successful import."
+'@VariableDescription("Warning about import already done.")
+Public Const DoneAlreadyWarning As String = "Data import was already carried out today."
+Attribute DoneAlreadyWarning.VB_VarDescription = "Warning about import already done."
+
 ' Row constants
 '@VariableDescription("Index of row of cell containing data file path.")
 Public Const PathCellRow As Long = 2

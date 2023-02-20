@@ -4,32 +4,6 @@ Attribute VB_Description = "Basic utilities for cleaning and protection."
 '@ModuleDescription("Basic utilities for cleaning and protection.")
 Option Explicit
 
-' String constants
-'@VariableDescription("Question about up to which date the calculations should be cleared.")
-Private Const m_deletionQuestion As String = "Up to which date shall be deleted?" & vbNewLine & "(DD.MM.YYYY)"
-Attribute m_deletionQuestion.VB_VarDescription = "Question about up to which date the calculations should be cleared."
-'@VariableDescription("Warning for input not being processable as a date.")
-Private Const m_noDateWarning As String = "Input can't be processed as a date." & vbNewLine & vbNewLine & DeletionQuestion
-Attribute m_noDateWarning.VB_VarDescription = "Warning for input not being processable as a date."
-'@VariableDescription("Warning to check special slowdown after making changes to dates etc.")
-Private Const m_slowdownChangeWarning As String = "Please check special slowdown!"
-Attribute m_slowdownChangeWarning.VB_VarDescription = "Warning to check special slowdown after making changes to dates etc."
-'@VariableDescription("Title of input box to show it needs an input.")
-Private Const m_inputLabel As String = "Input"
-Attribute m_inputLabel.VB_VarDescription = "Title of input box to show it needs an input."
-'@VariableDescription("Title of MsgBox to show it contains a warning.")
-Private Const m_warningLabel As String = "Warning!"
-Attribute m_warningLabel.VB_VarDescription = "Title of MsgBox to show it contains a warning."
-'@VariableDescription("Message for lifted worksheet protection.")
-Private Const m_protectionLifted As String = "Protection lifted." & vbNewLine & "Changes now possible."
-Attribute m_protectionLifted.VB_VarDescription = "Message for lifted worksheet protection."
-'@VariableDescription("Message for enforced worksheet protection.")
-Private Const m_protectionEnabled As String = "Protection reestablished."
-Attribute m_protectionEnabled.VB_VarDescription = "Message for enforced worksheet protection."
-
-' ————————————————————————————————————————————————————— '
-
-
 '@EntryPoint
 '@Description("Clears all cells up to a given date.")
 Public Sub DeleteUpToDate()
@@ -46,10 +20,10 @@ Attribute DeleteUpToDate.VB_Description = "Clears all cells up to a given date."
     
     ' Get input.
     Dim inputString As String
-    inputString = InputBox(m_deletionQuestion, m_inputLabel, startingDateCell.Value)
+    inputString = InputBox(DeletionQuestion, InputLabel, startingDateCell.Value)
     Do Until IsDate(inputString)
         If LenB(inputString) = 0 Then Exit Sub
-        inputString = InputBox(m_noDateWarning, m_inputLabel, startingDateCell.Value)
+        inputString = InputBox(NoDateWarning, InputLabel, startingDateCell.Value)
     Loop
     Dim inputDate As Date
     inputDate = CDate(inputString)
@@ -76,7 +50,7 @@ Attribute DeleteUpToDate.VB_Description = "Clears all cells up to a given date."
 
     ' Re-protect and confirm success.
     ws.Protect
-    MsgBox m_slowdownChangeWarning, vbExclamation, m_warningLabel
+    MsgBox SlowdownChangeWarning, vbExclamation, WarningLabel
 End Sub
 
 ' ————————————————————————————————————————————————————— '
@@ -89,9 +63,9 @@ Attribute UnProtect.VB_Description = "Toggles protection status of worksheet."
     Set ws = ActiveWorkbook.ActiveSheet
     If ws.ProtectContents Then
         ws.UnProtect
-        MsgBox m_protectionLifted
+        MsgBox ProtectionLifted
     Else
         ws.Protect
-        MsgBox m_protectionEnabled
+        MsgBox ProtectionEnabled
     End If
 End Sub

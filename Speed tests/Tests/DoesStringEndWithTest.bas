@@ -10,7 +10,7 @@ Option Explicit
 ' Both 'InStr & StrReverse's are slower still, closely followed by Like.
 ' Right & Len is slowest, almost doubling Right$ & Len.
 
-' Constants to change
+' Runtime constants
 '@VariableDescription("Label text for first testing method.")
 Private Const m_1stMethodLabel As String = "Using InStr & StrReverse: "
 Attribute m_1stMethodLabel.VB_VarDescription = "Label text for first testing method."
@@ -41,20 +41,8 @@ Attribute m_9thMethodLabel.VB_VarDescription = "Label text for ninth testing met
 '@VariableDescription("Number of methods to test.")
 Private Const m_methodsCount As Long = 9
 Attribute m_methodsCount.VB_VarDescription = "Number of methods to test."
-'@VariableDescription("Exponent of 10 for amount of iterations to do in testing.")
-Private Const m_iterationsExponent As Long = 8
-Attribute m_iterationsExponent.VB_VarDescription = "Exponent of 10 for amount of iterations to do in testing."
 
-' Constants
-'@VariableDescription("Label text for iteration count output.")
-Private Const m_iterationCountLabel As String = "Number of iterations: "
-Attribute m_iterationCountLabel.VB_VarDescription = "Label text for iteration count output."
-'@VariableDescription("Format of decimal number string output.")
-Private Const m_numberFormat As String = "0.0###"
-Attribute m_numberFormat.VB_VarDescription = "Format of decimal number string output."
-'@VariableDescription("Unit of measured time.")
-Private Const m_unit As String = " s"
-Attribute m_unit.VB_VarDescription = "Unit of measured time."
+' ————————————————————————————————————————————————————— '
 
 
 '@EntryPoint
@@ -78,7 +66,7 @@ Attribute TestStringEndsWith.VB_Description = "Tests if string starts with other
     
     ' Other variables & constants
     Dim i As Long
-    Const iterationCount As Long = 10 ^ m_iterationsExponent
+    Const iterationCount As Long = 10 ^ IterationsExponent
     Const methodsLength As Long = m_methodsCount - 1
     Dim startTimes(0 To methodsLength) As Double
     Dim endTimes(0 To methodsLength) As Double
@@ -151,9 +139,9 @@ Attribute TestStringEndsWith.VB_Description = "Tests if string starts with other
     endTimes(8) = Timer
     
     ' Output results.
-    msg = m_iterationCountLabel & "10^" & m_iterationsExponent & vbNewLine & vbNewLine
+    msg = IterationCountLabel & "10^" & IterationsExponent & vbNewLine & vbNewLine
     For i = 0 To methodsLength
-        msg = msg & vbNewLine & methods(i) & Format$(endTimes(i) - startTimes(i), m_numberFormat) & m_unit
+        msg = msg & vbNewLine & methods(i) & Format$(endTimes(i) - startTimes(i), NumberFormat) & Unit
     Next
     MsgBox msg
 End Sub

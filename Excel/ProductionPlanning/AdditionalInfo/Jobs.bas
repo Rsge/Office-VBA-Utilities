@@ -4,11 +4,6 @@ Attribute VB_Description = "Job calculations."
 '@ModuleDescription("Job calculations.")
 Option Explicit
 
-' String constants
-'@VariableDescription("Info string added to job on last day to indicate it'll finish in the future, beyond the current table's scopes.")
-Private Const m_futureInfo As String = "Future:"
-Attribute m_futureInfo.VB_VarDescription = "Info string added to job on last day to indicate it'll finish in the future, beyond the current table's scopes."
-
 ' Column constants
 '@VariableDescription("Jobs' numeric identifiers' column.")
 Private Const m_jobNumColumn As Long = 1
@@ -112,10 +107,10 @@ Attribute EarliestJobCompletion.VB_Description = "Shows jobs in row of their res
                 ' Add job at it's approximate date to the dictionary.
                 If remainingProduction > 0 Or index + i > data.Rows.Count Then
                     doneDate = GetCellValue(data, data.Rows.Count, 1)
-                    If InStr(m_doneJobs.Item(doneDate), m_futureInfo) Then
+                    If InStr(m_doneJobs.Item(doneDate), FutureInfo) Then
                         m_doneJobs.Item(doneDate) = m_doneJobs.Item(doneDate) & job & Comma
                     Else
-                        m_doneJobs.Item(doneDate) = m_doneJobs.Item(doneDate) & m_futureInfo & Colon & Space(1) & job & Comma
+                        m_doneJobs.Item(doneDate) = m_doneJobs.Item(doneDate) & FutureInfo & Colon & Space(1) & job & Comma
                     End If
                 Else
                     m_doneJobs.Item(doneDate) = m_doneJobs.Item(doneDate) & job & Comma

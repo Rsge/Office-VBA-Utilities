@@ -4,19 +4,6 @@ Attribute VB_Description = "Imports weight data from given CSV files."
 '@ModuleDescription("Imports weight data from given CSV files.")
 Option Explicit
 
-'@VariableDescription("Warning for a file's item number not being present in table.")
-Private Const m_entryNotAvailableWarning As String = "No entry exists for the following items:" & vbNewLine
-Attribute m_entryNotAvailableWarning.VB_VarDescription = "Warning for a file's item number not being present in table."
-'@VariableDescription("Info about successful import.")
-Private Const m_successInfo As String = "Data import completed successfully."
-Attribute m_successInfo.VB_VarDescription = "Info about successful import."
-'@VariableDescription("Warning about import already done.")
-Private Const m_doneAlreadyWarning As String = "Data import was already carried out today."
-Attribute m_doneAlreadyWarning.VB_VarDescription = "Warning about import already done."
-
-' ————————————————————————————————————————————————————— '
-
-
 '@EntryPoint
 '@Description("Imports weighing data from given data files.")
 Public Sub ImportDataFiles()
@@ -30,7 +17,7 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
     ' Backup worksheet.
     ActiveSheet.Copy After:=ActiveSheet
     On Error GoTo ErrorHandler
-    ActiveSheet.Name = BackupLabel & Format$(Now, DateFormat)
+    ActiveSheet.name = BackupLabel & Format$(Now, DateFormat)
     On Error GoTo 0
     ActiveWorkbook.Sheets.Item(1).Select
     ' Iterate over all items' files in data file folder.
@@ -110,12 +97,12 @@ MissingItem:
                 missingItems.Add itemNum
         End If
     Next
-    MsgBox (m_successInfo)
+    MsgBox (SuccessInfo)
     ' Show missing items list.
     If missingItems.Count > 0 Then
         Dim missingItemNum As Variant
         Dim missingItemsListString As String
-        missingItemsListString = m_entryNotAvailableWarning
+        missingItemsListString = EntryNotAvailableWarning
         For Each missingItemNum In missingItems
             missingItemsListString = missingItemsListString & missingItemNum & vbNewLine
         Next
@@ -129,6 +116,6 @@ ErrorHandler:
         ActiveWorkbook.ActiveSheet.Delete
         Application.DisplayAlerts = True
         ActiveWorkbook.Sheets.Item(1).Select
-        MsgBox m_doneAlreadyWarning, vbExclamation
+        MsgBox DoneAlreadyWarning, vbExclamation
     End If
 End Sub

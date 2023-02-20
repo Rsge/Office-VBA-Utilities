@@ -4,19 +4,6 @@ Attribute VB_Description = "General, often used methods."
 '@ModuleDescription("General, often used methods.")
 Option Explicit
 
-'@VariableDescription("Warning if no save location specified.")
-Private Const m_noSaveLocationWarning As String = "No save location configured or" & vbNewLine & _
-                                                  "save location does not exist." & vbNewLine & _
-                                                  "Please specify a save location."
-Attribute m_noSaveLocationWarning.VB_VarDescription = "Warning if no save location specified."
-'@VariableDescription("Warning if no files found at save location.")
-Private Const m_noFilesWarning As String = "No files found at specified location." & vbNewLine & _
-                                           "Please specify a different folder or abort and add files first."
-Attribute m_noFilesWarning.VB_VarDescription = "Warning if no files found at save location."
-
-' ————————————————————————————————————————————————————— '
-
-
 ''@Description("Replaces occurences of {} in a string with the specified replacements.")
 'Public Function FormatString(ByVal str As String, ParamArray replacements() As Variant) As String
 '    Dim strArray() As String
@@ -77,9 +64,9 @@ Attribute GetFileNameWithoutExtension.VB_Description = "Gets name of file withou
     GetFileNameWithoutExtension = Split(fileObject.Name, ".")(0)
 End Function
 
-'@Description("Gets number of last lines of file at path (default 2).")
+'@Description("Gets number of last lines of file at path (default 1).")
 Public Function GetLastLine(ByVal filePath As String, Optional ByVal lineCount As Long = 1) As String()
-Attribute GetLastLine.VB_Description = "Gets number of last lines of file at path (default 2)."
+Attribute GetLastLine.VB_Description = "Gets number of last lines of file at path (default 1)."
     Dim fileNumber As Long
     ' Use first unused file number.
     fileNumber = FreeFile
@@ -133,7 +120,7 @@ Attribute GetDataFilePath.VB_Description = "Gets save location of data files and
             ' Define path.
             If Not noFilesRepeat Then
                 ' MsgBox to cancel folder dialog
-                If MsgBox(m_noSaveLocationWarning, vbOKCancel) = vbCancel Then Exit Function
+                If MsgBox(NoSaveLocationWarning, vbOKCancel) = vbCancel Then Exit Function
                 ' Open folder dialog.
                 Dim FolderDialog As FileDialog
                 Set FolderDialog = Application.FileDialog(msoFileDialogFolderPicker)
@@ -147,7 +134,7 @@ Attribute GetDataFilePath.VB_Description = "Gets save location of data files and
             If Len(Dir(path & Application.PathSeparator & Ext)) <> 0 Then
                 noFilesRepeat = False
             Else
-                If MsgBox(m_noFilesWarning, vbOKCancel) = vbCancel Then Exit Function
+                If MsgBox(NoFilesWarning, vbOKCancel) = vbCancel Then Exit Function
                 path = vbNullString
                 noFilesRepeat = True
             End If

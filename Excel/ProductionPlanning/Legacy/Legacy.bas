@@ -4,13 +4,6 @@ Attribute VB_Description = "Legacy code saving."
 '@ModuleDescription("Legacy code saving.")
 Option Explicit
 
-' String constants
-'@VariableDescription("Prefix for a date string to symbolize something happens on this day.)
-Private Const m_datePrefix As String = "On "
-
-' ————————————————————————————————————————————————————— '
-
-
 ' Date to string functions
 '@Description("Converts a date to a string in default european date format.)
 Private Function TextCurrentDate(ByVal currentDate As Date) As String
@@ -20,7 +13,7 @@ End Function
 '@Description("Returns an info text with the given date.")
 Private Function TextToDate(ByVal currentDate As Date) As String
 Attribute TextToDate.VB_Description = "Returns an info text with the given date."
-    TextToDate = m_datePrefix & TextCurrentDate(currentDate) & Colon & Space(1)
+    TextToDate = DatePrefix & TextCurrentDate(currentDate) & Colon & Space(1)
 End Function
 
 ' ————————————————————————————————————————————————————— '

@@ -4,29 +4,6 @@ Attribute VB_Description = "Finding of holidays and other non-productive dates."
 '@ModuleDescription("Finding of holidays and other non-productive dates.")
 Option Explicit
 
-' String constants
-'@VariableDescription("Label for weekends.")
-Private Const m_weekendLabel As String = "Weekend"
-Attribute m_weekendLabel.VB_VarDescription = "Label for weekends."
-'@VariableDescription("Label for bridging days (Days in between holidays and weekends).")
-Private Const m_bridgingDayLabel As String = "Bridging day"
-Attribute m_bridgingDayLabel.VB_VarDescription = "Label for bridging days (Days in between holidays and weekends)."
-'@VariableDescription("Label for company-wide holidays.")
-Private Const m_companyHolidaysLabel As String = "Company holidays"
-Attribute m_companyHolidaysLabel.VB_VarDescription = "Label for company-wide holidays."
-'@VariableDescription("Label for legal holidays.")
-Private Const m_holidaysWorksheetName As String = "Holidays"
-Attribute m_holidaysWorksheetName.VB_VarDescription = "Label for legal holidays."
-'@VariableDescription("Name of table containing the holidays.")
-Private Const m_holidaysTableName As String = "Holidays"
-Attribute m_holidaysTableName.VB_VarDescription = "Name of table containing the holidays."
-'@VariableDescription("Name of table containing the briding days.")
-Private Const m_bridgingDaysTableName As String = "BridgingDays"
-Attribute m_bridgingDaysTableName.VB_VarDescription = "Name of table containing the briding days."
-'@VariableDescription("Name of table containing company holidays.")
-Private Const m_companyHolidaysTableName As String = "CompanyHolidays"
-Attribute m_companyHolidaysTableName.VB_VarDescription = "Name of table containing company holidays."
-
 ' Column constants
 '@VariableDescription("Index of holidays' names' column.")
 Private Const m_holidayNameColumn As Long = 1
@@ -46,7 +23,7 @@ Private Function ShowWeekends(ByVal currentDate As Date) As String
 Attribute ShowWeekends.VB_Description = "Shows if a given date is a weekend."
     Select Case Weekday(currentDate)
         Case vbSaturday, vbSunday
-            ShowWeekends = m_weekendLabel
+            ShowWeekends = WeekendLabel
         Case Else
             ShowWeekends = vbNullString
     End Select
@@ -79,7 +56,7 @@ Attribute ShowBridgingDays.VB_Description = "Shows if a given date is a bridging
     For Each cell In bridgingDays.Cells
         bridgingDayDate = cell.Value
         If currentDate = bridgingDayDate Then
-            ShowBridgingDays = m_bridgingDayLabel
+            ShowBridgingDays = BridgingDayLabel
             Exit Function
         End If
     Next
@@ -97,7 +74,7 @@ Attribute ShowCompanyHolidays.VB_Description = "Shows if a given date is a compa
         fromDate = GetCellValue(currentRow, 1, m_holidayFromDateColumn)
         toDate = GetCellValue(currentRow, 1, m_holidayDateColumn)
         If fromDate <= currentDate And currentDate <= toDate Then
-            ShowCompanyHolidays = m_companyHolidaysLabel
+            ShowCompanyHolidays = CompanyHolidaysLabel
             Exit Function
         End If
     Next
@@ -109,8 +86,8 @@ End Function
 '@Description("Shows all days which are completely work-free.")
 Public Function ShowWorkFreeDays(ByVal currentDate As Date) As String
 Attribute ShowWorkFreeDays.VB_Description = "Shows all days which are completely work-free."
-    With ActiveWorkbook.Worksheets.Item(m_holidaysWorksheetName)
-        ShowWorkFreeDays = ShowHolidays(currentDate, .Range(m_holidaysTableName)) + ShowBridgingDays(currentDate, .Range(m_bridgingDaysTableName)) + ShowCompanyHolidays(currentDate, .Range(m_companyHolidaysTableName))
+    With ActiveWorkbook.Worksheets.Item(HolidaysWorksheetName)
+        ShowWorkFreeDays = ShowHolidays(currentDate, .Range(HolidaysTableName)) + ShowBridgingDays(currentDate, .Range(BridgingDaysTableName)) + ShowCompanyHolidays(currentDate, .Range(CompanyHolidaysTableName))
     End With
     If LenB(ShowWorkFreeDays) = 0 Then
         ShowWorkFreeDays = ShowWeekends(currentDate)
@@ -120,5 +97,5 @@ End Function
 '@Description("Shows all days on which there is no production.")
 Public Function NoProduction(ByVal currentDate As Date) As Boolean
 Attribute NoProduction.VB_Description = "Shows all days on which there is no production."
-    NoProduction = ShowWorkFreeDays(currentDate) <> vbNullString And ShowWorkFreeDays(currentDate) <> m_companyHolidaysLabel
+    NoProduction = ShowWorkFreeDays(currentDate) <> vbNullString And ShowWorkFreeDays(currentDate) <> CompanyHolidaysLabel
 End Function

@@ -8,7 +8,7 @@ Option Explicit
 ' InStr is fastest, closely followed by InStrB.
 ' Using Like is much slower.
 
-' Constants to change
+' Runtime constants
 '@VariableDescription("Label text for first testing method.")
 Private Const m_1stMethodLabel As String = "Using InStr: "
 Attribute m_1stMethodLabel.VB_VarDescription = "Label text for first testing method."
@@ -21,20 +21,8 @@ Attribute m_3rdMethodLabel.VB_VarDescription = "Label text for third testing met
 '@VariableDescription("Number of methods to test.")
 Private Const m_methodsCount As Long = 3
 Attribute m_methodsCount.VB_VarDescription = "Number of methods to test."
-'@VariableDescription("Exponent of 10 for amount of iterations to do in testing.")
-Private Const m_iterationsExponent As Long = 8
-Attribute m_iterationsExponent.VB_VarDescription = "Exponent of 10 for amount of iterations to do in testing."
 
-' Constants
-'@VariableDescription("Label text for iteration count output.")
-Private Const m_iterationCountLabel As String = "Number of iterations: "
-Attribute m_iterationCountLabel.VB_VarDescription = "Label text for iteration count output."
-'@VariableDescription("Format of decimal number string output.")
-Private Const m_numberFormat As String = "0.0###"
-Attribute m_numberFormat.VB_VarDescription = "Format of decimal number string output."
-'@VariableDescription("Unit of measured time.")
-Private Const m_unit As String = " s"
-Attribute m_unit.VB_VarDescription = "Unit of measured time."
+' ————————————————————————————————————————————————————— '
 
 
 '@EntryPoint
@@ -54,7 +42,7 @@ Attribute TestIsStringInString.VB_Description = "Tests if string contains other 
     
     ' Other variables & constants
     Dim i As Long
-    Const iterationCount As Long = 10 ^ m_iterationsExponent
+    Const iterationCount As Long = 10 ^ IterationsExponent
     Const methodsLength As Long = m_methodsCount - 1
     Dim startTimes(0 To methodsLength) As Double
     Dim endTimes(0 To methodsLength) As Double
@@ -84,9 +72,9 @@ Attribute TestIsStringInString.VB_Description = "Tests if string contains other 
     endTimes(2) = Timer
     
     ' Output results.
-    msg = m_iterationCountLabel & "10^" & m_iterationsExponent & vbNewLine
+    msg = IterationCountLabel & "10^" & IterationsExponent & vbNewLine
     For i = 0 To methodsLength
-        msg = msg & vbNewLine & methods(i) & Format$(endTimes(i) - startTimes(i), m_numberFormat) & m_unit
+        msg = msg & vbNewLine & methods(i) & Format$(endTimes(i) - startTimes(i), NumberFormat) & Unit
     Next
     MsgBox msg
 End Sub
