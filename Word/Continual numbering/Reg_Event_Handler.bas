@@ -3,6 +3,7 @@ Attribute VB_Description = "Event handler definition."
 '@Folder("ContinualNumbering")
 '@ModuleDescription("Event handler definition.")
 Option Explicit
+Option Private Module
 
 '@Description("Registers the event class for handling.")
 Public Sub Register_Event_Handler()
