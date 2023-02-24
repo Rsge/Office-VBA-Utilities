@@ -169,7 +169,7 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
     i = m_dataStartingRow
     Do Until LenB(GetCellValue(headerWS, i, m_dataItemColumn)) = 0
         If LenB(GetCellValue(headerWS, i, m_headerStartDateColumn)) > 0 _
-            And LenB(GetCellValue(headerWS, i, m_headerEndDateColumn)) = 0 Then
+        And LenB(GetCellValue(headerWS, i, m_headerEndDateColumn)) = 0 Then
             GetCell(headerWS, i, m_headerStartDateColumn).Value = vbNullString
         End If
         i = i + 1
@@ -196,8 +196,8 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
                         CreateNewRow headerWS, j
                         SetHeaderCells headerWS, j
                     End If
-                ElseIf GetCellValue(headerWS, j, m_headerAllLangColumn) = m_trueLabel And _
-                    GetCellValue(headerWS, j + 2, m_dataItemColumn) <> itemNum Then
+                ElseIf GetCellValue(headerWS, j, m_headerAllLangColumn) = m_trueLabel
+                And GetCellValue(headerWS, j + 2, m_dataItemColumn) <> itemNum Then
                     SetHeaderCells headerWS, j
                 End If
                 found(0) = True
@@ -230,7 +230,7 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
                         Do
                             k = k + 1
                             If LenB(GetCellValue(lineWS, k, m_dataLangCodeColumn)) > 0 _
-                                And GetCellValue(lineWS, k, m_dataItemColumn) = itemNum Then
+                            And GetCellValue(lineWS, k, m_dataItemColumn) = itemNum Then
                                 found(0) = True
                             End If
                         Loop While LenB(GetCellValue(lineWS, k, m_dataLangCodeColumn)) = 0
@@ -242,7 +242,7 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
                                 j = j + 2
                                 Set dataLangCodeCell = GetCell(lineWS, j, m_dataLangCodeColumn)
                             Loop While GetCellValue(lineWS, j, m_dataItemColumn) = itemNum _
-                                And LenB(dataLangCodeCell.Value) = 0
+                            And LenB(dataLangCodeCell.Value) = 0
                             Set lineTextCell = GetCell(lineWS, j, m_lineTextColumn)
                             CreateNewRow lineWS, j - 1
                             dataLangCodeCell.Value = m_translatedLangCode
@@ -259,7 +259,7 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
                     ' If not, import localized info.
                     ElseIf langCode = m_translatedLangCode Then
                         Do While GetCellValue(lineWS, j + 1, m_dataItemColumn) = itemNum _
-                            And GetCellValue(lineWS, j + 1, m_dataLangCodeColumn) = langCode
+                        And GetCellValue(lineWS, j + 1, m_dataLangCodeColumn) = langCode
                             j = j + 1
                         Loop
                         If GetCellValue(lineWS, j, m_lineTextColumn) <> GetCellValue(importWS, i, m_importTranslatedColumn) Then
@@ -271,7 +271,7 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
                         found(0) = True
                     ElseIf langCode = m_nativeLangCode Then
                         Do While GetCellValue(lineWS, j + 1, m_dataItemColumn) = itemNum _
-                            And GetCellValue(lineWS, j + 1, m_dataLangCodeColumn) = langCode
+                        And GetCellValue(lineWS, j + 1, m_dataLangCodeColumn) = langCode
                             j = j + 1
                         Loop
                         If GetCellValue(lineWS, j, m_lineTextColumn) <> GetCellValue(importWS, i, m_importNativeColumn) Then

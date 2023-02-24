@@ -50,13 +50,13 @@ Attribute BlacklistedItems.VB_VarDescription = "Item blacklisted from being proc
 ' - Localized strings -
 ' Library
 '@VariableDescription("Warning if no save location specified.")
-Public Const NoSaveLocationWarning As String = "No save location configured or" & vbNewLine & _
-                                               "save location does not exist." & vbNewLine & _
-                                               "Please specify a save location."
+Public Const NoSaveLocationWarning As String = "No save location configured or" & vbNewLine _
+                                             & "save location does not exist." & vbNewLine _
+                                             & "Please specify a save location."
 Attribute NoSaveLocationWarning.VB_VarDescription = "Warning if no save location specified."
 '@VariableDescription("Warning if no files found at save location.")
-Public Const NoFilesWarning As String = "No files found at specified location." & vbNewLine & _
-                                        "Please specify a different folder or abort and add files first."
+Public Const NoFilesWarning As String = "No files found at specified location." & vbNewLine _
+                                      & "Please specify a different folder or abort and add files first."
 Attribute NoFilesWarning.VB_VarDescription = "Warning if no files found at save location."
 ' DataImport
 '@VariableDescription("Warning for a file's item number not being present in table.")

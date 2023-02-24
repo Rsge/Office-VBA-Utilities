@@ -71,9 +71,9 @@ Attribute FindUsedColumns.VB_ProcData.VB_Invoke_Func = "i\n14"
         columnNameParts = Split(columnName, " ")
         If UBound(columnNameParts) > 0 Then
             If (InStrB(columnNameParts(UBound(columnNameParts)), m_ignoreColumnWith) = 1 _
-                Or IsNumeric(columnNameParts(UBound(columnNameParts)))) _
-                And usedColumns.Contains(Replace(columnName, " " & columnNameParts(UBound(columnNameParts)), vbNullString)) _
-                Then GoTo Continue
+            Or IsNumeric(columnNameParts(UBound(columnNameParts)))) _
+            And usedColumns.Contains(Replace(columnName, " " & columnNameParts(UBound(columnNameParts)), vbNullString)) _
+            Then GoTo Continue
         End If
         ' Check if one of the first entries is different from the last one checked.
         j = m_startingRow
