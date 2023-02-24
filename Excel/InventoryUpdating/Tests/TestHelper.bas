@@ -1,5 +1,7 @@
 Attribute VB_Name = "TestHelper"
+Attribute VB_Description = "Helps in testing if automatic import works as intended."
 '@Folder("InventoryUpdating.Tests")
+'@ModuleDescription("Helps in testing if automatic import works as intended.")
 Option Explicit
 
 ' Runtime constant

@@ -1,5 +1,7 @@
 Attribute VB_Name = "Library"
+Attribute VB_Description = "General, often used methods."
 '@Folder("ProductionPlanning.Main")
+'@ModuleDescription("General, often used methods.")
 Option Explicit
 
 '@Description("Gets the cell in a range at a position.")
