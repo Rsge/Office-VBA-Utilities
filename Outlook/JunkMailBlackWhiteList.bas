@@ -1,4 +1,5 @@
 Attribute VB_Name = "JunkMailBlackWhitelist"
+Attribute VB_Description = "More extensive whitelisting and blacklisting of emails."
 '@Folder("Mail.JunkHandling")
 '@ModuleDescription("More extensive whitelisting and blacklisting of emails.")
 Option Explicit
