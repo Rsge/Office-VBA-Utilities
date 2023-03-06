@@ -14,9 +14,11 @@ Attribute DeleteUpToDate.VB_Description = "Clears all cells up to a given date."
     Dim startingDateCell As Range
     Set startingDateCell = GetCell(ws.Cells, StartingDateRow, StartingDateColumn)
     Dim data As Range
-    Set data = GetColumn(ws.UsedRange, GetColumnRangeStr(DateColumn, SlowdownsColumn))
     Dim jobs As Range
-    Set jobs = GetColumn(ws.UsedRange, GetColumnRangeStr(JobsDefColumn, JobsDueDatesColumn))
+    With ws.UsedRange
+        Set data = .Range(.Columns.Item(DateColumn), .Columns.Item(SlowdownsColumn))
+        Set jobs = .Range(.Columns.Item(JobsDefColumn), .Columns.Item(JobsDueDatesColumn))
+    End With
     
     ' Get input.
     Dim inputString As String

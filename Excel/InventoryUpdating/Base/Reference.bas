@@ -105,8 +105,6 @@ Attribute LastChangedDateColumn.VB_VarDescription = "Index of last changes' date
 '@VariableDescription("Index of column of cell with files' path in Excel table.")
 Public Const PathCellColumn As Long = 14
 Attribute PathCellColumn.VB_VarDescription = "Index of column of cell with files' path in Excel table."
-''@VariableDescription("Ascii value to add to column index to get column letter.")
-'Public Const ColumnLetterAscii As Long = 64
 
 ' CSV data file column constants (0-based)
 '@VariableDescription("Index of last changed dates' column in CSV data file.")

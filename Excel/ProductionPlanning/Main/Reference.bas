@@ -108,6 +108,3 @@ Attribute JobsDefColumn.VB_VarDescription = "Index of jobs' definitions' column 
 '@VariableDescription("Index of jobs' due dates' definitions' column in data worksheet.")
 Public Const JobsDueDatesColumn As Long = 12
 Attribute JobsDueDatesColumn.VB_VarDescription = "Index of jobs' due dates' definitions' column in data worksheet."
-'@VariableDescription("Ascii value to add to column index to get column letter.")
-Public Const ColumnLetterAscii As Long = 64
-Attribute ColumnLetterAscii.VB_VarDescription = "Ascii value to add to column index to get column letter."

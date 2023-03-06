@@ -27,9 +27,3 @@ Public Function GetActiveCellValue(ByVal row As Long, ByVal column As Long) As V
 Attribute GetActiveCellValue.VB_Description = "Gets the value of a cell on the active sheet at a position."
     GetActiveCellValue = GetCell(ActiveSheet.Cells, row, column).Value
 End Function
-
-'@Description("Gets a string representing a range of columns from their two column indizes.")
-Public Function GetColumnRangeStr(ByVal firstColumn As Long, ByVal secondColumn As Long) As String
-Attribute GetColumnRangeStr.VB_Description = "Gets a string representing a range of columns from their two column indizes."
-    GetColumnRangeStr = Chr$(firstColumn + ColumnLetterAscii) & Colon & Chr$(secondColumn + ColumnLetterAscii)
-End Function
