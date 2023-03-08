@@ -16,9 +16,18 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
     Set missingItems = CreateObject("System.Collections.ArrayList")
     ' Backup worksheet.
     ActiveSheet.Copy After:=ActiveSheet
-    On Error GoTo ErrorHandler
+    On Error GoTo Catch
     ActiveSheet.name = BackupLabel & Format$(Now, DateFormat)
     On Error GoTo 0
+    If False Then
+Catch:
+        Application.DisplayAlerts = False
+        ActiveWorkbook.ActiveSheet.Delete
+        Application.DisplayAlerts = True
+        ActiveWorkbook.Sheets.Item(1).Select
+        MsgBox DoneAlreadyWarning, vbExclamation
+        Exit Sub
+    End If
     ActiveWorkbook.Sheets.Item(1).Select
     ' Iterate over all items' files in data file folder.
     Dim file As Object
@@ -107,15 +116,5 @@ MissingItem:
             missingItemsListString = missingItemsListString & missingItemNum & vbNewLine
         Next
         MsgBox (missingItemsListString)
-    End If
-    Exit Sub
-ErrorHandler:
-    If Err.Number > 0 Then
-        Err.Clear
-        Application.DisplayAlerts = False
-        ActiveWorkbook.ActiveSheet.Delete
-        Application.DisplayAlerts = True
-        ActiveWorkbook.Sheets.Item(1).Select
-        MsgBox DoneAlreadyWarning, vbExclamation
     End If
 End Sub
