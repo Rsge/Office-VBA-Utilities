@@ -83,13 +83,13 @@ Attribute GetLastLine.VB_Description = "Gets number of last lines of file at pat
     ' Set pointer to last position in file.
     pointer = LOF(fileNumber)
     Do
-        ' Read char at position "Pointer" into "Char".
+        ' Read char at position "pointer" into "char".
         Get fileNumber, pointer, char
         If char = vbCr Then
             ' Simply skip CRs for Linux compat.
             pointer = pointer - 1
         ElseIf char = vbLf Then
-            ' Read Count last lines of file.
+            ' Read count last lines of file.
             If currentLineNumber < lineCount - 1 Then
                 currentLineNumber = currentLineNumber + 1
                 pointer = pointer - 1
@@ -103,7 +103,6 @@ Attribute GetLastLine.VB_Description = "Gets number of last lines of file at pat
         End If
     Loop
     Close fileNumber
-    
     GetLastLine = lastLines
 End Function
 
