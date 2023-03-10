@@ -1,6 +1,6 @@
 Attribute VB_Name = "DoesStringStartWithTest"
 Attribute VB_Description = "String contains string testing."
-'@Folder("Tests")
+'@Folder("SpeedTests.Tests")
 '@ModuleDescription("String contains string testing.")
 Option Explicit
 

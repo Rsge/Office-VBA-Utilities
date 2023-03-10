@@ -1,6 +1,6 @@
 Attribute VB_Name = "Template"
 Attribute VB_Description = "Template for speed tests."
-'@Folder("Templates")
+'@Folder("SpeedTests.Templates")
 '@ModuleDescription("Template for speed tests.")
 Option Explicit
 

@@ -1,6 +1,6 @@
 Attribute VB_Name = "Reference"
 Attribute VB_Description = "Base constants for all speed tests."
-'@Folder("Base")
+'@Folder("SpeedTests.Base")
 '@ModuleDescription("Base constants for all speed tests.")
 Option Explicit
 

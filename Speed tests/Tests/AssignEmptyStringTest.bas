@@ -1,6 +1,6 @@
 Attribute VB_Name = "AssignEmptyStringTest"
 Attribute VB_Description = "Empty string asssignment testing."
-'@Folder("Tests")
+'@Folder("SpeedTests.Tests")
 '@ModuleDescription("Empty string asssignment testing.")
 Option Explicit
 
