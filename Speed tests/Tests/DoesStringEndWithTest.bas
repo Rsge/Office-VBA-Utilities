@@ -1,7 +1,7 @@
 Attribute VB_Name = "DoesStringEndWithTest"
-Attribute VB_Description = "String contains string testing."
+Attribute VB_Description = "Tests string ending with string checking methods."
 '@Folder("SpeedTests.Tests")
-'@ModuleDescription("String contains string testing.")
+'@ModuleDescription("Tests string ending with string checking methods.")
 Option Explicit
 
 ' Result:
@@ -46,9 +46,9 @@ Attribute m_methodsCount.VB_VarDescription = "Number of methods to test."
 
 
 '@EntryPoint
-'@Description("Tests if string starts with other string with different methods.")
+'@Description("Tests if string ends with other string with different methods.")
 Public Sub TestStringEndsWith()
-Attribute TestStringEndsWith.VB_Description = "Tests if string starts with other string with different methods."
+Attribute TestStringEndsWith.VB_Description = "Tests if string ends with other string with different methods."
     ' Insert method labels in array.
     Dim methods As Variant
     methods = Array(m_1stMethodLabel, m_2ndMethodLabel, m_3rdMethodLabel, _

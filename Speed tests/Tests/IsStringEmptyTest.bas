@@ -1,7 +1,7 @@
 Attribute VB_Name = "IsStringEmptyTest"
-Attribute VB_Description = "String emptiness testing."
+Attribute VB_Description = "Tests string emptiness checking methods."
 '@Folder("SpeedTests.Tests")
-'@ModuleDescription("String emptiness testing.")
+'@ModuleDescription("Tests string emptiness checking methods.")
 Option Explicit
 
 ' Result:

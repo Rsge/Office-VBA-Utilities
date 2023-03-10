@@ -1,7 +1,7 @@
 Attribute VB_Name = "DoesStringStartWithTest"
-Attribute VB_Description = "String contains string testing."
+Attribute VB_Description = "Tests string starting with string checking methods."
 '@Folder("SpeedTests.Tests")
-'@ModuleDescription("String contains string testing.")
+'@ModuleDescription("Tests string starting with string checking methods.")
 Option Explicit
 
 ' Result:

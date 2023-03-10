@@ -1,7 +1,7 @@
 Attribute VB_Name = "AssignEmptyStringTest"
-Attribute VB_Description = "Empty string asssignment testing."
+Attribute VB_Description = "Tests empty string assignment methods."
 '@Folder("SpeedTests.Tests")
-'@ModuleDescription("Empty string asssignment testing.")
+'@ModuleDescription("Tests empty string assignment methods.")
 Option Explicit
 
 ' Result:

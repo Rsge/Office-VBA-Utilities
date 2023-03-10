@@ -22,9 +22,9 @@ Attribute m_methodsCount.VB_VarDescription = "Number of methods to test."
 
 
 '@EntryPoint
-'@Description("Tests string emptiness with different methods.")
+'@Description("Tests something with different methods.")
 Public Sub TestSomething()
-Attribute TestSomething.VB_Description = "Tests string emptiness with different methods."
+Attribute TestSomething.VB_Description = "Tests something with different methods."
     ' Insert method labels in array.
     Dim methods As Variant
     methods = Array(m_1stMethodLabel, m_2ndMethodLabel)
