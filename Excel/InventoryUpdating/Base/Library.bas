@@ -6,19 +6,19 @@ Option Explicit
 
 ''@Description("Replaces occurences of {} in a string with the specified replacements.")
 'Public Function FormatString(ByVal str As String, ParamArray replacements() As Variant) As String
-'    Dim strArray() As String
-'    strArray = Split(str, "{}")
+'    Dim parts() As String
+'    parts = Split(str, "{}")
 '    Dim out As Object
 '    Set out = CreateObject("System.Collections.ArrayList")
 '    Dim i As Long
 '    i = 0
 '    Dim replacement As Variant
 '    For Each replacement In replacements
-'        out.Add strArray(i)
+'        out.Add parts(i)
 '        out.Add replacement
 '        i = i + 1
 '    Next
-'    out.Add strArray(i)
+'    out.Add parts(i)
 '    FormatString = Join(out.ToArray, vbNullString)
 'End Function
 
