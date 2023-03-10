@@ -36,11 +36,10 @@ Attribute TestIsStringEmpty.VB_Description = "Tests string emptiness with differ
     Dim methods As Variant
     methods = Array(m_1stMethodLabel, m_2ndMethodLabel, m_3rdMethodLabel, m_4thMethodLabel)
     ' Define test variables.
+    Const testStr As String = vbNullString
     '@Ignore VariableNotUsed
     Dim testBool As Boolean
-    Dim testStr As String
-    testStr = vbNullString
-
+    
     ' Other variables & constants
     Dim i As Long
     Const iterationCount As Long = 10 ^ IterationsExponent

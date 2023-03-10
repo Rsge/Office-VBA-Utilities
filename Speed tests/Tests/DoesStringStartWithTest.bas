@@ -41,12 +41,10 @@ Attribute TestStringStartsWith.VB_Description = "Tests if string starts with oth
     methods = Array(m_1stMethodLabel, m_2ndMethodLabel, m_3rdMethodLabel, _
                     m_4thMethodLabel, m_5thMethodLabel)
     ' Define test variables.
+    Const testStr As String = "TestExample"
+    Const testForStr As String = "Test"
     '@Ignore VariableNotUsed
     Dim testBool As Boolean
-    Dim testStr As String
-    testStr = "TestExample"
-    Dim testForStr As String
-    testForStr = "Test"
     
     ' Other variables & constants
     Dim i As Long

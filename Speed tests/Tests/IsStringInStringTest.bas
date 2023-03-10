@@ -33,12 +33,10 @@ Attribute TestIsStringInString.VB_Description = "Tests if string contains other 
     Dim methods As Variant
     methods = Array(m_1stMethodLabel, m_2ndMethodLabel, m_3rdMethodLabel)
     ' Define test variables.
+    Const testStr As String = "Example,Test"
+    Const testForStr As String = ","
     '@Ignore VariableNotUsed
     Dim testBool As Boolean
-    Dim testStr As String
-    testStr = "Example,Test"
-    Dim testForStr As String
-    testForStr = ","
     
     ' Other variables & constants
     Dim i As Long
