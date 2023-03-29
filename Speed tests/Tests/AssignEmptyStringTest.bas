@@ -5,7 +5,7 @@ Attribute VB_Description = "Tests empty string assignment methods."
 Option Explicit
 
 ' Result:
-' Assigning vbNullString is much faster.
+' Assigning vbNullString is much faster than using "".
 
 ' Runtime constants
 '@VariableDescription("Label text for first testing method.")
@@ -22,9 +22,9 @@ Attribute m_methodsCount.VB_VarDescription = "Number of methods to test."
 
 
 '@EntryPoint
-'@Description("Tests string emptiness with different methods.")
+'@Description("Tests assigning an empty string with different methods.")
 Public Sub TestAssignEmptyString()
-Attribute TestAssignEmptyString.VB_Description = "Tests string emptiness with different methods."
+Attribute TestAssignEmptyString.VB_Description = "Tests assigning an empty string with different methods."
     ' Insert method labels in array.
     Dim methods As Variant
     methods = Array(m_1stMethodLabel, m_2ndMethodLabel)

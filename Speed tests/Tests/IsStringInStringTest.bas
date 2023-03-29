@@ -34,7 +34,8 @@ Attribute TestIsStringInString.VB_Description = "Tests if string contains other 
     methods = Array(m_1stMethodLabel, m_2ndMethodLabel, m_3rdMethodLabel)
     ' Define test variables.
     Const testStr As String = "Example,Test"
-    Const testForStr As String = ","
+    Dim testForStr As String
+    testForStr = ","
     '@Ignore VariableNotUsed
     Dim testBool As Boolean
     

@@ -56,7 +56,8 @@ Attribute TestStringEndsWith.VB_Description = "Tests if string ends with other s
                     m_7thMethodLabel, m_8thMethodLabel, m_9thMethodLabel)
     ' Define test variables.
     Const testStr As String = "ExampleStringThatsLongerThanUsualToHaveBetterGroundWorkForTheDifferentApplicationsTest"
-    Const testForStr As String = "Test"
+    Dim testForStr As String
+    testForStr = "Test"
     Const testForStrRev As String = "tseT"
     '@Ignore VariableNotUsed
     Dim testBool As Boolean

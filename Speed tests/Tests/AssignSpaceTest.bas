@@ -1,23 +1,23 @@
-Attribute VB_Name = "IsStringEqualToStringTest"
-Attribute VB_Description = "Tests string being equal to string checking methods."
+Attribute VB_Name = "AssignSpaceTest"
+Attribute VB_Description = "Tests space assignment methods."
 '@Folder("SpeedTests.Tests")
-'@ModuleDescription("Tests string being equal to string checking methods.")
+'@ModuleDescription("Tests space assignment methods.")
 Option Explicit
 
 ' Result:
-' Using '=' is fastest.
-' Using InStr is a bit slower, using Like uses almost double it's time.
+' Assigning with Space$ is fastest.
+' Using " " is slower, using Space is slowest.
 
 ' Runtime constants
 '@VariableDescription("Label text for first testing method.")
-Private Const m_1stMethodLabel As String = "Using '=': "
+Private Const m_1stMethodLabel As String = "Using "" "": "
 Attribute m_1stMethodLabel.VB_VarDescription = "Label text for first testing method."
 '@VariableDescription("Label text for second testing method.")
-Private Const m_2ndMethodLabel As String = "Using InStr: "
+Private Const m_2ndMethodLabel As String = "Using Space: "
 Attribute m_2ndMethodLabel.VB_VarDescription = "Label text for second testing method."
-'@VariableDescription("Label text for second testing method.")
-Private Const m_3rdMethodLabel As String = "Using Like: "
-Attribute m_3rdMethodLabel.VB_VarDescription = "Label text for second testing method."
+'@VariableDescription("Label text for third testing method.")
+Private Const m_3rdMethodLabel As String = "Using Space$: "
+Attribute m_3rdMethodLabel.VB_VarDescription = "Label text for third testing method."
 '@VariableDescription("Number of methods to test.")
 Private Const m_methodsCount As Long = 3
 Attribute m_methodsCount.VB_VarDescription = "Number of methods to test."
@@ -26,17 +26,16 @@ Attribute m_methodsCount.VB_VarDescription = "Number of methods to test."
 
 
 '@EntryPoint
-'@Description("Tests string equality with different methods.")
-Public Sub TestStringEquality()
-Attribute TestStringEquality.VB_Description = "Tests string equality with different methods."
+'@Description("Tests assigning of space with different methods.")
+Public Sub TestAssignSpace()
+Attribute TestAssignSpace.VB_Description = "Tests assigning of space with different methods."
     ' Insert method labels in array.
     Dim methods As Variant
     methods = Array(m_1stMethodLabel, m_2ndMethodLabel, m_3rdMethodLabel)
     ' Define test variables.
-    Const testStr As String = "TestExample"
     '@Ignore VariableNotUsed
-    Dim testBool As Boolean
-    
+    Dim testStr As String
+
     ' Other variables & constants
     Dim i As Long
     Const iterationCount As Long = 10 ^ IterationsExponent
@@ -45,27 +44,27 @@ Attribute TestStringEquality.VB_Description = "Tests string equality with differ
     Dim endTimes(0 To methodsLength) As Double
     Dim msg As String
     
-    ' Test '='.
+    ' Test " ".
     startTimes(0) = Timer
     For i = 0 To iterationCount
-        testBool = testStr = testStr
+        testStr = " "
     Next
     endTimes(0) = Timer
-
-    ' Test InStr.
+    
+    ' Test Space.
     startTimes(1) = Timer
     For i = 0 To iterationCount
-        testBool = InStr(testStr, testStr)
+        testStr = Space(1)
     Next
     endTimes(1) = Timer
     
-    ' Test Like.
+    ' Test Space$.
     startTimes(2) = Timer
     For i = 0 To iterationCount
-        testBool = testStr Like testStr
+        testStr = Space$(1)
     Next
     endTimes(2) = Timer
-    
+
     ' Output results.
     msg = IterationCountLabel & "10^" & IterationsExponent & vbNewLine
     For i = 0 To methodsLength
