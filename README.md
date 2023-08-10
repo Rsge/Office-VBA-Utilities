@@ -23,9 +23,12 @@ I'd also recommmend making a few adjustments to the VBA editor's settings as see
 
 ### Speed tests
 * `AssignEmptyStringTest.bas` compares different methods to create an empty string.
+* `AssignSpaceTest.bas` compares different methods to create a string of a space.
+* `CompareNumberTest.bas` compares different methods to compare a number to another.
 * `DoesStringStartWithTest.bas` compares different methods to determine if a string starts with another string.
 * `DoesStringEndWithTest.bas` compares different methods to determine if a string ends with another string.
 * `IsStringEmptyTest.bas` compares different methods to determine if a string is empty.
+* `IsStringEqualToStringTest.bas` compares different methods to determine if a string equals another string.
 * `IsStringInStringTest.bas` compares different methods to determine if a string contains another string.
 
 ### Word
