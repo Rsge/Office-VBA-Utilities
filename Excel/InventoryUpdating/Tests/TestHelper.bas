@@ -55,11 +55,11 @@ Public Sub DeleteUnchanged()
 Attribute DeleteUnchanged.VB_Description = "Deletes all entries who's automatic and manual last changed dates are before the checkup date."
     Dim i As Long
     i = StartingRow
+    Dim manWasChanged As Boolean
+    Dim autoWasChanged As Boolean
     Do Until LenB(ActiveSheet.Cells(i, ItemColumn).Value) = 0
-        Dim manWasChanged As Boolean
-        manWasChanged = GetCellValue(ActiveSheet, i, m_manChangeDateColumn) = m_checkupDate
-        Dim autoWasChanged As Boolean
-        autoWasChanged = GetCellValue(ActiveSheet, i, m_autoChangeDateColumn) = m_checkupDate
+        manWasChanged = GetActCellValue(i, m_manChangeDateColumn) = m_checkupDate
+        autoWasChanged = GetActCellValue(i, m_autoChangeDateColumn) = m_checkupDate
         If manWasChanged Or autoWasChanged Then
             i = i + 1
         Else
@@ -74,14 +74,14 @@ Public Sub DeleteEquals()
 Attribute DeleteEquals.VB_Description = "Deletes all entries without difference in BB-date and (significant to a threshold) difference in automatic and manual new amount."
     Dim i As Long
     i = StartingRow
-    Do Until LenB(GetCellValue(ActiveSheet, i, ItemColumn)) = 0
-        Dim bbDateMatch As Boolean
-        bbDateMatch = CDate(GetCellValue(ActiveSheet, i, m_autoBBDateColumn)) = CDate(GetCellValue(ActiveSheet, i, m_manBBDateColumn))
-        Dim diff As Double
-        diff = Abs(CDbl(GetCellValue(ActiveSheet, i, m_autoNewAmountColumn)) - CDbl(GetCellValue(ActiveSheet, i, m_manNewAmountColumn)))
-        Dim diffThreshold As Double
-        diffThreshold = GetCellValue(ActiveSheet, i, m_autoNewAmountColumn) * (m_diffThresholdPercent / 100)
-        Dim diffMatch As Boolean
+    Dim bbDateMatch As Boolean
+    Dim diff As Double
+    Dim diffThreshold As Double
+    Dim diffMatch As Boolean
+    Do Until LenB(GetActCellValue(i, ItemColumn)) = 0
+        bbDateMatch = CDate(GetActCellValue(i, m_autoBBDateColumn)) = CDate(GetActCellValue(i, m_manBBDateColumn))
+        diff = Abs(CDbl(GetActCellValue(i, m_autoNewAmountColumn)) - CDbl(GetActCellValue(i, m_manNewAmountColumn)))
+        diffThreshold = GetActCellValue(i, m_autoNewAmountColumn) * (m_diffThresholdPercent / 100)
         diffMatch = diff < diffThreshold
         If bbDateMatch And diffMatch Then
             ActiveSheet.Rows(i).Delete

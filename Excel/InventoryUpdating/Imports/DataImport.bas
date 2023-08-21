@@ -1,112 +1,272 @@
 Attribute VB_Name = "DataImport"
-Attribute VB_Description = "Imports weight data from given CSV files."
+Attribute VB_Description = "Import weight data from given CSV files."
 '@Folder("InventoryUpdating.Imports")
-'@ModuleDescription("Imports weight data from given CSV files.")
+'@ModuleDescription("Import weight data from given CSV files.")
 Option Explicit
+
+'@Description("Gets path of data import files or export file and determines if file(s) is/are available.")
+Private Function GetFilePath(ByVal pathCell As Range, ByVal forImport As Boolean) As String
+Attribute GetFilePath.VB_Description = "Gets path of data import files or export file and determines if file(s) is/are available."
+    ' Variables
+    Dim path As String
+    path = pathCell.Value
+    Dim repeated As Boolean
+    Dim label As String
+    If forImport Then
+        label = ImportLabel
+    Else ' If for export...
+        label = ExportLabel
+        ' Get export file name.
+        Dim exportFileName As String
+        exportFileName = BuildWBName(ExportDateFormat)
+    End If
+    ' Loop as long as no valid path is found and not canceled.
+    Dim FolderDialog As FileDialog
+    Do
+        ' If no path specified, define one.
+        If IsEmpty(path) Then
+            ' MsgBox to cancel folder dialog
+            If Not repeated Then
+                If MsgBoxCanceled(FormatString(NoPathWarning, label)) Then Exit Function
+            End If
+            ' Open folder dialog.
+            Set FolderDialog = Application.FileDialog(msoFileDialogFolderPicker)
+            If FolderDialog.Show = 0 Then Exit Function
+            ' Get path.
+            path = FolderDialog.SelectedItems.Item(1) & Application.PathSeparator
+            pathCell.Value = path
+        End If
+        ' Check file existence.
+        If (forImport And IsEmpty(Dir(path & DataFilePattern))) _
+        Or (Not forImport And IsEmpty(Dir(path & exportFileName))) Then
+            ' MsgBox to cancel repeated folder dialog
+            If MsgBoxCanceled(FormatString(NoFilesWarning, label)) Then Exit Function
+            repeated = True
+            path = vbNullString
+        Else
+            Exit Do
+        End If
+    Loop
+    GetFilePath = path
+End Function
 
 '@EntryPoint
 '@Description("Imports weighing data from given data files.")
 Public Sub ImportDataFiles()
 Attribute ImportDataFiles.VB_Description = "Imports weighing data from given data files."
-    ' Variables
-    Dim dataFilePath As String
-    dataFilePath = GetDataFilePath(GetCell(ActiveSheet, PathCellRow, PathCellColumn))
-    If IsEmpty(dataFilePath) Then Exit Sub
+    ' Define paths, names and the missing items list.
     Dim missingItems As Object
     Set missingItems = CreateObject("System.Collections.ArrayList")
-    ' Backup worksheet.
-    ActiveSheet.Copy After:=ActiveSheet
-    On Error GoTo Catch
-    ActiveSheet.name = BackupLabel & Format$(Now, DateFormat)
-    On Error GoTo 0
-    If False Then
-Catch:
-        Application.DisplayAlerts = False
-        ActiveWorkbook.ActiveSheet.Delete
-        Application.DisplayAlerts = True
-        ActiveWorkbook.Sheets.Item(1).Select
-        MsgBox DoneAlreadyWarning, vbExclamation
+    Dim importDataFilesPath As String
+    importDataFilesPath = GetFilePath(GetActCell(ImportPathAndResetMarkerRow, PathCellsColumn), forImport:=True)
+    If IsEmpty(importDataFilesPath) Then Exit Sub
+    Dim exportWBPath As String
+    exportWBPath = GetFilePath(GetActCell(ExportPathRow, PathCellsColumn), forImport:=False)
+    If IsEmpty(exportWBPath) Then Exit Sub
+    Dim exportWBName As String
+    exportWBName = BuildWBName(ExportDateFormat)
+    Dim exportWB As Workbook
+    ' Select first sheet.
+    ActiveWorkbook.Worksheets.Item(1).Select
+    ' Create copy of this workbook with current date and use that from now on, if not already in use.
+    Dim currentWB As Workbook
+    If CreateWBCopy Then
+        Dim newName As String
+        newName = BuildWBName(ActFileDateFormat, isMakroWB:=True)
+        Dim isNew As Boolean
+        isNew = ThisWorkbook.Name <> newName
+        Dim newPath As String
+        newPath = ThisWorkbook.path & Application.PathSeparator & newName
+        If isNew Then
+            ThisWorkbook.SaveCopyAs newPath
+            Set currentWB = Workbooks.Open(newPath)
+        Else
+            Set currentWB = ThisWorkbook
+        End If
+    Else
+        Set currentWB = ThisWorkbook
+    End If
+    ' Open export workbook, make sure it's not read-only and put it in background.
+    Set exportWB = Workbooks.Open(exportWBPath & exportWBName)
+    If exportWB.ReadOnly Then
+        WarnBox ReadOnlyWarning
+        exportWB.Close
+        Exit Sub
+    End If
+    Dim exportSheet As Worksheet
+    Set exportSheet = exportWB.ActiveSheet
+    currentWB.Activate
+    ' Import baseline from export file, if not done already.
+    If IsEmpty(GetActCellValue(ImportPathAndResetMarkerRow, ResetMarkerColumn)) Then
+        exportSheet.Range(DataRegionStartCell).CurrentRegion.Copy ActiveSheet.Range(DataRegionStartCell)
+    Else
+        SetActCellValue ImportPathAndResetMarkerRow, ResetMarkerColumn, vbNullString
+    End If
+    ' Back up worksheet.
+    Dim sheetName As String
+    sheetName = BackupSheetLabel & Format$(Now, DataDateFormat)
+    If Not ContainsSheetStartingWith(sheetName) Then
+        ' Delete old backups.
+        DeleteSheetsStartingWith BackupSheetLabel
+        ' Create new backup.
+        ActiveSheet.Copy After:=ActiveSheet
+        ActiveSheet.Name = sheetName
+    Else
+        WarnBox DoneAlreadyWarning
+        exportWB.Close
         Exit Sub
     End If
     ActiveWorkbook.Sheets.Item(1).Select
+    ' Create blacklist and special item list.
+    Dim blacklist As Object
+    Dim specialItemsList As Object
+    With ActiveWorkbook.Sheets.Item(DefSheetName)
+        Set blacklist = GetTableAsList(.Range(BlacklistedItemsTableName))
+        Set specialItemsList = GetTableAsList(.Range(SpecialItemsTableName))
+    End With
     ' Iterate over all items' files in data file folder.
     Dim file As Object
-    For Each file In CreateObject("Scripting.FileSystemObject").GetFolder(dataFilePath).Files
-        ' Gett item.
-        Dim itemNum As String
+    Dim itemNum As String
+    Dim hasDuplicate As Boolean
+    Dim isSpecialItem As Boolean
+    Dim itemColumnRange As Range
+    Dim itemCell As Range
+    Dim firstCellAdr As String
+    Dim missesInTable As Boolean
+    Dim doRepeat As Boolean
+    Dim itemRow As Long
+    Dim description As String
+    Dim descHasMarker As Boolean
+    Dim actValueRange As Range
+    Dim i As Long
+    Dim ImportData() As String
+    Dim currentAmount As Double
+    Dim previousAmount As Double
+    Dim diff As Double
+    Dim unit As String
+    Dim importBBDateStr As String
+    For Each file In CreateObject("Scripting.FileSystemObject").GetFolder(importDataFilesPath).Files
+        ' Get item.
         itemNum = GetFileNameWithoutExtension(file)
         ' Account for special, duplicate items.
-        Dim hasDuplicate As Boolean
         hasDuplicate = False
-        Dim isSpecialItem As Boolean
         isSpecialItem = False
-        If Contains(SpecialItems, itemNum) Or EndsWith(itemNum, SpecialItemFileMarker) Then
+        If specialItemsList.Contains(Replace(itemNum, SpecialItemFileMarker, vbNullString)) Then
             hasDuplicate = True
             If EndsWith(itemNum, SpecialItemFileMarker) Then
                 isSpecialItem = True
                 itemNum = Replace(itemNum, SpecialItemFileMarker, vbNullString)
             End If
         End If
-        ' Find item's cell.
-        Dim itemColumnRange As Range
-        Set itemColumnRange = ActiveSheet.Columns.Item(ItemColumn)
-        Dim itemCell As Range
-        Set itemCell = itemColumnRange.Find(itemNum)
-        ' Process item's data if cell is found, otherwise add it to missing list.
-        If Not itemCell Is Nothing Then
-Retry:
-            Dim itemRow As Long
-            itemRow = itemCell.row
-            If hasDuplicate Then
-                Dim description As String
-                description = ActiveSheet.Cells.Item(itemRow, DescriptionColumn).Value
-                Dim descHasMarker As Boolean
-                descHasMarker = StartsWith(description, SpecialItemDescriptionMarker)
-                If Not ((isSpecialItem And descHasMarker) Or (Not isSpecialItem And Not descHasMarker)) Then
-                    Set itemCell = itemColumnRange.FindNext(itemCell)
-                    If itemCell Is Nothing Then GoTo MissingItem
-                    ' HACK It's easiest like this - probably could do it "better", but it works...
-                    GoTo Retry
-                End If
+        ' Don't process blacklisted items.
+        If Not blacklist.Contains(itemNum) Then
+            ' Find item's cell.
+            Set itemColumnRange = ActiveSheet.Columns.Item(ItemColumn)
+            Set itemCell = itemColumnRange.Find(itemNum)
+            ' Find item's cell. If not found, add to missing and create it.
+            If Not itemCell Is Nothing Then
+                missesInTable = False
+                firstCellAdr = itemCell.Address
+                ' Account for special items having two entries.
+                Do
+                    itemRow = itemCell.Row
+                    doRepeat = False
+                    ' If item has a special duplicate, the description differentiates the entries.
+                    If hasDuplicate Then
+                        description = GetActCellValue(itemRow, DescriptionColumn)
+                        descHasMarker = StartsWith(description, SpecialItemDescriptionMarker)
+                        ' If the description isn't for the current item's variant, try the next result.
+                        ' Otherwise go on with the import.
+                        If isSpecialItem Xor descHasMarker Then
+                            Set itemCell = itemColumnRange.FindNext(itemCell)
+                            If itemCell.Address = firstCellAdr Then
+                                missesInTable = True
+                                Exit Do
+                            End If
+                            doRepeat = True
+                        End If
+                    End If
+                Loop While doRepeat
+            Else
+                missesInTable = True
             End If
-            Dim ImportData() As String
+            If missesInTable Then
+                ' Add row for missing item.
+                missingItems.Add itemNum
+                itemRow = StartingRow
+                Do Until IsEmpty(GetActCellValue(itemRow, ItemColumn))
+                    ' Find where the item belongs.
+                    If StrComp(itemNum, GetActCellValue(itemRow, ItemColumn)) = -1 Then
+                        Exit Do
+                    End If
+                    itemRow = itemRow + 1
+                Loop
+                If itemRow > StartingRow Then
+                    CreateNewActRow itemRow, copyFrom:=-1
+                Else
+                    CreateNewActRow itemRow, copyFrom:=1
+                End If
+                ' Get missing item's data or set it to default values.
+                ImportData = Split(GetFirstLine(file.path, 2)(1), Sep)
+                SetActCellValue itemRow, ItemColumn, itemNum
+                If isSpecialItem Then
+                    SetActCellValue itemRow, DescriptionColumn, SpecialItemDescriptionMarker & Space$(1)
+                Else
+                    SetActCellValue itemRow, DescriptionColumn, vbNullString
+                End If
+                importBBDateStr = ImportData(ImportsCurrentBBDateColumn)
+                SetActCellValue itemRow, BBDateColumn, importBBDateStr
+                GetActCell(itemRow, BBDateColumn).NumberFormat = DataDateFormat
+                unit = KiloUnitPrefix & Replace(ImportUnit, Space$(1), vbNullString)
+                SetActCellValue itemRow, UnitColumn, unit
+                currentAmount = Replace(ImportData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
+                SetActCellValue itemRow, PreviousAmountColum, currentAmount / 1000
+                SetActCellValue itemRow, AmountDiffColumn, 0
+                SetActCellValue itemRow, LastChangedDateColumn, PlaceholderDate
+                Set actValueRange = ActiveSheet.Range(DataRegionStartCell).CurrentRegion
+                For i = actValueRange.Columns.Count To ActiveSheet.Range(DataRegionStartCell).Column + LastChangedDateColumn Step -1
+                    actValueRange.Cells.Item(itemRow - ActiveSheet.Range(DataRegionStartCell).Row + 1, i).Value = vbNullString
+                Next
+            End If
+            ' Process item's data.
             ImportData = Split(GetLastLine(file.path)(0), Sep)
             ' Account for kilo-unit.
-            Dim currentAmount As Double
             currentAmount = Replace(ImportData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
-            Dim unit As String
-            unit = GetCellValue(ActiveSheet, itemRow, UnitColumn)
+            unit = GetActCellValue(itemRow, UnitColumn)
             If Contains(unit, KiloUnitPrefix) Or unit = LitersUnit Then
                 currentAmount = currentAmount / 1000
             End If
             ' Change data in Excel table only if imported data is newer.
-            If CDate(GetCellValue(ActiveSheet, itemRow, LastChangedDateColumn)) < CDate(ImportData(ImportsLastChangedDateColumn)) Then
+            If CDate(GetActCellValue(itemRow, LastChangedDateColumn)) < CDate(ImportData(ImportsLastChangedDateColumn)) Then
                 ' BB date
-                Dim currentBBDateStr As String
-                currentBBDateStr = ImportData(ImportsCurrentBBDateColumn)
-                If currentBBDateStr = PlaceholderDate Then
-                    GetCell(ActiveSheet, itemRow, BBDateColumn).Value = vbNullString
+                importBBDateStr = ImportData(ImportsCurrentBBDateColumn)
+                If importBBDateStr = PlaceholderDate Then
+                    SetActCellValue itemRow, BBDateColumn, vbNullString
                 Else
                     On Error Resume Next
-                    GetCell(ActiveSheet, itemRow, BBDateColumn).Value = CDate(currentBBDateStr)
+                    SetActCellValue itemRow, BBDateColumn, CDate(importBBDateStr)
                     On Error GoTo 0
                 End If
+                GetActCell(itemRow, BBDateColumn).NumberFormat = DataDateFormat
                 ' Last changed date
-                GetCell(ActiveSheet, itemRow, LastChangedDateColumn).Value = Now
+                SetActCellValue itemRow, LastChangedDateColumn, Date
+                GetActCell(itemRow, LastChangedDateColumn).NumberFormat = DataDateFormat
                 ' Amount
-                Dim previousAmount As Double
-                previousAmount = GetCellValue(ActiveSheet, itemRow, NewAmountColumn)
-                GetCell(ActiveSheet, itemRow, PreviousAmountColum).Value = previousAmount
-                Dim diff As Double
+                previousAmount = GetActCellValue(itemRow, NewAmountColumn)
+                SetActCellValue itemRow, PreviousAmountColum, previousAmount
                 diff = Math.Round(currentAmount - previousAmount, Decimals)
-                GetCell(ActiveSheet, itemRow, AmountDiffColumn).Value = diff
+                SetActCellValue itemRow, AmountDiffColumn, diff
             End If
-MissingItem:
-        ElseIf Not Contains(BlacklistedItems, itemNum) Then
-                missingItems.Add itemNum
         End If
     Next
-    MsgBox (SuccessInfo)
+    ' Export to export file.
+    With ActiveSheet.Range(DataRegionStartCell)
+        .CurrentRegion.Copy exportSheet.Range(DataRegionStartCell)
+        .Select
+    End With
+    exportWB.Close saveChanges:=True
+    currentWB.Save
+    MsgBox SuccessInfo
     ' Show missing items list.
     If missingItems.Count > 0 Then
         Dim missingItemNum As Variant
@@ -115,6 +275,7 @@ MissingItem:
         For Each missingItemNum In missingItems
             missingItemsListString = missingItemsListString & missingItemNum & vbNewLine
         Next
-        MsgBox (missingItemsListString)
+        MsgBox missingItemsListString
     End If
+    If CreateWBCopy Then If isNew Then ThisWorkbook.Close
 End Sub
