@@ -92,7 +92,8 @@ Public Const ReadOnlyWarning As String = "The export workbook is read-only at th
 Attribute ReadOnlyWarning.VB_VarDescription = "Warning for export file being read-only."
 '@VariableDescription("Warning for a file's item number not being present in table.")
 Public Const EntryNotAvailableWarning As String = "No entry exists for the following items." & vbNewLine _
-                                                & "Please add the correct description and check the unit" & vbNewLine _
+                                                & "Please add the correct description and check the unit " _
+                                                & "in this and the export file open in the background " _
                                                 & "or fix the import data files." & vbNewLine
 Attribute EntryNotAvailableWarning.VB_VarDescription = "Warning for a file's item number not being present in table."
 '@VariableDescription("Info about successful processing.")

@@ -159,115 +159,116 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
             End If
         End If
         ' Don't process blacklisted items.
-        If Not blacklist.Contains(itemNum) Then
-            ' Find item's cell.
-            Set itemColumnRange = ActiveSheet.Columns.Item(ItemColumn)
-            Set itemCell = itemColumnRange.Find(itemNum)
-            ' Find item's cell. If not found, add to missing and create it.
-            If Not itemCell Is Nothing Then
-                missesInTable = False
-                firstCellAdr = itemCell.Address
-                ' Account for special items having two entries.
-                Do
-                    itemRow = itemCell.Row
-                    doRepeat = False
-                    ' If item has a special duplicate, the description differentiates the entries.
-                    If hasDuplicate Then
-                        description = GetActCellValue(itemRow, DescriptionColumn)
-                        descHasMarker = StartsWith(description, SpecialItemDescriptionMarker)
-                        ' If the description isn't for the current item's variant, try the next result.
-                        ' Otherwise go on with the import.
-                        If isSpecialItem Xor descHasMarker Then
-                            Set itemCell = itemColumnRange.FindNext(itemCell)
-                            If itemCell.Address = firstCellAdr Then
-                                missesInTable = True
-                                Exit Do
-                            End If
-                            doRepeat = True
+        If blacklist.Contains(itemNum) Then GoTo Continue
+        ' Find item's cell.
+        Set itemColumnRange = ActiveSheet.Columns.Item(ItemColumn)
+        Set itemCell = itemColumnRange.Find(itemNum)
+        ' Find item's cell. If not found, add to missing and create it.
+        If Not itemCell Is Nothing Then
+            missesInTable = False
+            firstCellAdr = itemCell.Address
+            ' Account for special items having two entries.
+            Do
+                itemRow = itemCell.Row
+                doRepeat = False
+                ' If item has a special duplicate, the description differentiates the entries.
+                If hasDuplicate Then
+                    description = GetActCellValue(itemRow, DescriptionColumn)
+                    descHasMarker = StartsWith(description, SpecialItemDescriptionMarker)
+                    ' If the description isn't for the current item's variant, try the next result.
+                    ' Otherwise go on with the import.
+                    If isSpecialItem Xor descHasMarker Then
+                        Set itemCell = itemColumnRange.FindNext(itemCell)
+                        If itemCell.Address = firstCellAdr Then
+                            missesInTable = True
+                            Exit Do
                         End If
+                        doRepeat = True
                     End If
-                Loop While doRepeat
-            Else
-                missesInTable = True
-            End If
-            If missesInTable Then
-                ' Add row for missing item.
-                missingItems.Add itemNum
-                itemRow = StartingRow
-                Do Until IsEmpty(GetActCellValue(itemRow, ItemColumn))
-                    ' Find where the item belongs.
-                    If StrComp(itemNum, GetActCellValue(itemRow, ItemColumn)) = -1 Then
-                        Exit Do
-                    End If
-                    itemRow = itemRow + 1
-                Loop
-                If itemRow > StartingRow Then
-                    CreateNewActRow itemRow, copyFrom:=-1
-                Else
-                    CreateNewActRow itemRow, copyFrom:=1
                 End If
-                ' Get missing item's data or set it to default values.
-                ImportData = Split(GetFirstLine(file.path, 2)(1), Sep)
-                SetActCellValue itemRow, ItemColumn, itemNum
-                If isSpecialItem Then
-                    SetActCellValue itemRow, DescriptionColumn, SpecialItemDescriptionMarker & Space$(1)
-                Else
-                    SetActCellValue itemRow, DescriptionColumn, vbNullString
-                End If
-                importBBDateStr = ImportData(ImportsCurrentBBDateColumn)
-                SetActCellValue itemRow, BBDateColumn, importBBDateStr
-                GetActCell(itemRow, BBDateColumn).NumberFormat = DataDateFormat
-                unit = KiloUnitPrefix & Replace(ImportUnit, Space$(1), vbNullString)
-                SetActCellValue itemRow, UnitColumn, unit
-                currentAmount = Replace(ImportData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
-                SetActCellValue itemRow, PreviousAmountColum, currentAmount / 1000
-                SetActCellValue itemRow, AmountDiffColumn, 0
-                SetActCellValue itemRow, LastChangedDateColumn, PlaceholderDate
-                Set actValueRange = ActiveSheet.Range(DataRegionStartCell).CurrentRegion
-                For i = actValueRange.Columns.Count To ActiveSheet.Range(DataRegionStartCell).Column + LastChangedDateColumn Step -1
-                    actValueRange.Cells.Item(itemRow - ActiveSheet.Range(DataRegionStartCell).Row + 1, i).Value = vbNullString
-                Next
-            End If
-            ' Process item's data.
-            ImportData = Split(GetLastLine(file.path)(0), Sep)
-            ' Account for kilo-unit.
-            currentAmount = Replace(ImportData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
-            unit = GetActCellValue(itemRow, UnitColumn)
-            If Contains(unit, KiloUnitPrefix) Or unit = LitersUnit Then
-                currentAmount = currentAmount / 1000
-            End If
-            ' Change data in Excel table only if imported data is newer.
-            If CDate(GetActCellValue(itemRow, LastChangedDateColumn)) < CDate(ImportData(ImportsLastChangedDateColumn)) Then
-                ' BB date
-                importBBDateStr = ImportData(ImportsCurrentBBDateColumn)
-                If importBBDateStr = PlaceholderDate Then
-                    SetActCellValue itemRow, BBDateColumn, vbNullString
-                Else
-                    On Error Resume Next
-                    SetActCellValue itemRow, BBDateColumn, CDate(importBBDateStr)
-                    On Error GoTo 0
-                End If
-                GetActCell(itemRow, BBDateColumn).NumberFormat = DataDateFormat
-                ' Last changed date
-                SetActCellValue itemRow, LastChangedDateColumn, Date
-                GetActCell(itemRow, LastChangedDateColumn).NumberFormat = DataDateFormat
-                ' Amount
-                previousAmount = GetActCellValue(itemRow, NewAmountColumn)
-                SetActCellValue itemRow, PreviousAmountColum, previousAmount
-                diff = Math.Round(currentAmount - previousAmount, Decimals)
-                SetActCellValue itemRow, AmountDiffColumn, diff
-            End If
+            Loop While doRepeat
+        Else
+            missesInTable = True
         End If
+        If missesInTable Then
+            ' Add row for missing item.
+            missingItems.Add itemNum
+            itemRow = StartingRow
+            Do Until IsEmpty(GetActCellValue(itemRow, ItemColumn))
+                ' Find where the item belongs.
+                If StrComp(itemNum, GetActCellValue(itemRow, ItemColumn)) = -1 Then
+                    Exit Do
+                End If
+                itemRow = itemRow + 1
+            Loop
+            If itemRow > StartingRow Then
+                CreateNewActRow itemRow, copyFrom:=-1
+            Else
+                CreateNewActRow itemRow, copyFrom:=1
+            End If
+            ' Get missing item's data or set it to default values.
+            ImportData = Split(GetFirstLine(file.path, 2)(1), Sep)
+            SetActCellValue itemRow, ItemColumn, itemNum
+            If isSpecialItem Then
+                SetActCellValue itemRow, DescriptionColumn, SpecialItemDescriptionMarker & Space$(1)
+            Else
+                SetActCellValue itemRow, DescriptionColumn, vbNullString
+            End If
+            importBBDateStr = ImportData(ImportsCurrentBBDateColumn)
+            SetActCellValue itemRow, BBDateColumn, importBBDateStr
+            GetActCell(itemRow, BBDateColumn).NumberFormat = DataDateFormat
+            unit = KiloUnitPrefix & Replace(ImportUnit, Space$(1), vbNullString)
+            SetActCellValue itemRow, UnitColumn, unit
+            currentAmount = Replace(ImportData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
+            SetActCellValue itemRow, PreviousAmountColum, currentAmount / 1000
+            SetActCellValue itemRow, AmountDiffColumn, 0
+            SetActCellValue itemRow, LastChangedDateColumn, PlaceholderDate
+            Set actValueRange = ActiveSheet.Range(DataRegionStartCell).CurrentRegion
+            For i = actValueRange.Columns.Count To ActiveSheet.Range(DataRegionStartCell).Column + LastChangedDateColumn Step -1
+                actValueRange.Cells.Item(itemRow - ActiveSheet.Range(DataRegionStartCell).Row + 1, i).Value = vbNullString
+            Next
+        End If
+        ' Process item's data.
+        ImportData = Split(GetLastLine(file.path)(0), Sep)
+        ' Account for kilo-unit.
+        currentAmount = Replace(ImportData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
+        unit = GetActCellValue(itemRow, UnitColumn)
+        If Contains(unit, KiloUnitPrefix) Or unit = LitersUnit Then
+            currentAmount = currentAmount / 1000
+        End If
+        ' Change data in Excel table only if imported data is newer.
+        If CDate(GetActCellValue(itemRow, LastChangedDateColumn)) < CDate(ImportData(ImportsLastChangedDateColumn)) Then
+            ' BB date
+            importBBDateStr = ImportData(ImportsCurrentBBDateColumn)
+            If importBBDateStr = PlaceholderDate Then
+                SetActCellValue itemRow, BBDateColumn, vbNullString
+            Else
+                On Error Resume Next
+                SetActCellValue itemRow, BBDateColumn, CDate(importBBDateStr)
+                On Error GoTo 0
+            End If
+            GetActCell(itemRow, BBDateColumn).NumberFormat = DataDateFormat
+            ' Last changed date
+            SetActCellValue itemRow, LastChangedDateColumn, Date
+            GetActCell(itemRow, LastChangedDateColumn).NumberFormat = DataDateFormat
+            ' Amount
+            previousAmount = GetActCellValue(itemRow, NewAmountColumn)
+            SetActCellValue itemRow, PreviousAmountColum, previousAmount
+            diff = Math.Round(currentAmount - previousAmount, Decimals)
+            SetActCellValue itemRow, AmountDiffColumn, diff
+        End If
+Continue:
     Next
     ' Export to export file.
     With ActiveSheet.Range(DataRegionStartCell)
         .CurrentRegion.Copy exportSheet.Range(DataRegionStartCell)
         .Select
     End With
-    exportWB.Close saveChanges:=True
+    ' Save.
+    exportWB.Save
     currentWB.Save
     MsgBox SuccessInfo
-    ' Show missing items list.
+    ' Show missing items list or just close export workbook.
     If missingItems.Count > 0 Then
         Dim missingItemNum As Variant
         Dim missingItemsListString As String
@@ -276,6 +277,9 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
             missingItemsListString = missingItemsListString & missingItemNum & vbNewLine
         Next
         MsgBox missingItemsListString
+    Else
+        exportWB.Close
     End If
+    ' Close original workbook if copy was created.
     If CreateWBCopy Then If isNew Then ThisWorkbook.Close
 End Sub
