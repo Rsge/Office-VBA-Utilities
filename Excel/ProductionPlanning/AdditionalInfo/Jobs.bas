@@ -48,7 +48,7 @@ Attribute ShowDueJobs.VB_Description = "Shows due jobs in row of their deadline 
     dueDate = CDate(GetCellValue(data, index, DateColumn))
     If m_dueJobs.Exists(dueDate) Then
         Dim nextDay As Date
-        nextDay = data.Cells.Item(index + 1, DateColumn)
+        nextDay = GetCellValue(data, index + 1, DateColumn)
         If nextDay <> dueDate Then
             ShowDueJobs = Left$(m_dueJobs.Item(dueDate), Len(m_dueJobs.Item(dueDate)) - 2)
         Else
@@ -69,15 +69,15 @@ Attribute EarliestJobCompletion.VB_Description = "Shows jobs in row of their res
         Set m_doneJobs = CreateObject("Scripting.Dictionary")
     End If
     Dim dueDate As Date
-    dueDate = data.Cells.Item(index, DateColumn)
+    dueDate = GetCellValue(data, index, DateColumn)
     Dim job As String
-    job = data.Cells.Item(index, JobColumn)
+    job = GetCellValue(data, index, JobColumn)
     Dim i As Long
     i = 1
     
     ' Calculate when jobs will be done.
     If job <> vbNullString Then
-        Do While (index + i) <= data.Rows.Count And LenB(GetCellValue(data, index + i, JobColumn)) = 0
+        Do While (index + i) <= data.Rows.Count And IsEmpty(GetCellValue(data, index + i, JobColumn))
             i = i + 1
         Loop
         If GetCellValue(data, index + i, 2) <> job Then
@@ -122,7 +122,7 @@ Attribute EarliestJobCompletion.VB_Description = "Shows jobs in row of their res
     ' Show jobs on their potential completion dates or on end of table.
     If m_doneJobs.Exists(dueDate) Then
         Dim nextDay As Date
-        nextDay = data.Cells.Item(index + 1, DateColumn)
+        nextDay = GetCellValue(data, index + 1, DateColumn)
         If nextDay <> dueDate Then
             EarliestJobCompletion = Left$(m_doneJobs.Item(dueDate), Len(m_doneJobs.Item(dueDate)) - 2)
         Else

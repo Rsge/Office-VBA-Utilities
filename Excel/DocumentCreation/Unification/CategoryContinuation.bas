@@ -110,8 +110,8 @@ Attribute EnsureContinuedCategoriesCorrectHeaderAndFormatting.VB_Description = "
             ErrBox MissingHeaderError
             Exit Sub
         ElseIf currentColumn > DataHeaderColumn Or currentRow > DataHeaderRow Then
-            GetCell(dataWS, DataHeaderRow, DataHeaderColumn).Value = header
-            GetCell(dataWS, currentRow, currentColumn).Value = vbNullString
+            SetCellValue dataWS, DataHeaderRow, DataHeaderColumn, header
+            SetCellValue dataWS, currentRow, currentColumn, vbNullString
             changed = True
         End If
         ' Format first header.
@@ -130,8 +130,8 @@ Attribute EnsureContinuedCategoriesCorrectHeaderAndFormatting.VB_Description = "
                 headerRows.Add currentRow
                 ' Move consecutive headers if in wrong column.
                 If currentColumn > DataHeaderColumn Then
-                    GetCell(dataWS, currentRow, DataHeaderColumn).Value = GetCellValue(dataWS, currentRow, currentColumn)
-                    GetCell(dataWS, currentRow, currentColumn).Value = vbNullString
+                    SetCellValue dataWS, currentRow, DataHeaderColumn, GetCellValue(dataWS, currentRow, currentColumn)
+                    SetCellValue dataWS, currentRow, currentColumn, vbNullString
                 End If
                 ' Format consecutive headers.
                 If m_adjustFormat Then
@@ -178,14 +178,14 @@ Attribute EnsureContinuedCategoriesCorrectHeaderAndFormatting.VB_Description = "
                         ' Set consecutive headers.
                         If m_replaceHeaders Then
                             If GetCellValue(dataWS, headerRow, DataHeaderColumn) <> header Then
-                                GetCell(dataWS, headerRow, DataHeaderColumn).Value = header
+                                SetCellValue dataWS, headerRow, DataHeaderColumn, header
                                 changed = True
                             End If
                         End If
                         ' Set consecutive categories.
                         currentRow = headerRow + headerCategoryGap + i
                         If GetCellValue(dataWS, currentRow, currentColumn) <> categoryPart Then
-                            GetCell(dataWS, currentRow, currentColumn).Value = categoryPart
+                            SetCellValue dataWS, currentRow, currentColumn, categoryPart
                             changed = True
                         End If
                         ' Format consecutive categories.

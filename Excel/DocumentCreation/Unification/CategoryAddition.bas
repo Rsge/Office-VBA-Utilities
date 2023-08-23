@@ -98,47 +98,49 @@ Attribute ListSpecificAndAddNewCategories.VB_Description = "Lists specific categ
                     nextValue = GetCellValue(dataWS, DataCategoryStartingRow, currentColumn + 1)
                     prevMatches = regexNeighbors.Test(prevValue)
                     nextMatches = regexNeighbors.Test(nextValue)
-                    If Not IsEmpty(regexNeighbors.Pattern) _
-                    And (prevMatches Or nextMatches) Then
-                        Select Case m_insertMode
-                            ' Insert column before match.
-                            Case 0
-                                If nextMatches Then
-                                    dataWS.Columns.Item(currentColumn).Insert
-                                    dataWS.Columns.Item(currentColumn).Value = dataWS.Columns.Item(currentColumn + 2).Value
-                                    dataWS.Columns.Item(currentColumn + 2).Delete
+                    With dataWS.Columns
+                        If Not IsEmpty(regexNeighbors.Pattern) _
+                        And (prevMatches Or nextMatches) Then
+                                Select Case m_insertMode
+                                    ' Insert column before match.
+                                    Case 0
+                                        If nextMatches Then
+                                            .Item(currentColumn).Insert
+                                            .Item(currentColumn).Value = .Item(currentColumn + 2).Value
+                                            .Item(currentColumn + 2).Delete
+                                            foundColumn = foundColumn + 1
+                                        Else
+                                            currentColumn = currentColumn - 1
+                                        End If
+                                    ' Insert column after match.
+                                    Case 1
+                                        If prevMatches Then
+                                            .Item(currentColumn + 1).Insert
+                                            .Item(currentColumn + 1).Value = .Item(currentColumn - 1).Value
+                                            .Item(currentColumn - 1).Delete
+                                            foundColumn = foundColumn - 1
+                                        Else
+                                            currentColumn = currentColumn + 1
+                                        End If
+                                End Select
+                        Else
+                            Select Case m_insertMode
+                                ' Insert column before match.
+                                Case 0
+                                    .Item(currentColumn).Insert
                                     foundColumn = foundColumn + 1
-                                Else
-                                    currentColumn = currentColumn - 1
-                                End If
-                            ' Insert column after match.
-                            Case 1
-                                If prevMatches Then
-                                    dataWS.Columns.Item(currentColumn + 1).Insert
-                                    dataWS.Columns.Item(currentColumn + 1).Value = dataWS.Columns.Item(currentColumn - 1).Value
-                                    dataWS.Columns.Item(currentColumn - 1).Delete
-                                    foundColumn = foundColumn - 1
-                                Else
+                                ' Insert column after match.
+                                Case 1
                                     currentColumn = currentColumn + 1
-                                End If
-                        End Select
-                    Else
-                        Select Case m_insertMode
-                            ' Insert column before match.
-                            Case 0
-                                dataWS.Columns.Item(currentColumn).Insert
-                                foundColumn = foundColumn + 1
-                            ' Insert column after match.
-                            Case 1
-                                currentColumn = currentColumn + 1
-                                dataWS.Columns.Item(currentColumn).Insert
-                        End Select
-                    End If
+                                    .Item(currentColumn).Insert
+                            End Select
+                        End If
+                    End With
                     ' Insert new category.
                     Do
                         currentRow = i + DataCategoryStartingRow
                         If GetCellValue(dataWS, currentRow, currentColumn) <> insertRows(i) Then
-                            GetCell(dataWS, currentRow, currentColumn).Value = insertRows(i)
+                            SetCellValue dataWS, currentRow, currentColumn, insertRows(i)
                             changed = True
                         End If
                         i = i + 1

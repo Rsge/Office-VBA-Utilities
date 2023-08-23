@@ -38,6 +38,7 @@ Attribute m_checkAmount.VB_VarDescription = "How many rows to check for differen
 Public Sub FindUsedColumns()
 Attribute FindUsedColumns.VB_Description = "Finds columns with at least one difference in content to determine if used and outputs column names to txt."
 Attribute FindUsedColumns.VB_ProcData.VB_Invoke_Func = "i\n14"
+    ' Variables
     Dim i As Long
     i = m_startingColumn
     Dim j As Long

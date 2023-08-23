@@ -86,58 +86,74 @@ Attribute m_baseLineNum.VB_VarDescription = "The base (= 1) line number in data 
 ' ————————————————————————————————————————————————————— '
 
 
+'@Description("Tests if a string is empty.")
+Public Function IsEmpty(ByVal str As String) As Boolean
+Attribute IsEmpty.VB_Description = "Tests if a string is empty."
+    IsEmpty = LenB(str) = 0
+End Function
+
 '@Description("Gets the cell on a worksheet at a position.")
-Private Function GetCell(ByVal sheet As Worksheet, ByVal row As Long, ByVal column As Long) As Range
+Private Function GetCell(ByVal ws As Worksheet, ByVal row_ As Long, ByVal column_ As Long) As Range
 Attribute GetCell.VB_Description = "Gets the cell on a worksheet at a position."
-    Set GetCell = sheet.Cells.Item(row, column)
+    Set GetCell = ws.Cells.Item(row_, column_)
 End Function
 
 '@Description("Gets the value of a cell on a worksheet at a position.")
-Private Function GetCellValue(ByVal sheet As Worksheet, ByVal row As Long, ByVal column As Long) As Variant
+Private Function GetCellValue(ByVal ws As Worksheet, ByVal row_ As Long, ByVal column_ As Long) As Variant
 Attribute GetCellValue.VB_Description = "Gets the value of a cell on a worksheet at a position."
-    GetCellValue = GetCell(sheet, row, column).Value
+    GetCellValue = GetCell(ws, row_, column_).Value
 End Function
 
+'@Description("Sets the value of a cell on the active worksheet at a position to a value.")
+Public Sub SetCellValue(ByVal ws As Worksheet, ByVal row_ As Long, ByVal column_ As Long, ByVal val As Variant)
+Attribute SetCellValue.VB_Description = "Sets the value of a cell on the active worksheet at a position to a value."
+    GetCell(ws, row_, column_).Value = val
+End Sub
+
+'@Description("Adds an amount to a cell on a worksheet at a position.")
+Private Sub AddToCellValue(ByVal ws As Worksheet, ByVal row_ As Long, ByVal column_ As Long, ByVal addition As Long)
+Attribute AddToCellValue.VB_Description = "Adds an amount to a cell on a worksheet at a position."
+    SetCellValue ws, row_, column_, GetCellValue(ws, row_, column_) + addition
+End Sub
+
+' ————————————————————————————————————————————————————— '
+
 '@Description("Inserts a new row at given position in table.")
-Private Sub CreateNewRow(ByVal ws As Worksheet, ByVal row As Long)
+Private Sub CreateNewRow(ByVal ws As Worksheet, ByVal row_ As Long)
 Attribute CreateNewRow.VB_Description = "Inserts a new row at given position in table."
-    ws.Rows.Item(row).Insert
-    ws.Rows.Item(row + 1).Copy ws.Rows.Item(row)
+    With ws.Rows
+        .Item(row_).Insert
+        .Item(row_ + 1).Copy .Item(row_)
+    End With
 End Sub
 
 '@Description("Sets text header cells' values.")
-Private Sub SetHeaderCells(ByVal ws As Worksheet, ByVal row As Long)
+Private Sub SetHeaderCells(ByVal ws As Worksheet, ByVal row_ As Long)
 Attribute SetHeaderCells.VB_Description = "Sets text header cells' values."
-    ws.Cells.Item(row, m_headerAllLangColumn) = m_falseLabel
-    ws.Cells.Item(row, m_dataTxtNumColumn) = 0
+    SetCellValue ws, row_, m_headerAllLangColumn, m_falseLabel
+    SetCellValue ws, row_, m_dataTxtNumColumn, 0
     Dim langCodeCell As Range
-    Set langCodeCell = ws.Cells.Item(row, m_dataLangCodeColumn)
-    If ws.Cells.Item(row + 1, m_dataLangCodeColumn).Value = m_translatedLangCode Then
+    Set langCodeCell = GetCell(ws, row_, m_dataLangCodeColumn)
+    If GetCellValue(ws, row_ + 1, m_dataLangCodeColumn) = m_translatedLangCode Then
         langCodeCell.Value = m_nativeLangCode
     Else
         langCodeCell.Value = m_translatedLangCode
     End If
-    If LenB(ws.Cells.Item(row, m_headerEndDateColumn).Value) > 0 Then
-        ws.Cells.Item(row, m_headerStartDateColumn).Value = vbNullString
-        ws.Cells.Item(row, m_headerEndDateColumn).Value = vbNullString
+    If Not IsEmpty(ws.Cells.Item(row_, m_headerEndDateColumn).Value) Then
+        SetCellValue ws, row_, m_headerStartDateColumn, vbNullString
+        SetCellValue ws, row_, m_headerEndDateColumn, vbNullString
     End If
-End Sub
-
-'@Description("Adds an amount to a cell on a worksheet at a position.")
-Private Sub AddToCellValue(ByVal sheet As Worksheet, ByVal row As Long, ByVal column As Long, ByVal addition As Long)
-Attribute AddToCellValue.VB_Description = "Adds an amount to a cell on a worksheet at a position."
-    GetCell(sheet, row, column).Value = GetCellValue(sheet, row, column) + addition
 End Sub
 
 '@Description("Adds localized line text.")
 Private Sub AddNewLocalizedTextLine(ByVal importWS As Worksheet, ByVal lineWS As Worksheet, ByVal importRow As Long, ByVal lineRow As Long, ByVal itemNum As String, ByVal langCode As String, ByVal importColumn As Long)
 Attribute AddNewLocalizedTextLine.VB_Description = "Adds localized line text."
     CreateNewRow lineWS, lineRow - 1
-    lineWS.Cells.Item(lineRow, m_dataItemColumn) = itemNum
-    lineWS.Cells.Item(lineRow, m_dataLangCodeColumn) = langCode
-    lineWS.Cells.Item(lineRow, m_dataTxtNumColumn) = 1
-    lineWS.Cells.Item(lineRow, m_lineLineNumColumn) = m_baseLineNum
-    lineWS.Cells.Item(lineRow, m_lineTextColumn) = importWS.Cells.Item(importRow, importColumn)
+    SetCellValue lineWS, lineRow, m_dataItemColumn, itemNum
+    SetCellValue lineWS, lineRow, m_dataLangCodeColumn, langCode
+    SetCellValue lineWS, lineRow, m_dataTxtNumColumn, 1
+    SetCellValue lineWS, lineRow, m_lineLineNumColumn, m_baseLineNum
+    SetCellValue lineWS, lineRow, m_lineTextColumn, GetCellValue(importWS, importRow, importColumn)
 End Sub
 
 ' ————————————————————————————————————————————————————— '
@@ -146,6 +162,7 @@ End Sub
 '@Description("Imports data for items from another excel workbook.")
 Public Sub ImportItemExtendedText()
 Attribute ImportItemExtendedText.VB_Description = "Imports data for items from another excel workbook."
+    ' Define workbooks and -sheets.
     Dim importWB As Workbook
     Set importWB = Workbooks.Open(m_wbPath)
     Dim importWS As Worksheet
@@ -156,7 +173,19 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
     Set lineWS = ThisWorkbook.Sheets.[_Default](m_lineSheetName)
     Dim itemWS As Worksheet
     Set itemWS = ThisWorkbook.Sheets.[_Default](m_itemSheetName)
+    ' Delete start date if no end date exists.
     Dim i As Long
+    i = m_dataStartingRow
+    Do Until IsEmpty(GetCellValue(headerWS, i, m_dataItemColumn))
+        If Not IsEmpty(GetCellValue(headerWS, i, m_headerStartDateColumn)) _
+        And IsEmpty(GetCellValue(headerWS, i, m_headerEndDateColumn)) Then
+            SetCellValue headerWS, i, m_headerStartDateColumn, vbNullString
+        End If
+        i = i + 1
+    Loop
+
+    ' Go through import data item by item.
+    i = m_importStartingRow
     Dim j As Long
     Dim k As Long
     Dim itemNum As String
@@ -164,24 +193,11 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
     Dim found(1) As Boolean
     Dim dataLangCodeCell As Range
     Dim lineTextCell As Range
-    
-    ' Delete start date if no end date exists.
-    i = m_dataStartingRow
-    Do Until LenB(GetCellValue(headerWS, i, m_dataItemColumn)) = 0
-        If LenB(GetCellValue(headerWS, i, m_headerStartDateColumn)) > 0 _
-        And LenB(GetCellValue(headerWS, i, m_headerEndDateColumn)) = 0 Then
-            GetCell(headerWS, i, m_headerStartDateColumn).Value = vbNullString
-        End If
-        i = i + 1
-    Loop
-
-    ' Go through import data item by item.
-    i = m_importStartingRow
-    Do Until LenB(GetCellValue(importWS, i, m_importItemColumn)) = 0
+    Do Until IsEmpty(GetCellValue(importWS, i, m_importItemColumn))
         itemNum = GetCellValue(importWS, i, m_importItemColumn)
         ' Find item in header data.
         j = m_dataStartingRow
-        Do Until LenB(GetCellValue(headerWS, j, m_dataItemColumn)) = 0
+        Do Until IsEmpty(GetCellValue(headerWS, j, m_dataItemColumn))
             ' If item is found, process it and exit header loop.
             If itemNum = GetCellValue(headerWS, j, m_dataItemColumn) Then
                 ' If next row isn't same item...
@@ -196,7 +212,7 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
                         CreateNewRow headerWS, j
                         SetHeaderCells headerWS, j
                     End If
-                ElseIf GetCellValue(headerWS, j, m_headerAllLangColumn) = m_trueLabel
+                ElseIf GetCellValue(headerWS, j, m_headerAllLangColumn) = m_trueLabel _
                 And GetCellValue(headerWS, j + 2, m_dataItemColumn) <> itemNum Then
                     SetHeaderCells headerWS, j
                 End If
@@ -208,14 +224,14 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
         If Not found(0) Then
             CreateNewRow headerWS, j - 1
             SetHeaderCells headerWS, j
-            GetCell(headerWS, j, m_dataItemColumn).Value = itemNum
+            SetCellValue headerWS, j, m_dataItemColumn, itemNum
             CreateNewRow headerWS, j
             SetHeaderCells headerWS, j
         End If
         found(0) = False
         ' Find item in line data.
         j = m_dataStartingRow
-        Do Until LenB(GetCellValue(lineWS, j, m_dataItemColumn)) = 0
+        Do Until IsEmpty(GetCellValue(lineWS, j, m_dataItemColumn))
             ' If item is found, process it and exit line loop.
             If itemNum = GetCellValue(lineWS, j, m_dataItemColumn) Then
                 Do
@@ -229,11 +245,11 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
                         k = j
                         Do
                             k = k + 1
-                            If LenB(GetCellValue(lineWS, k, m_dataLangCodeColumn)) > 0 _
+                            If Not IsEmpty(GetCellValue(lineWS, k, m_dataLangCodeColumn)) _
                             And GetCellValue(lineWS, k, m_dataItemColumn) = itemNum Then
                                 found(0) = True
                             End If
-                        Loop While LenB(GetCellValue(lineWS, k, m_dataLangCodeColumn)) = 0
+                        Loop While IsEmpty(GetCellValue(lineWS, k, m_dataLangCodeColumn))
                         If Not found(0) Then
                             Do
                                 dataLangCodeCell.Value = m_translatedLangCode
@@ -242,7 +258,7 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
                                 j = j + 2
                                 Set dataLangCodeCell = GetCell(lineWS, j, m_dataLangCodeColumn)
                             Loop While GetCellValue(lineWS, j, m_dataItemColumn) = itemNum _
-                            And LenB(dataLangCodeCell.Value) = 0
+                            And IsEmpty(dataLangCodeCell.Value)
                             Set lineTextCell = GetCell(lineWS, j, m_lineTextColumn)
                             CreateNewRow lineWS, j - 1
                             dataLangCodeCell.Value = m_translatedLangCode
@@ -255,8 +271,8 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
                             found(1) = True
                             j = j + 1
                         End If
-                    ' Check which lang code is used and if correct info is already input.
-                    ' If not, import localized info.
+                        ' Check which lang code is used and if correct info is already input.
+                        ' If not, import localized info.
                     ElseIf langCode = m_translatedLangCode Then
                         Do While GetCellValue(lineWS, j + 1, m_dataItemColumn) = itemNum _
                         And GetCellValue(lineWS, j + 1, m_dataLangCodeColumn) = langCode
@@ -265,7 +281,7 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
                         If GetCellValue(lineWS, j, m_lineTextColumn) <> GetCellValue(importWS, i, m_importTranslatedColumn) Then
                             CreateNewRow lineWS, j
                             j = j + 1
-                            GetCell(lineWS, j, m_lineTextColumn).Value = GetCellValue(importWS, i, m_importTranslatedColumn)
+                            SetCellValue lineWS, j, m_lineTextColumn, GetCellValue(importWS, i, m_importTranslatedColumn)
                             AddToCellValue lineWS, j, m_lineLineNumColumn, m_baseLineNum
                         End If
                         found(0) = True
@@ -277,7 +293,7 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
                         If GetCellValue(lineWS, j, m_lineTextColumn) <> GetCellValue(importWS, i, m_importNativeColumn) Then
                             CreateNewRow lineWS, j
                             j = j + 1
-                            GetCell(lineWS, j, m_lineTextColumn).Value = GetCellValue(importWS, i, m_importNativeColumn)
+                            SetCellValue lineWS, j, m_lineTextColumn, GetCellValue(importWS, i, m_importNativeColumn)
                             AddToCellValue lineWS, j, m_lineLineNumColumn, m_baseLineNum
                         End If
                         found(1) = True
@@ -299,10 +315,10 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
         found(1) = False
         ' Find item in item data.
         j = m_dataStartingRow
-        Do Until LenB(GetCellValue(itemWS, j, m_itemItemColumn)) = 0
+        Do Until IsEmpty(GetCellValue(itemWS, j, m_itemItemColumn))
             ' If item is found, process it and exit item loop.
             If itemNum = GetCellValue(itemWS, j, m_itemItemColumn) Then
-                GetCell(itemWS, j, m_itemAutoTextBoolColumn).Value = m_trueLabel
+                SetCellValue itemWS, j, m_itemAutoTextBoolColumn, m_trueLabel
                 found(0) = True
                 Exit Do
             End If
@@ -310,8 +326,8 @@ Attribute ImportItemExtendedText.VB_Description = "Imports data for items from a
         Loop
         If Not found(0) Then
             CreateNewRow itemWS, j - 1
-            GetCell(itemWS, j, m_itemItemColumn).Value = itemNum
-            GetCell(itemWS, j, m_itemAutoTextBoolColumn).Value = m_trueLabel
+            SetCellValue itemWS, j, m_itemItemColumn, itemNum
+            SetCellValue itemWS, j, m_itemAutoTextBoolColumn, m_trueLabel
         End If
         found(0) = False
         i = i + 1

@@ -35,9 +35,9 @@ Attribute Auto_Open.VB_Description = "On worksheet opening, initializes slowdown
     Dim i As Long
     i = StartingRow
     ' Get all slowdowns with their respective dates.
-    Do Until LenB(GetActiveCellValue(i, DateColumn)) = 0
-        If LenB(GetActiveCellValue(i, SlowdownsColumn)) > 0 Then
-            m_slowdowns.Item(GetActiveCellValue(i, DateColumn)) = GetActiveCellValue(i, SlowdownsColumn)
+    Do Until IsEmpty(GetActCellValue(i, DateColumn))
+        If Not IsEmpty(GetActCellValue(i, SlowdownsColumn)) Then
+            m_slowdowns.Item(GetActCellValue(i, DateColumn)) = GetActCellValue(i, SlowdownsColumn)
         End If
         i = i + 1
     Loop
@@ -58,7 +58,7 @@ Attribute UpdateSlowdowns.VB_Description = "Updates slowdowns so each one is app
         Dim slowdownCell As Range
         Dim dateValue As String
         For Each slowdownCell In ActiveSheet.Range(where).Rows
-            dateValue = GetActiveCellValue(slowdownCell.row, DateColumn)
+            dateValue = GetActCellValue(slowdownCell.Row, DateColumn)
             ' Add new entries and delete old ones.
             If Len(slowdownCell.Value) > 0 Then
                 m_slowdowns.Item(dateValue) = slowdownCell.Value
@@ -74,20 +74,20 @@ Attribute UpdateSlowdowns.VB_Description = "Updates slowdowns so each one is app
             Dim currentDate As String
             Dim currentSlowdownCell As Range
             Dim i As Long
-            i = ActiveSheet.Range(where).row
-            Do While GetActiveCellValue(i - 1, DateColumn) = GetActiveCellValue(i, DateColumn)
+            i = ActiveSheet.Range(where).Row
+            Do While GetActCellValue(i - 1, DateColumn) = GetActCellValue(i, DateColumn)
                 i = i - 1
             Loop
             IsRunning = True
-            Do Until LenB(GetActiveCellValue(i, DateColumn)) > 0
-                currentDate = GetActiveCellValue(i, DateColumn)
+            Do While IsEmpty(GetActCellValue(i, DateColumn))
+                currentDate = GetActCellValue(i, DateColumn)
                 Set currentSlowdownCell = GetCell(ActiveSheet.Cells, i, SlowdownsColumn)
                 ' If date has a slowdown, enforce it, otherwise clear the cell.
                 If m_slowdowns.Exists(currentDate) Then
                     ' If previous cell's date is same as current's, clear current cell,
                     ' else, set slowdown to correct value.
                     ' (Slowdown is only needed once per date)
-                    If currentDate = GetActiveCellValue(i - 1, DateColumn) Then
+                    If currentDate = GetActCellValue(i - 1, DateColumn) Then
                         currentSlowdownCell.Value = vbNullString
                     ElseIf Not currentSlowdownCell.Value = m_slowdowns.Item(currentDate) Then
                         currentSlowdownCell.Value = m_slowdowns.Item(currentDate)

@@ -5,9 +5,6 @@ Attribute VB_Description = "Translates data between languages using a pre-define
 Option Explicit
 
 ' String constants
-'@VariableDescription("The first row with data.")
-Private Const m_startingRow As Long = 2
-Attribute m_startingRow.VB_VarDescription = "The first row with data."
 '@VariableDescription("Remove this string from front of packing unit.")
 Private Const m_removeThis As String = "-"
 Attribute m_removeThis.VB_VarDescription = "Remove this string from front of packing unit."
@@ -16,6 +13,9 @@ Private Const m_keepBeforeThis As String = "+"
 Attribute m_keepBeforeThis.VB_VarDescription = "Keep packing unit before this string, cut rest."
 
 ' Integer constants
+'@VariableDescription("The first row with data.")
+Private Const m_startingRow As Long = 2
+Attribute m_startingRow.VB_VarDescription = "The first row with data."
 '@VariableDescription("The column containing the item number.")
 Private Const m_itemColumn As Long = 1
 Attribute m_itemColumn.VB_VarDescription = "The column containing the item number."
@@ -29,26 +29,43 @@ Attribute m_germanColumn.VB_VarDescription = "The column containing german local
 ' ————————————————————————————————————————————————————— '
 
 
+'@Description("Tests if a string is empty.")
+Public Function IsEmpty(ByVal str As String) As Boolean
+Attribute IsEmpty.VB_Description = "Tests if a string is empty."
+    IsEmpty = LenB(str) = 0
+End Function
+
+'@Description("Gets the cell on the active worksheet at a position.")
+Public Function GetActCell(ByVal row_ As Long, ByVal column_ As Long) As Range
+Attribute GetActCell.VB_Description = "Gets the cell on the active worksheet at a position."
+    Set GetActCell = ActiveSheet.Cells.Item(row_, column_)
+End Function
+
+'@Description("Gets the value of a cell on the active worksheet at a position.")
+Public Function GetActCellValue(ByVal row_ As Long, ByVal column_ As Long) As Variant
+Attribute GetActCellValue.VB_Description = "Gets the value of a cell on the active worksheet at a position."
+    GetActCellValue = GetActCell(row_, column_).Value
+End Function
+
+' ————————————————————————————————————————————————————— '
+
 '@EntryPoint
 '@Description("Translates data between languages in different columns.")
 '@ExcelHotkey T
 Public Sub Translate()
 Attribute Translate.VB_Description = "Translates data between languages in different columns."
 Attribute Translate.VB_ProcData.VB_Invoke_Func = "T\n14"
-    ' Variables
-    Dim dictEnDeP As Object
-    Set dictEnDeP = CreateObject("Scripting.Dictionary")
+    ' Define disctionaries
     Dim dictDeEnP As Object
     Set dictDeEnP = CreateObject("Scripting.Dictionary")
-    Dim dictEnDePU As Object
-    Set dictEnDePU = CreateObject("Scripting.Dictionary")
+    Dim dictEnDeP As Object
+    Set dictEnDeP = CreateObject("Scripting.Dictionary")
     Dim dictDeEnPU As Object
     Set dictDeEnPU = CreateObject("Scripting.Dictionary")
-    Dim i As Long
-    i = m_startingRow
-
-    ' Add translations.
+    Dim dictEnDePU As Object
+    Set dictEnDePU = CreateObject("Scripting.Dictionary")
     Dim key As Variant
+    ' Add translations.
     dictEnDeP.Add "Example", "Beispiel"
     For Each key In dictEnDeP.Keys()
         dictDeEnP.Add dictEnDeP.Item(key), key
@@ -60,12 +77,14 @@ Attribute Translate.VB_ProcData.VB_Invoke_Func = "T\n14"
     ' Translate data in Excel table.
     Dim englishCell As Range
     Dim germanCell As Range
-    Do Until LenB(ActiveSheet.Cells.Item(i, m_itemColumn).Value) = 0
-        Set englishCell = ActiveSheet.Cells.Item(i, m_englishColumn)
-        Set germanCell = ActiveSheet.Cells.Item(i, m_germanColumn)
-        If LenB(englishCell.Value) = 0 And LenB(germanCell.Value) > 0 Then
+    Dim i As Long
+    i = m_startingRow
+    Do Until IsEmpty(GetActCellValue(i, m_itemColumn))
+        Set englishCell = GetActCell(i, m_englishColumn)
+        Set germanCell = GetActCell(i, m_germanColumn)
+        If IsEmpty(englishCell.Value) And Not IsEmpty(germanCell.Value) Then
             englishCell.Value = GetPackagingTranslation(germanCell.Value, dictDeEnP, dictDeEnPU)
-        ElseIf LenB(germanCell.Value) = 0 And LenB(englishCell.Value) > 0 Then
+        ElseIf IsEmpty(germanCell.Value) And Not IsEmpty(englishCell.Value) Then
             germanCell.Value = GetPackagingTranslation(englishCell.Value, dictEnDeP, dictEnDePU)
         End If
         i = i + 1

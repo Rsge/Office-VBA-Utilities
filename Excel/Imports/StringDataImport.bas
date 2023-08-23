@@ -28,22 +28,43 @@ Attribute m_updateOnly.VB_VarDescription = "Wether to just update the item list 
 ' ————————————————————————————————————————————————————— '
 
 
+'@Description("Tests if a string is empty.")
+Public Function IsEmpty(ByVal str As String) As Boolean
+Attribute IsEmpty.VB_Description = "Tests if a string is empty."
+    IsEmpty = LenB(str) = 0
+End Function
+
+'@Description("Gets the cell on the active worksheet at a position.")
+Public Function GetActCell(ByVal row_ As Long, ByVal column_ As Long) As Range
+Attribute GetActCell.VB_Description = "Gets the cell on the active worksheet at a position."
+    Set GetActCell = ActiveSheet.Cells.Item(row_, column_)
+End Function
+
+'@Description("Gets the value of a cell on the active worksheet at a position.")
+Public Function GetActCellValue(ByVal row_ As Long, ByVal column_ As Long) As Variant
+Attribute GetActCellValue.VB_Description = "Gets the value of a cell on the active worksheet at a position."
+    GetActCellValue = GetActCell(row_, column_).Value
+End Function
+
+'@Description("Sets the value of a cell on the active worksheet at a position to a value.")
+Public Sub SetActCellValue(ByVal row_ As Long, ByVal column_ As Long, ByVal val As Variant)
+Attribute SetActCellValue.VB_Description = "Sets the value of a cell on the active worksheet at a position to a value."
+    GetActCell(row_, column_).Value = val
+End Sub
+
+' ————————————————————————————————————————————————————— '
+
 '@EntryPoint
 '@Description("Imports string data for items from txt file.")
 Public Sub ImportStringItemData()
 Attribute ImportStringItemData.VB_Description = "Imports string data for items from txt file."
-    ' Variables
+    ' Get data from file.
     Dim fileNumber As Long
     fileNumber = FreeFile()
     Dim items As Object
     Set items = CreateObject("Scripting.Dictionary")
     Dim currentLine As String
     Dim itemData() As String
-    Dim i As Long
-    i = m_startingRow
-    Dim infoCell As Range
-    
-    ' Get data from file.
     Open m_path For Input As fileNumber
     Do Until EOF(fileNumber)
         Line Input #fileNumber, currentLine
@@ -53,10 +74,13 @@ Attribute ImportStringItemData.VB_Description = "Imports string data for items f
     Close fileNumber
     
     ' Import data to Excel table.
-    Do Until LenB(ActiveSheet.Cells(i, m_itemColumn).Value) = 0
-        itemData(0) = ActiveSheet.Cells(i, m_itemColumn).Value
-        Set infoCell = ActiveSheet.Cells.Item(i, m_infoColumn)
-        If items.Exists(itemData(0)) And LenB(infoCell.Value) = 0 Then
+    Dim i As Long
+    i = m_startingRow
+    Dim infoCell As Range
+    Do Until IsEmpty(GetActCellValue(i, m_itemColumn))
+        itemData(0) = GetActCellValue(i, m_itemColumn)
+        Set infoCell = GetActCell(i, m_infoColumn)
+        If items.Exists(itemData(0)) And IsEmpty(infoCell.Value) Then
             infoCell.Value = items.Item(itemData(0))
             items.Remove (itemData(0))
         End If
@@ -66,8 +90,8 @@ Attribute ImportStringItemData.VB_Description = "Imports string data for items f
     If Not m_updateOnly Then
         Dim item_ As Variant
         For Each item_ In items.Keys
-            ActiveSheet.Cells.Item(i, m_itemColumn).Value = "'" & item_
-            ActiveSheet.Cells.Item(i, m_infoColumn).Value = items.Item(itemData(0))
+            SetActCellValue i, m_itemColumn, "'" & item_
+            SetActCellValue i, m_infoColumn, items.Item(itemData(0))
             i = i + 1
         Next
     End If

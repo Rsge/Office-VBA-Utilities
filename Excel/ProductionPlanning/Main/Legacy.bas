@@ -20,8 +20,8 @@ End Function
 
 '@EntryPoint
 '@Description("Calculates the point at which the production of an item would finish")
-Private Function ProductionFinish(ByVal Capacity As Long, ByVal index As Long, ByVal data As Range) As String
-Attribute ProductionFinish.VB_Description = "Calculates the point at which the production of an item would finish"
+Private Function Produktionsabschluss(ByVal Capacity As Long, ByVal index As Long, ByVal data As Range) As String
+Attribute Produktionsabschluss.VB_Description = "Calculates the point at which the production of an item would finish"
     ' Variables
     Dim currentDate As Date
     currentDate = CDate(GetCellValue(data, index, DateColumn))
@@ -42,12 +42,12 @@ Attribute ProductionFinish.VB_Description = "Calculates the point at which the p
     ' else if it's the first entry, item is only done when there's no remaining capacity,
     ' else it has to be further calculated.
     If IsEmpty(holiday) Or remainingCapacity > 0 Then
-        ProductionFinish = vbNullString
+        Produktionsabschluss = vbNullString
     ElseIf index = 1 Then
         If remainingCapacity = 0 Then
-            ProductionFinish = TextToDate(currentDate) & itemNum
+            Produktionsabschluss = TextToDate(currentDate) & itemNum
         Else
-            ProductionFinish = vbNullString
+            Produktionsabschluss = vbNullString
         End If
     Else
         Dim lastRemainingCapacity As Long
@@ -59,7 +59,7 @@ Attribute ProductionFinish.VB_Description = "Calculates the point at which the p
         'If there's enough capacity to finish the current item, it can be added as finished
         If Capacity + lastRemainingCapacity >= 0 And productAmount <= Capacity Then
             If productAmount = 0 And remainingCapacity < -Capacity Then
-                ProductionFinish = vbNullString
+                Produktionsabschluss = vbNullString
             Else
                 ' If there's remaining capacity, the current item is finished.
                 If remainingCapacity >= 0 Then output = itemNum
@@ -86,9 +86,9 @@ Attribute ProductionFinish.VB_Description = "Calculates the point at which the p
                 If remainingCapacity < 0 Then output = itemNum & Comma & output
                 If Right$(output, Len(Comma)) = Comma Then output = Left$(output, Len(output) - Len(Comma))
                 If LenB(output) > 0 Then
-                    ProductionFinish = TextToDate(currentDate) & output
+                    Produktionsabschluss = TextToDate(currentDate) & output
                 Else
-                    ProductionFinish = vbNullString
+                    Produktionsabschluss = vbNullString
                 End If
             End If
         ElseIf Capacity + lastRemainingCapacity >= 0 And Abs(productAmount - Capacity) < Abs(remainingCapacity) Then
@@ -99,7 +99,7 @@ Attribute ProductionFinish.VB_Description = "Calculates the point at which the p
             remainingCapacity = GetCellValue(data, index - i + 1, RemainingCapacityColumn)
             output = itemNum & Comma & output
             If Right$(output, Len(Comma)) = Comma Then output = Left$(output, Len(output) - Len(Comma))
-            ProductionFinish = TextToDate(currentDate) + output
+            Produktionsabschluss = TextToDate(currentDate) + output
         End If
     End If
 End Function
@@ -108,8 +108,8 @@ End Function
 
 '@EntryPoint
 '@Description("Shows which items were due in repect to their jobs.")
-Private Function ShowDueItems(ByVal index As Long, ByVal jobs As Range, ByVal data As Range) As String
-Attribute ShowDueItems.VB_Description = "Shows which items were due in repect to their jobs."
+Private Function ZeigeFaelligeArtikel(ByVal index As Long, ByVal jobs As Range, ByVal data As Range) As String
+Attribute ZeigeFaelligeArtikel.VB_Description = "Shows which items were due in repect to their jobs."
     Dim jobData As Object
     Set jobData = CreateObject("Scripting.Dictionary")
     Dim currentRow As Range
@@ -130,11 +130,11 @@ Attribute ShowDueItems.VB_Description = "Shows which items were due in repect to
         Dim nextDay As Date
         nextDay = data.Cells.Item(index + 1, DateColumn)
         If nextDay <> currentDate Then
-            ShowDueItems = Left$(jobData.Item(currentDate), Len(jobData.Item(currentDate)) - 2)
+            ZeigeFaelligeArtikel = Left$(jobData.Item(currentDate), Len(jobData.Item(currentDate)) - 2)
         Else
-            ShowDueItems = vbNullString
+            ZeigeFaelligeArtikel = vbNullString
         End If
     Else
-        ShowDueItems = vbNullString
+        ZeigeFaelligeArtikel = vbNullString
     End If
 End Function

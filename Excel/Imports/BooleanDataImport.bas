@@ -36,23 +36,35 @@ Attribute m_updateOnly.VB_VarDescription = "Wether to just update the item list 
 
 ' ————————————————————————————————————————————————————— '
 
+'@Description("Gets the cell on the active worksheet at a position.")
+Public Function GetActCell(ByVal row_ As Long, ByVal column_ As Long) As Range
+Attribute GetActCell.VB_Description = "Gets the cell on the active worksheet at a position."
+    Set GetActCell = ActiveSheet.Cells.Item(row_, column_)
+End Function
+
+'@Description("Gets the value of a cell on the active worksheet at a position.")
+Public Function GetActCellValue(ByVal row_ As Long, ByVal column_ As Long) As Variant
+Attribute GetActCellValue.VB_Description = "Gets the value of a cell on the active worksheet at a position."
+    GetActCellValue = GetActCell(row_, column_).Value
+End Function
+
+'@Description("Sets the value of a cell on the active worksheet at a position to a value.")
+Public Sub SetActCellValue(ByVal row_ As Long, ByVal column_ As Long, ByVal val As Variant)
+Attribute SetActCellValue.VB_Description = "Sets the value of a cell on the active worksheet at a position to a value."
+    GetActCell(row_, column_).Value = val
+End Sub
 
 '@EntryPoint
 '@Description("Imports boolean data for items from txt file.")
 Public Sub ImportBooleanItemData()
 Attribute ImportBooleanItemData.VB_Description = "Imports boolean data for items from txt file."
-    ' Variables
+    ' Get data from file.
     Dim fileNumber As Long
     fileNumber = FreeFile()
     Dim items As Object
     Set items = CreateObject("Scripting.Dictionary")
     Dim currentLine As String
     Dim itemData() As String
-    Dim i As Long
-    i = m_startingRow
-    Dim infoCell As Range
-    
-    ' Get data from file.
     Open m_path For Input As fileNumber
     Do Until EOF(fileNumber)
         Line Input #fileNumber, currentLine
@@ -62,9 +74,12 @@ Attribute ImportBooleanItemData.VB_Description = "Imports boolean data for items
     Close fileNumber
     
     ' Import data to Excel table.
-    Do Until LenB(ActiveSheet.Cells.Item(i, m_itemColumn).Value) = 0
-        itemData(0) = ActiveSheet.Cells.Item(i, m_itemColumn).Value
-        Set infoCell = ActiveSheet.Cells.Item(i, m_infoColumn)
+    Dim i As Long
+    i = m_startingRow
+    Dim infoCell As Range
+    Do Until LenB(GetActCellValue(i, m_itemColumn)) = 0
+        itemData(0) = GetActCellValue(i, m_itemColumn)
+        Set infoCell = GetActCell(i, m_infoColumn)
         If items.Exists(itemData(0)) Then
             If Not CBool(items.Item(itemData(0))) Then
                 If InStr(infoCell.Value, m_hasNoEntry) > 0 Then
@@ -83,8 +98,8 @@ Attribute ImportBooleanItemData.VB_Description = "Imports boolean data for items
     If Not m_updateOnly Then
         Dim item_ As Variant
         For Each item_ In items.Keys
-            ActiveSheet.Cells.Item(i, m_itemColumn).Value = "'" & item_
-            ActiveSheet.Cells.Item(i, m_infoColumn).Value = m_hasNoEntry
+            SetActCellValue i, m_itemColumn, "'" & item_
+            SetActCellValue i, m_infoColumn, m_hasNoEntry
             i = i + 1
         Next
     End If

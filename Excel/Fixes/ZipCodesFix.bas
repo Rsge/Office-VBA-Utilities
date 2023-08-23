@@ -40,15 +40,15 @@ Attribute m_checkLength.VB_VarDescription = "How many chars of check cell should
 
 
 '@Description("Gets the cell on a worksheet at a position.")
-Private Function GetCell(ByVal sheet As Worksheet, ByVal row As Long, ByVal column As Long) As Range
+Private Function GetCell(ByVal ws As Worksheet, ByVal row_ As Long, ByVal column_ As Long) As Range
 Attribute GetCell.VB_Description = "Gets the cell on a worksheet at a position."
-    Set GetCell = sheet.Cells.Item(row, column)
+    Set GetCell = ws.Cells.Item(row_, column_)
 End Function
 
 '@Description("Gets the value of a cell on a worksheet at a position.")
-Private Function GetCellValue(ByVal sheet As Worksheet, ByVal row As Long, ByVal column As Long) As Variant
+Private Function GetCellValue(ByVal ws As Worksheet, ByVal row_ As Long, ByVal column_ As Long) As Variant
 Attribute GetCellValue.VB_Description = "Gets the value of a cell on a worksheet at a position."
-    GetCellValue = GetCell(sheet, row, column).Value
+    GetCellValue = GetCell(ws, row_, column_).Value
 End Function
 
 '@Description("Gets the column in a table from it's name.")

@@ -3,12 +3,15 @@ Attribute VB_Description = "Creation of dictionaries from entries in Excel table
 '@Folder("DocumentCreation.Base")
 '@ModuleDescription("Creation of dictionaries from entries in Excel tables.")
 Option Explicit
-Option Private Module
+'Option Private Module
+
+'TODO Solve this w/ Class &| Types
 
 'Dicts
 Private m_dictDocNative As Object
 Private m_dictDocTransl As Object
-Private m_dictDecimals As Object
+Private m_dictDecimalsNative As Object
+Private m_dictDecimalsTransl As Object
 Private m_dictData As Object
 Private m_listDocSkip As Object
 '@Description("Dictionary with mapping of native language document categories to respective data categories.")
@@ -21,10 +24,15 @@ Public Property Get DictDocTransl() As Object
 Attribute DictDocTransl.VB_Description = "Dictionary with mapping of translated document categories to respective data categories."
     Set DictDocTransl = m_dictDocTransl
 End Property
-'@Description("Dictionary with mapping of .")
-Public Property Get DictDecimals() As Object
-Attribute DictDecimals.VB_Description = "Dictionary with mapping of ."
-    Set DictDecimals = m_dictDecimals
+'@Description("Dictionary with mapping of decimal and padding places to respective native data categories.")
+Public Property Get DictDecimalsNative() As Object
+Attribute DictDecimalsNative.VB_Description = "Dictionary with mapping of decimal and padding places to respective native data categories."
+    Set DictDecimalsNative = m_dictDecimalsNative
+End Property
+'@Description("Dictionary with mapping of decimal and padding places to respective translated data categories.")
+Public Property Get DictDecimalsTransl() As Object
+Attribute DictDecimalsTransl.VB_Description = "Dictionary with mapping of decimal and padding places to respective translated data categories."
+    Set DictDecimalsTransl = m_dictDecimalsTransl
 End Property
 '@Description("Dictionary with mapping of native language data categories to respective document categories.")
 Public Property Get DictData() As Object
@@ -39,7 +47,6 @@ End Property
 
 ' ————————————————————————————————————————————————————— '
 
-
 '@Description("Determines if one string that must and at least one that can be given is.")
 Private Function HasEntries(ByVal must As String, ByVal firstCan As String, ByVal secondCan As String) As Boolean
 Attribute HasEntries.VB_Description = "Determines if one string that must and at least one that can be given is."
@@ -52,7 +59,8 @@ Attribute InitDicts.VB_Description = "Inits the dictionary."
     ' Create dicts.
     Set m_dictDocNative = CreateObject("Scripting.Dictionary")
     Set m_dictDocTransl = CreateObject("Scripting.Dictionary")
-    Set m_dictDecimals = CreateObject("Scripting.Dictionary")
+    Set m_dictDecimalsNative = CreateObject("Scripting.Dictionary")
+    Set m_dictDecimalsTransl = CreateObject("Scripting.Dictionary")
     Set m_dictData = CreateObject("Scripting.Dictionary")
     Set m_listDocSkip = CreateObject("System.Collections.ArrayList")
     ' Declarations
@@ -83,7 +91,8 @@ Attribute InitDicts.VB_Description = "Inits the dictionary."
             On Error GoTo DecimalErr
             If Not IsEmpty(decimalsStr) Then
                 decimals = CLng(decimalsStr)
-                m_dictDecimals.Add data, decimals
+                If Not IsEmpty(doc(0)) Then m_dictDecimalsNative.Add doc(0), decimals
+                If Not IsEmpty(doc(1)) Then m_dictDecimalsTransl.Add doc(1), decimals
             End If
             On Error GoTo 0
         End If
@@ -110,9 +119,9 @@ Attribute InitDicts.VB_Description = "Inits the dictionary."
             End If
         End If
     Next
+    Exit Sub
     
     ' Raise error with useful error description.
-    Exit Sub
 DictErr:
     Err.Raise vbObjectError + 1, "Dict", FormatString(DuplicateCategoryIDError, doc(0) & RowSep & doc(1) & RowSep & data)
     Exit Sub
