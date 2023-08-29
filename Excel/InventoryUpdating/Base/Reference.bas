@@ -29,7 +29,7 @@ Attribute KiloUnitPrefix.VB_VarDescription = "'Thousands' prefix of unit."
 Public Const LitersUnit As String = "l"
 Attribute LitersUnit.VB_VarDescription = "Unit of litres, prompting division by 1000."
 '@VariableDescription("Regex-format of file name. Whats in brackets will be constant, the rest varies depending on which file is looked at.")
-Public Const FileNameFormatRegex As String = "(\w+)\s?\d*[\.-/]?\d*[\.-/]\d*"
+Public Const FileNameFormatRegex As String = "(\w+)\s?\d*[\.-/]?\d*[\.-/]?\d*"
 Attribute FileNameFormatRegex.VB_VarDescription = "Regex-format of file name. Whats in brackets will be constant, the rest varies depending on which file is looked at."
 
 ' - Localized strings -
