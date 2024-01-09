@@ -27,44 +27,44 @@ Private Const m_nsName As String = "MAPI"
 Attribute m_nsName.VB_VarDescription = "Name of namespace to use."
 
 ' Variable
-'@MemberAttribute VB_VarHelpID, -1
+'@VariableDescription("Items in sent folder with events.")
 Private WithEvents m_items As Outlook.Items
-Attribute m_items.VB_VarHelpID = -1
+Attribute m_items.VB_VarDescription = "Items in sent folder with events."
 
 ' ————————————————————————————————————————————————————— '
 
 
 '@Description("Validates if a string starts with a given string.")
-Public Function StartsWith(ByVal text As String, ByVal beginning As String) As Boolean
+Public Function StartsWith(ByVal Text As String, ByVal beginning As String) As Boolean
 Attribute StartsWith.VB_Description = "Validates if a string starts with a given string."
-     StartsWith = (Left$(Trim$(UCase$(text)), Len(beginning)) = UCase$(beginning))
+     StartsWith = (Left$(Trim$(UCase$(Text)), Len(beginning)) = UCase$(beginning))
 End Function
 
 '@Description("On application startup, gets items in Sent folder.")
 Private Sub Application_Startup()
 Attribute Application_Startup.VB_Description = "On application startup, gets items in Sent folder."
-    Dim ns As Outlook.Namespace
-    Set ns = Application.GetNamespace(m_nsName)
+    Dim NS As Outlook.Namespace
+    Set NS = Application.GetNamespace(m_nsName)
     Dim sentItemsFolder As Outlook.MAPIFolder
-    Set sentItemsFolder = ns.GetDefaultFolder(olFolderSentMail)
+    Set sentItemsFolder = NS.GetDefaultFolder(olFolderSentMail)
     Set m_items = sentItemsFolder.Items
 End Sub
 
 '@Description("On adding an item to the Sent items, moves it to the correct Sent folder.")
-Private Sub m_items_ItemAdd(ByVal itemObject As Object)
+Private Sub m_items_ItemAdd(ByVal Item As Object)
 Attribute m_items_ItemAdd.VB_Description = "On adding an item to the Sent items, moves it to the correct Sent folder."
     On Error Resume Next
-    If TypeOf itemObject Is Outlook.MailItem Then
+    If TypeOf Item Is Outlook.MailItem Then
         Dim from As String
-        from = itemObject.sender.GetExchangeUser().PrimarySmtpAddress
+        from = Item.sender.GetExchangeUser().PrimarySmtpAddress
         If StartsWith(from, m_senderAddressStart) Then
-            Dim ns As Outlook.Namespace
-            Set ns = Application.GetNamespace(m_nsName)
+            Dim NS As Outlook.Namespace
+            Set NS = Application.GetNamespace(m_nsName)
             Dim mailbox As Outlook.Folder
-            Set mailbox = ns.Folders.Items(m_mailboxName)(0)
+            Set mailbox = NS.Folders.Item(m_mailboxName)
             Dim sentItemsFolder As Outlook.Folder
-            Set sentItemsFolder = mailbox.Folders.Items(m_sentItemsFolderName)(0)
-            itemObject.Move sentItemsFolder
+            Set sentItemsFolder = mailbox.Folders.Item(m_sentItemsFolderName)
+            Item.Move sentItemsFolder
         End If
     End If
     On Error GoTo 0
@@ -92,9 +92,9 @@ End Sub
 '    Set sentItemsFolder = mailbox.Folders(SentItemsFolderName)
 ''    Set SentItemsFolder = Namespace.GetSharedDefaultFolder(Mailbox, olFolderSentMail)
 '    from = item.SentOnBehalfOfName
-''    Debug.Print (Item.SendUsingAccount)
-''    Debug.Print (From)
-''    Debug.Print (SentItemsFolder)
+''    Debug.Print Item.SendUsingAccount
+''    Debug.Print From
+''    Debug.Print SentItemsFolder
 '
 '    If StartsWith(from, m_senderAddressStart) Then
 ''        Set item.SaveSentMessageFolder = sentItemsFolder
