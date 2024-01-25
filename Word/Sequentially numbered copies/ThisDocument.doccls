@@ -1,10 +1,10 @@
-﻿'@Folder("ContinualNumbering")
+﻿'@Folder("SequentiallyNumberedCopies")
 '@ModuleDescription("Event handler registration & variable clearing.")
 Option Explicit
 
 '@Description("Registers event handler on document opening.")
 Private Sub Document_Open()
-    Register_Event_Handler
+    RegisterEventHandler
 End Sub
 
 '@Description("Deletes all document variables.")

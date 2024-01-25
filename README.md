@@ -32,4 +32,4 @@ I'd also recommmend making a few adjustments to the VBA editor's settings as see
 * `IsStringInStringTest.bas` compares different methods to determine if a string contains another string.
 
 ### Word
-* For `Continual numbering` all three files need to be used to achieve a counter counting the amount of pages printed on the page with the ability to set on print.
+* For `Sequentially numbered copies`, `ThisDocument.doccls` and either the `MultiPage` (MP) or `SinglePage` (SP) files need to be used to achieve a running number of printed pages on the page with the ability to set a starting value on print.
