@@ -8,8 +8,8 @@ Option Explicit
 Private Function GetFilePath(ByVal pathCell As Range, ByVal forImport As Boolean) As String
 Attribute GetFilePath.VB_Description = "Gets path of data import files or export file and determines if file(s) is/are available."
     ' Variables
-    Dim path As String
-    path = pathCell.Value
+    Dim filePath As String
+    filePath = pathCell.Value
     Dim repeated As Boolean
     Dim label As String
     If forImport Then
@@ -24,7 +24,7 @@ Attribute GetFilePath.VB_Description = "Gets path of data import files or export
     Dim FolderDialog As FileDialog
     Do
         ' If no path specified, define one.
-        If IsEmpty(path) Then
+        If IsEmpty(filePath) Then
             ' MsgBox to cancel folder dialog
             If Not repeated Then
                 If MsgBoxCanceled(FormatString(NoPathWarning, label)) Then Exit Function
@@ -33,21 +33,21 @@ Attribute GetFilePath.VB_Description = "Gets path of data import files or export
             Set FolderDialog = Application.FileDialog(msoFileDialogFolderPicker)
             If FolderDialog.Show = 0 Then Exit Function
             ' Get path.
-            path = FolderDialog.SelectedItems.Item(1) & Application.PathSeparator
-            pathCell.Value = path
+            filePath = FolderDialog.SelectedItems.Item(1) & Application.PathSeparator
+            pathCell.Value = filePath
         End If
         ' Check file existence.
-        If (forImport And IsEmpty(Dir(path & DataFilePattern))) _
-        Or (Not forImport And IsEmpty(Dir(path & exportFileName))) Then
+        If (forImport And IsEmpty(Dir(filePath & DataFilePattern))) _
+        Or (Not forImport And IsEmpty(Dir(filePath & exportFileName))) Then
             ' MsgBox to cancel repeated folder dialog
             If MsgBoxCanceled(FormatString(NoFilesWarning, label)) Then Exit Function
             repeated = True
-            path = vbNullString
+            filePath = vbNullString
         Else
             Exit Do
         End If
     Loop
-    GetFilePath = path
+    GetFilePath = filePath
 End Function
 
 '@EntryPoint
@@ -70,20 +70,21 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
     ActiveWorkbook.Worksheets.Item(1).Select
     ' Create copy of this workbook with current date and use that from now on, if not already in use.
     Dim currentWB As Workbook
+    Dim isNew As Boolean
     If CreateWBCopy Then
         Dim newName As String
         newName = BuildWBName(ActFileDateFormat, isMakroWB:=True)
-        Dim isNew As Boolean
         isNew = ThisWorkbook.Name <> newName
-        Dim newPath As String
-        newPath = ThisWorkbook.path & Application.PathSeparator & newName
+        Dim newFilePath As String
+        newFilePath = ThisWorkbook.Path & Application.PathSeparator & newName
         If isNew Then
-            ThisWorkbook.SaveCopyAs newPath
-            Set currentWB = Workbooks.Open(newPath)
+            ThisWorkbook.SaveCopyAs newFilePath
+            Set currentWB = Workbooks.Open(newFilePath)
         Else
             Set currentWB = ThisWorkbook
         End If
     Else
+        isNew = False
         Set currentWB = ThisWorkbook
     End If
     ' Open export workbook, make sure it's not read-only and put it in background.
@@ -139,7 +140,7 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
     Dim descHasMarker As Boolean
     Dim actValueRange As Range
     Dim i As Long
-    Dim ImportData() As String
+    Dim importData() As String
     Dim currentAmount As Double
     Dim previousAmount As Double
     Dim diff As Double
@@ -207,19 +208,19 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
                 CreateNewActRow itemRow, copyFrom:=1
             End If
             ' Get missing item's data or set it to default values.
-            ImportData = Split(GetFirstLine(file.path, 2)(1), Sep)
+            importData = Split(GetFirstLine(file.Path, 2)(1), Sep)
             SetActCellValue itemRow, ItemColumn, itemNum
             If isSpecialItem Then
                 SetActCellValue itemRow, DescriptionColumn, SpecialItemDescriptionMarker & Space$(1)
             Else
                 SetActCellValue itemRow, DescriptionColumn, vbNullString
             End If
-            importBBDateStr = ImportData(ImportsCurrentBBDateColumn)
+            importBBDateStr = importData(ImportsCurrentBBDateColumn)
             SetActCellValue itemRow, BBDateColumn, importBBDateStr
             GetActCell(itemRow, BBDateColumn).NumberFormat = DataDateFormat
             unit = KiloUnitPrefix & Replace(ImportUnit, Space$(1), vbNullString)
             SetActCellValue itemRow, UnitColumn, unit
-            currentAmount = Replace(ImportData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
+            currentAmount = Replace(importData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
             SetActCellValue itemRow, PreviousAmountColum, currentAmount / 1000
             SetActCellValue itemRow, AmountDiffColumn, 0
             SetActCellValue itemRow, LastChangedDateColumn, PlaceholderDate
@@ -229,17 +230,26 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
             Next
         End If
         ' Process item's data.
-        ImportData = Split(GetLastLine(file.path)(0), Sep)
+        importData = Split(GetLastLine(file.Path)(0), Sep)
+        If UBound(importData) < ImportsLastDataColumn - 1 Then
+            ' If data has wrong format, show error and reset workbook.
+            MsgBox FormatString(FormattingError, file.Name)
+            exportWB.Close SaveChanges:=False
+            ResetTable
+            ' Close original workbook if copy was created.
+            If CreateWBCopy Then If isNew Then ThisWorkbook.Close
+            Exit Sub
+        End If
         ' Account for kilo-unit.
-        currentAmount = Replace(ImportData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
+        currentAmount = Replace(importData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
         unit = GetActCellValue(itemRow, UnitColumn)
         If Contains(unit, KiloUnitPrefix) Or unit = LitersUnit Then
             currentAmount = currentAmount / 1000
         End If
         ' Change data in Excel table only if imported data is newer.
-        If CDate(GetActCellValue(itemRow, LastChangedDateColumn)) < CDate(ImportData(ImportsLastChangedDateColumn)) Then
+        If CDate(GetActCellValue(itemRow, LastChangedDateColumn)) < CDate(importData(ImportsLastChangedDateColumn)) Then
             ' BB date
-            importBBDateStr = ImportData(ImportsCurrentBBDateColumn)
+            importBBDateStr = importData(ImportsCurrentBBDateColumn)
             If importBBDateStr = PlaceholderDate Then
                 SetActCellValue itemRow, BBDateColumn, vbNullString
             Else

@@ -90,6 +90,11 @@ Attribute ExportLabel.VB_VarDescription = "Descriptive label of the export file.
 Public Const ReadOnlyWarning As String = "The export workbook is read-only at the moment." & vbNewLine & _
                                          "Please ensure the workbook has been closed everywhere and try again."
 Attribute ReadOnlyWarning.VB_VarDescription = "Warning for export file being read-only."
+'@VariableDescription("Warning for format error in last line of import file.")
+Public Const FormattingError As String = "The last row in File {} isn't in the correct format." & vbNewLine _
+                                       & "Maybe an empty line has been accidentally added at the end?" & vbNewLine _
+                                       & "Please fix the mistake and try again."
+Attribute FormattingError.VB_VarDescription = "Warning for format error in last line of import file."
 '@VariableDescription("Warning for a file's item number not being present in table.")
 Public Const EntryNotAvailableWarning As String = "No entry exists for the following items." & vbNewLine _
                                                 & "Please add the correct description and check the unit " _
@@ -171,3 +176,6 @@ Attribute ImportsCurrentBBDateColumn.VB_VarDescription = "Index of current BB da
 '@VariableDescription("Index of current amounts' column in CSV data file.")
 Public Const ImportsCurrentAmountColumn As Long = 8
 Attribute ImportsCurrentAmountColumn.VB_VarDescription = "Index of current amounts' column in CSV data file."
+'@VariableDescription("Highest used column index in CSV data file.")
+Public Const ImportsLastDataColumn As Long = 8
+Attribute ImportsLastDataColumn.VB_VarDescription = "Highest used column index in CSV data file."
