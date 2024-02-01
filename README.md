@@ -8,7 +8,8 @@ I'd also recommmend making a few adjustments to the VBA editor's settings as see
 
 ### Excel
 * `BasicUtilities` contains modules for automated clearing of specific part with prior confirmation and un-/protecting the document via bindable macro.
-* `Finders/DifferingEntriesFinder.bas` lists all entries in a selected sheet's first column that aren't present in the first sheet's first column. Also copys results to clipboard.
+* `Finders/DifferingEntriesFinder.bas` lists all entries in the active sheet's first column that aren't present in the first sheet's first column. Also copys results to clipboard.
+* `Finders/EntryEqualizer.bas` deletes all entries in the active sheet's chosen column that aren't present in the first sheet's first column.
 * `Finders/UsedColumnsFinder.bas` lists all columns' headers in a text file, whose content isn't the same in every cell.
 * `Fixes/ZipCodesFix.bas` fixes the US state abbreviation letters being put in front of the zip code instead of after the city in a table with column names.
 * `Imports` contains modules for importing boolean or string values as text info for entries in an Excel sheet from a text or excel file.

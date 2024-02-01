@@ -21,7 +21,9 @@ Attribute m_searchColumnAct.VB_VarDescription = "Which column to search in activ
 Private Const m_searchColumnFirst As Long = 1
 Attribute m_searchColumnFirst.VB_VarDescription = "Which column to search in confirm sheet."
 
+
 ' ————————————————————————————————————————————————————— '
+
 '@Description("Tests if a string is empty.")
 Private Function IsEmpty(ByVal str As String) As Boolean
 Attribute IsEmpty.VB_Description = "Tests if a string is empty."
@@ -57,7 +59,7 @@ Attribute FindDifferingEntries.VB_Description = "Finds entries in active sheet's
     Do Until IsEmpty(GetActCellValue(currentActRow, m_searchColumnAct))
         currentFirstRow = currentFoundRows
         check = False
-        Do Until IsEmpty(ws.Cells.Item(currentFirstRow, m_searchColumnFirst).Value)
+        Do Until IsEmpty(GetCellValue(ws, currentFirstRow, m_searchColumnFirst))
             If GetActCellValue(currentActRow, m_searchColumnAct) = GetCellValue(ws, currentFirstRow, m_searchColumnFirst) Then
                 check = True
                 currentFoundRows = currentFoundRows + 1
