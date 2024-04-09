@@ -21,8 +21,9 @@ Modules with the `.cls` extension have to go into the `ThisOutlookSession` modul
 * `BulkEditContacts.bas` allows for bulk-editing of contacts.
 * `DeleteSentFromSender.cls` deletes all mails of a specific sender address from the Sent folder permanently on Outlook startup.
 * `JunkMailBlackWhiteList.bas` force-whitelists mails under specified conditions and blacklists all addresses in a provided (linebreak-separated) text file (because "normal" rules are limited in max number of mails).
-* `MoveFromFolderToFolder.bas` moves all mails from one folder to another reliably one-by-one.
-* `MoveToCorrectSentFolder.cls` moves each sent email to the correct mailbox' Sent-elements-folder (Because per default they go into the main account's).
+* `MoveFromFolderToFolder.bas` moves all mails from one folder to another reliably one by one.
+* `MoveToCorrectSentFolder.cls` moves each sent email to the correct mailbox' Sent Elements folder. (Because per default they go into the main account's.)\
+There is also a [registry fix](https://github.com/Rsge/Windows-Error-Fixing-Scripts/blob/main/Set%20Outlook%20delegate%20sent%20items%20folder.reg) for this.
 
 ### Speed tests
 * `AssignEmptyStringTest.bas` compares different methods to create an empty string.
