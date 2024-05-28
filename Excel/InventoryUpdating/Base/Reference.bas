@@ -97,9 +97,10 @@ Public Const FormattingError As String = "The last row in File {} isn't in the c
 Attribute FormattingError.VB_VarDescription = "Warning for format error in last line of import file."
 '@VariableDescription("Warning for a file's item number not being present in table.")
 Public Const EntryNotAvailableWarning As String = "No entry exists for the following items." & vbNewLine _
-                                                & "Please add the correct description and check the unit " _
-                                                & "in this and the export file open in the background " _
-                                                & "or fix the import data files." & vbNewLine
+                                                & "Please add the correct description, check the unit " _
+                                                & "in this and the export file open in the background and save " _
+                                                & "or fix the import data files, use 'Reset' and import data again." _
+                                                & vbNewLine
 Attribute EntryNotAvailableWarning.VB_VarDescription = "Warning for a file's item number not being present in table."
 '@VariableDescription("Info about successful processing.")
 Public Const SuccessInfo As String = "Data processed successfully."
