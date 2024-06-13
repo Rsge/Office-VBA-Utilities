@@ -35,6 +35,7 @@ End Function
 
 ' ————————————————————————————————————————————————————— '
 
+
 '@Description("Gets the cell on a worksheet at a position.")
 Public Function GetCell(ByVal ws As Worksheet, ByVal row_ As Long, ByVal column_ As Long) As Range
 Attribute GetCell.VB_Description = "Gets the cell on a worksheet at a position."

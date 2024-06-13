@@ -33,6 +33,7 @@ Attribute m_listFileNameSeparateAlphabetical.VB_VarDescription = "Name of file f
 
 ' ————————————————————————————————————————————————————— '
 
+
 '@EntryPoint
 '@Description("Lists all categories found in data and uses regex to unify category names.")
 Public Sub ListAndUnifiyCategories()
