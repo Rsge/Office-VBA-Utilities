@@ -25,6 +25,9 @@ Attribute ImportUnit.VB_VarDescription = "Unit string used in data files."
 '@VariableDescription("'Thousands' prefix of unit.")
 Public Const KiloUnitPrefix As String = "k"
 Attribute KiloUnitPrefix.VB_VarDescription = "'Thousands' prefix of unit."
+'@VariableDescription("First item receipt at which to switch from base to kilo unit when adding it.")
+Public Const UnitSwitchAmount As Double = 25000#
+Attribute UnitSwitchAmount.VB_VarDescription = "First item receipt at which to switch from base to kilo unit when adding it."
 '@VariableDescription("Unit of litres, prompting division by 1000.")
 Public Const LitersUnit As String = "l"
 Attribute LitersUnit.VB_VarDescription = "Unit of litres, prompting division by 1000."

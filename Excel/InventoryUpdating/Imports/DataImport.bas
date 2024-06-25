@@ -218,10 +218,15 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
             importBBDateStr = importData(ImportsCurrentBBDateColumn)
             SetActCellValue itemRow, BBDateColumn, importBBDateStr
             GetActCell(itemRow, BBDateColumn).NumberFormat = DataDateFormat
-            unit = KiloUnitPrefix & Replace(ImportUnit, Space$(1), vbNullString)
-            SetActCellValue itemRow, UnitColumn, unit
-            currentAmount = Replace(importData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
-            SetActCellValue itemRow, PreviousAmountColum, currentAmount / 1000
+            currentAmount = CDbl(Replace(importData(ImportsCurrentAmountColumn), ImportUnit, vbNullString))
+            unit = Replace(ImportUnit, Space$(1), vbNullString)
+            If currentAmount >= UnitSwitchAmount Then
+                SetActCellValue itemRow, UnitColumn, KiloUnitPrefix & unit
+                SetActCellValue itemRow, PreviousAmountColum, currentAmount / 1000
+            Else
+                SetActCellValue itemRow, UnitColumn, unit
+                SetActCellValue itemRow, PreviousAmountColum, currentAmount
+            End If
             SetActCellValue itemRow, AmountDiffColumn, 0
             SetActCellValue itemRow, LastChangedDateColumn, PlaceholderDate
             Set actValueRange = ActiveSheet.Range(DataRegionStartCell).CurrentRegion
