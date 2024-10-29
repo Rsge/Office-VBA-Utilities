@@ -1,4 +1,4 @@
-Attribute VB_Name = "FileRegexReplace"
+Attribute VB_Name = "BulkRegexReplace"
 Attribute VB_Description = "Handles regex text replacement in all files of a type in a starting folder and all it's subfolders."
 '@Folder("FileEditing")
 '@ModuleDescription("Handles regex text replacement in all files of a type in a starting folder and all it's subfolders.")
@@ -24,7 +24,7 @@ Attribute m_regexReplacementsStr.VB_VarDescription = "m_sep delimited list of re
 
 
 '@Description("Tests if a string ends with another string.")
-Public Function EndsWith(ByVal str As String, ByVal ending As String) As Boolean
+Private Function EndsWith(ByVal str As String, ByVal ending As String) As Boolean
 Attribute EndsWith.VB_Description = "Tests if a string ends with another string."
     EndsWith = Right$(str, Len(ending)) = ending
 End Function
