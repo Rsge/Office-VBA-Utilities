@@ -37,5 +37,6 @@ There is also a [registry fix](https://github.com/Rsge/Windows-Error-Fixing-Scri
 
 ### Word
 * For `Sequentially numbered copies`, `ThisDocument.doccls` and either the `MultiPage` (MP) or `SinglePage` (SP) files need to be used to achieve a running number of printed pages on the page with the ability to set a starting value on print.
-* `FileRegexReplace.bas` allows for bulk replacement of text in all files of a type in a folder and it's subfolders via multiple regexes.
+* `BulkRegexReplace.bas` allows for bulk replacement of text in all documents in a folder and it's subfolders via multiple regexes.
 * `HotkeyActions.bas` adds a few actions I always use as subs so that, imported in the `Normal` project, they can be given a hotkey for easy use. (File – Options – Customize the Ribbon – Keyboard shortcuts: Customize... – Scroll down and select "Macros" on the left)
+* `Unification.bas` allows for bulk unification of headers and/or format templates of all documents in a folder and it's subfolders.
