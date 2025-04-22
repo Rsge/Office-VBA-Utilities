@@ -1,5 +1,5 @@
 Attribute VB_Name = "HotkeyActions"
-Attribute VB_Description = "Sets currently selected text to monospace font."
+Attribute VB_Description = "Adds various useful hotkeys for different often-used actions."
 '@Folder("TextEditing")
 '@ModuleDescription("Sets currently selected text to monospace font.")
 Option Explicit

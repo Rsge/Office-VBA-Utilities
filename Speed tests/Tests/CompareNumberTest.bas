@@ -5,7 +5,7 @@ Attribute VB_Description = "Template for speed tests."
 Option Explicit
 
 ' Result:
-' Using = is fastetst.
+' Using = is fastest.
 ' Using <> vs. > is nearly indistinguishable, but > seems marginally faster sometimes.
 
 ' Runtime constants
