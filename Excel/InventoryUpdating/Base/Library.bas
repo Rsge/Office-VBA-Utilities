@@ -50,10 +50,9 @@ End Function
 
 '@Description("Sets the value of a cell on the active worksheet at a position to a value.")
 Public Sub SetActCellValue(ByVal row_ As Long, ByVal column_ As Long, ByVal val As Variant)
-Attribute SetActCellValue.VB_Description = "Sets the value of a cell on the active worksheet at a position to a string."
+Attribute SetActCellValue.VB_Description = "Sets the value of a cell on the active worksheet at a position to a value."
     GetActCell(row_, column_).Value = val
 End Sub
-
 
 '@Description("Inserts a new row at given position on sheet.")
 Public Sub CreateNewRow(ByVal ws As Worksheet, ByVal row_ As Long, ByVal copyFrom As Long)

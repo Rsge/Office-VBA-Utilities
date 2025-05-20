@@ -218,13 +218,12 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
             importBBDateStr = importData(ImportsCurrentBBDateColumn)
             SetActCellValue itemRow, BBDateColumn, importBBDateStr
             GetActCell(itemRow, BBDateColumn).NumberFormat = DataDateFormat
-            currentAmount = CDbl(Replace(importData(ImportsCurrentAmountColumn), ImportUnit, vbNullString))
-            unit = Replace(ImportUnit, Space$(1), vbNullString)
+            currentAmount = CDbl(importData(ImportsCurrentAmountColumn))
             If currentAmount >= UnitSwitchAmount Then
-                SetActCellValue itemRow, UnitColumn, KiloUnitPrefix & unit
+                SetActCellValue itemRow, UnitColumn, KiloUnitPrefix & BaseUnit
                 SetActCellValue itemRow, PreviousAmountColum, currentAmount / 1000
             Else
-                SetActCellValue itemRow, UnitColumn, unit
+                SetActCellValue itemRow, UnitColumn, BaseUnit
                 SetActCellValue itemRow, PreviousAmountColum, currentAmount
             End If
             SetActCellValue itemRow, AmountDiffColumn, 0
@@ -246,7 +245,7 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
             Exit Sub
         End If
         ' Account for kilo-unit.
-        currentAmount = Replace(importData(ImportsCurrentAmountColumn), ImportUnit, vbNullString)
+        currentAmount = CDbl(importData(ImportsCurrentAmountColumn))
         unit = GetActCellValue(itemRow, UnitColumn)
         If Contains(unit, KiloUnitPrefix) Or unit = LitersUnit Then
             currentAmount = currentAmount / 1000

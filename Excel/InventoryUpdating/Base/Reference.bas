@@ -19,12 +19,12 @@ Attribute DataFilePattern.VB_VarDescription = "Search pattern for import data fi
 '@VariableDescription("Number of decimal places to use in rounding.")
 Public Const Decimals As Long = 3
 Attribute Decimals.VB_VarDescription = "Number of decimal places to use in rounding."
-'@VariableDescription("Unit string used in data files.")
-Public Const ImportUnit As String = " g"
-Attribute ImportUnit.VB_VarDescription = "Unit string used in data files."
-'@VariableDescription("'Thousands' prefix of unit.")
+'@VariableDescription("Base unit string used in table.")
+Public Const BaseUnit As String = "g"
+Attribute BaseUnit.VB_VarDescription = "Base unit string used in table."
+'@VariableDescription("Thousands prefix of unit.")
 Public Const KiloUnitPrefix As String = "k"
-Attribute KiloUnitPrefix.VB_VarDescription = "'Thousands' prefix of unit."
+Attribute KiloUnitPrefix.VB_VarDescription = "Thousands prefix of unit."
 '@VariableDescription("First item receipt at which to switch from base to kilo unit when adding it.")
 Public Const UnitSwitchAmount As Double = 25000#
 Attribute UnitSwitchAmount.VB_VarDescription = "First item receipt at which to switch from base to kilo unit when adding it."
@@ -123,9 +123,9 @@ Attribute NoResetWarning.VB_VarDescription = "Warning about reset not being poss
 
 ' - Region constants -
 ' Excel table range string constants
-'@VariableDescription("Index of row of cell containing import data files' path.")
+'@VariableDescription("Address of cell that is at the top left of the data region.")
 Public Const DataRegionStartCell As String = "A1"
-Attribute DataRegionStartCell.VB_VarDescription = "Index of row of cell containing import data files' path."
+Attribute DataRegionStartCell.VB_VarDescription = "Address of cell that is at the top left of the data region."
 
 ' Excel table row constants (First = 1)
 '@VariableDescription("Index of row of cell containing import data files' path.")
