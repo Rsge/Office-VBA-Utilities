@@ -251,7 +251,8 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
             currentAmount = currentAmount / 1000
         End If
         ' Change data in Excel table only if imported data is newer.
-        If CDate(GetActCellValue(itemRow, LastChangedDateColumn)) < CDate(importData(ImportsLastChangedDateColumn)) Then
+        If CDate(GetActCellValue(itemRow, LastChangedDateColumn)) <= CDate(importData(ImportsLastChangedDateColumn)) _
+            And GetActCellValue(itemRow, NewAmountColumn) <> Math.Round(currentAmount, Decimals) Then
             ' BB date
             importBBDateStr = importData(ImportsCurrentBBDateColumn)
             If importBBDateStr = PlaceholderDate Then
