@@ -17,12 +17,12 @@ Attribute m_protectionEnabled.VB_VarDescription = "Message for enforced workshee
 
 '@EntryPoint
 '@Description("Toggles protection status of worksheet.")
-Public Sub UnProtect()
-Attribute UnProtect.VB_Description = "Toggles protection status of worksheet."
+Public Sub ToggleProtect()
+Attribute ToggleProtect.VB_Description = "Toggles protection status of worksheet."
     Dim ws As Worksheet
     Set ws = ActiveWorkbook.ActiveSheet
     If ws.ProtectContents Then
-        ws.UnProtect
+        ws.Unprotect
         MsgBox (m_protectionLifted)
     Else
         ws.Protect

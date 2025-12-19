@@ -96,7 +96,11 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
     End If
     Dim exportSheet As Worksheet
     Set exportSheet = exportWB.ActiveSheet
+    ' Toggle protection off
+    ToggleProtect exportSheet, False
     currentWB.Activate
+    DoEvents
+    ToggleProtect ActiveSheet, False
     ' Import baseline from export file, if not done already.
     If IsEmpty(GetActCellValue(ImportPathAndResetMarkerRow, ResetMarkerColumn)) Then
         exportSheet.Range(DataRegionStartCell).CurrentRegion.Copy ActiveSheet.Range(DataRegionStartCell)
@@ -112,9 +116,10 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
         ' Create new backup.
         ActiveSheet.Copy After:=ActiveSheet
         ActiveSheet.Name = sheetName
+        ToggleProtect ActiveSheet, True
     Else
         WarnBox DoneAlreadyWarning
-        exportWB.Close
+        exportWB.Close SaveChanges:=False
         Exit Sub
     End If
     ActiveWorkbook.Sheets.Item(1).Select
@@ -241,7 +246,7 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
             exportWB.Close SaveChanges:=False
             ResetTable
             ' Close original workbook if copy was created.
-            If CreateWBCopy Then If isNew Then ThisWorkbook.Close
+            If CreateWBCopy And isNew Then ThisWorkbook.Close
             Exit Sub
         End If
         ' Account for kilo-unit.
@@ -279,6 +284,9 @@ Continue:
         .CurrentRegion.Copy exportSheet.Range(DataRegionStartCell)
         .Select
     End With
+    ' Protect
+    ToggleProtect exportSheet, True
+    ToggleProtect ActiveSheet, True
     ' Save.
     exportWB.Save
     currentWB.Save
@@ -296,5 +304,5 @@ Continue:
         exportWB.Close
     End If
     ' Close original workbook if copy was created.
-    If CreateWBCopy Then If isNew Then ThisWorkbook.Close
+    If CreateWBCopy And isNew Then ThisWorkbook.Close
 End Sub

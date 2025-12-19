@@ -237,3 +237,13 @@ Attribute GetTableAsList.VB_Description = "Creates a list from a one-column-tabl
     Next
     Set GetTableAsList = list
 End Function
+
+'@Description("Toggles protection status of worksheet.")
+Public Sub ToggleProtect(ByVal ws As Worksheet, ByVal prot As Boolean)
+Attribute ToggleProtect.VB_Description = "Toggles protection status of worksheet."
+    If prot Then
+        ws.Protect
+    Else
+        ws.Unprotect
+    End If
+End Sub
