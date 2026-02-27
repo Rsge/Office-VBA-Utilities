@@ -58,9 +58,12 @@ Attribute SpecialItemDescriptionMarker.VB_VarDescription = "Marker starting the 
 '@VariableDescription("Name of blacklisted items table.")
 Public Const BlacklistedItemsTableName As String = "Blacklist"
 Attribute BlacklistedItemsTableName.VB_VarDescription = "Name of blacklisted items table."
-'@VariableDescription("Format of date in Excel table.")
+'@VariableDescription("Format for dates in Excel table.")
 Public Const DataDateFormat As String = "dd/mm/yy;@"
-Attribute DataDateFormat.VB_VarDescription = "Format of date in Excel table."
+Attribute DataDateFormat.VB_VarDescription = "Format for dates in Excel table."
+'@VariableDescription("Format of date value in Excel cells. I love Americans...")
+Public Const ExcelDateFormat As String = "mm\/dd\/yyyy"
+Attribute ExcelDateFormat.VB_VarDescription = "Format of date value in Excel cells. I love Americans..."
 '@VariableDescription("Format of date in working workbook's file name.")
 Public Const ActFileDateFormat As String = " yyyy-mm-dd"
 Attribute ActFileDateFormat.VB_VarDescription = "Format of date in working workbook's file name."
@@ -115,7 +118,7 @@ Attribute DoneAlreadyWarning.VB_VarDescription = "Warning about processing alrea
 
 ' DataReset
 '@VariableDescription("Message in cell used as marker for reset.")
-Public Const ResetMarkerMsg As String = "[DO NOT DELETE YOURSELF]"
+Public Const ResetMarkerMsg As String = "[DO NOT DELETE THIS YOURSELF]"
 Attribute ResetMarkerMsg.VB_VarDescription = "Message in cell used as marker for reset."
 '@VariableDescription("Warning about reset not being possible because no backup is available.")
 Public Const NoResetWarning As String = "There is no backup to revert to."

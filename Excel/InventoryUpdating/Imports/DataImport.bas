@@ -213,6 +213,7 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
                 CreateNewActRow itemRow, copyFrom:=1
             End If
             ' Get missing item's data or set it to default values.
+            ' Start with number and description.
             importData = Split(GetFirstLine(file.Path, 2)(1), Sep)
             SetActCellValue itemRow, ItemColumn, itemNum
             If isSpecialItem Then
@@ -220,22 +221,38 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
             Else
                 SetActCellValue itemRow, DescriptionColumn, vbNullString
             End If
+            ' Set date such that it gets displayed with the given format.
             importBBDateStr = importData(ImportsCurrentBBDateColumn)
-            SetActCellValue itemRow, BBDateColumn, importBBDateStr
+            GetActCell(itemRow, BBDateColumn).FormulaR1C1 = Format$(importBBDateStr, ExcelDateFormat)
             GetActCell(itemRow, BBDateColumn).NumberFormat = DataDateFormat
+            ' Set amounts with correct format.
             currentAmount = CDbl(importData(ImportsCurrentAmountColumn))
             If currentAmount >= UnitSwitchAmount Then
-                SetActCellValue itemRow, UnitColumn, KiloUnitPrefix & BaseUnit
+                unit = KiloUnitPrefix & BaseUnit
                 SetActCellValue itemRow, PreviousAmountColum, currentAmount / 1000
             Else
-                SetActCellValue itemRow, UnitColumn, BaseUnit
+                unit = BaseUnit
                 SetActCellValue itemRow, PreviousAmountColum, currentAmount
             End If
+            SetActCellValue itemRow, UnitColumn, unit
             SetActCellValue itemRow, AmountDiffColumn, 0
+            i = StartingRow
+            Do Until IsEmpty(GetActCellValue(i, UnitColumn))
+                If i <> itemRow And GetActCellValue(i, UnitColumn) = unit Then
+                    GetActCell(itemRow, PreviousAmountColum).NumberFormat = GetActCell(i, PreviousAmountColum).NumberFormat
+                    GetActCell(itemRow, AmountDiffColumn).NumberFormat = GetActCell(i, AmountDiffColumn).NumberFormat
+                    GetActCell(itemRow, NewAmountColumn).NumberFormat = GetActCell(i, NewAmountColumn).NumberFormat
+                    Exit Do
+                End If
+                i = i + 1
+            Loop
+            ' Set change date to a placeholder and clear rest.
             SetActCellValue itemRow, LastChangedDateColumn, PlaceholderDate
             Set actValueRange = ActiveSheet.Range(DataRegionStartCell).CurrentRegion
             For i = actValueRange.Columns.Count To ActiveSheet.Range(DataRegionStartCell).Column + LastChangedDateColumn Step -1
-                actValueRange.Cells.Item(itemRow - ActiveSheet.Range(DataRegionStartCell).Row + 1, i).Value = vbNullString
+                If Not StartsWith(GetActCell(itemRow, i).Formula, "=") Then
+                    actValueRange.Cells.Item(itemRow - ActiveSheet.Range(DataRegionStartCell).Row + 1, i).Value = vbNullString
+                End If
             Next
         End If
         ' Process item's data.
@@ -243,7 +260,7 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
         If UBound(importData) < ImportsLastDataColumn - 1 Then
             ' If data has wrong format, show error and reset workbook.
             MsgBox FormatString(FormattingError, file.Name)
-            exportWB.Close SaveChanges:=False
+'            exportWB.Close SaveChanges:=False
             ResetTable
             ' Close original workbook if copy was created.
             If CreateWBCopy And isNew Then ThisWorkbook.Close
@@ -276,6 +293,8 @@ Attribute ImportDataFiles.VB_Description = "Imports weighing data from given dat
             SetActCellValue itemRow, PreviousAmountColum, previousAmount
             diff = Math.Round(currentAmount - previousAmount, Decimals)
             SetActCellValue itemRow, AmountDiffColumn, diff
+        ElseIf GetActCellValue(itemRow, LastChangedDateColumn) = PlaceholderDate Then
+            SetActCellValue itemRow, LastChangedDateColumn, Date
         End If
 Continue:
     Next
