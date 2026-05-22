@@ -31,7 +31,7 @@ Attribute m_listFileNameFileAdds.VB_VarDescription = "Name of file for saving us
 Private Const m_listFileNameSeparateAlphabetical As String = "Categories - Single, Alphab.txt"
 Attribute m_listFileNameSeparateAlphabetical.VB_VarDescription = "Name of file for saving used column names in alphabetical order with each line as it's own category."
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 
 '@EntryPoint

@@ -25,7 +25,7 @@ Attribute m_startingRow.VB_VarDescription = "The frist row in Excel table with d
 Private Const m_updateOnly As Boolean = True
 Attribute m_updateOnly.VB_VarDescription = "Wether to just update the item list or add new items at the end, too."
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 
 '@Description("Tests if a string is empty.")
@@ -52,7 +52,7 @@ Attribute SetActCellValue.VB_Description = "Sets the value of a cell on the acti
     GetActCell(row_, column_).Value = val
 End Sub
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 '@EntryPoint
 '@Description("Imports string data for items from txt file.")

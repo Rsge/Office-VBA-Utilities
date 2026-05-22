@@ -28,7 +28,7 @@ Attribute IsEmpty.VB_Description = "Tests if a string is empty."
     IsEmpty = LenB(str) = 0
 End Function
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 '@Description("Gets the cell on a worksheet at a position.")
 Public Function GetCell(ByVal ws As Worksheet, ByVal row_ As Long, ByVal column_ As Long) As Range
@@ -69,7 +69,7 @@ Attribute CreateNewActRow.VB_Description = "Inserts a new row at given position 
     CreateNewRow ActiveSheet, row_, copyFrom
 End Sub
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 '@Description("Shows a MsgBox in a warning style.")
 Public Sub WarnBox(ByVal msg As String)
@@ -83,7 +83,7 @@ Attribute MsgBoxCanceled.VB_Description = "Shows an Ok-Cancel-MsgBox and returns
     MsgBoxCanceled = MsgBox(msg, vbOKCancel) = vbCancel
 End Function
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 '@Description("Returns if the active Workbook contains a sheet with a name starting with a specified string.")
 Public Function ContainsSheetStartingWith(ByVal str As String) As Boolean
@@ -111,7 +111,7 @@ Attribute DeleteSheetsStartingWith.VB_Description = "Deletes all sheets in activ
     Application.DisplayAlerts = True
 End Sub
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 '@Description("Gets name of file without the extension.")
 Public Function GetFileNameWithoutExtension(ByVal fileObject As Object) As String
@@ -223,7 +223,7 @@ Attribute BuildWBName.VB_Description = "Builds file name of a file based on acti
     BuildWBName = baseName & Format$(Now, dateFormat) & ext
 End Function
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 '@Description("Creates a list from a one-column-table as range.")
 Public Function GetTableAsList(ByVal table As Range) As Object

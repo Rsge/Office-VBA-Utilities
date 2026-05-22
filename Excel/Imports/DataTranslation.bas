@@ -26,7 +26,7 @@ Attribute m_englishColumn.VB_VarDescription = "The column containing english loc
 Private Const m_germanColumn As Long = 3
 Attribute m_germanColumn.VB_VarDescription = "The column containing german localization."
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 
 '@Description("Tests if a string is empty.")
@@ -47,7 +47,7 @@ Attribute GetActCellValue.VB_Description = "Gets the value of a cell on the acti
     GetActCellValue = GetActCell(row_, column_).Value
 End Function
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 '@EntryPoint
 '@Description("Translates data between languages in different columns.")

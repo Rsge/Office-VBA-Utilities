@@ -15,7 +15,7 @@ Attribute m_holidayFromDateColumn.VB_VarDescription = "Index of holidays' dates'
 Private Const m_holidayDateColumn As Long = 2
 Attribute m_holidayDateColumn.VB_VarDescription = "Index of holidays' dates' column."
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 
 '@Description("Shows if a given date is a weekend.")
@@ -81,7 +81,7 @@ Attribute ShowCompanyHolidays.VB_Description = "Shows if a given date is a compa
     ShowCompanyHolidays = vbNullString
 End Function
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 '@Description("Shows all days which are completely work-free.")
 Public Function ShowWorkFreeDays(ByVal currentDate As Date) As String

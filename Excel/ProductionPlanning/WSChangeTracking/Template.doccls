@@ -1,4 +1,4 @@
-﻿'@Folder("ProductionPlanning.WSChangeTracking")
+'@Folder("ProductionPlanning.WSChangeTracking")
 '@ModuleDescription("Event-available class.")
 Option Explicit
 

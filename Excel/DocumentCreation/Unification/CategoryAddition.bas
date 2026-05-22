@@ -33,7 +33,7 @@ Attribute m_insertCategory.VB_VarDescription = "What category to insert. Rows se
 Private Const m_listFileNameCategoryAdditions As String = "Categories - Added.txt"
 Attribute m_listFileNameCategoryAdditions.VB_VarDescription = "Name of file for saving used column names, new per file."
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 
 '@EntryPoint

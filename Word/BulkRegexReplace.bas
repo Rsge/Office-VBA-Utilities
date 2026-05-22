@@ -20,7 +20,7 @@ Attribute m_regexPatternsStr.VB_VarDescription = "m_sep delimited list of regex 
 Private Const m_regexReplacementsStr As String = "`$1"
 Attribute m_regexReplacementsStr.VB_VarDescription = "m_sep delimited list of replacements for regex matches."
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 
 '@Description("Tests if a string ends with another string.")

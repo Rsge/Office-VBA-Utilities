@@ -46,7 +46,7 @@ Attribute m_manChangeDateColumn.VB_VarDescription = "Index of manually input las
 Private Const m_diffThresholdPercent As Double = 0.01
 Attribute m_diffThresholdPercent.VB_VarDescription = "How much manual and automatic new value are allowed to differ in percent to account for imprecise floating point calculations."
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 
 '@EntryPoint

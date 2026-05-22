@@ -45,7 +45,7 @@ Attribute ListDocSkip.VB_Description = "List of entries in document categories r
     Set ListDocSkip = m_listDocSkip
 End Property
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 '@Description("Determines if one string that must and at least one that can be given is.")
 Private Function HasEntries(ByVal must As String, ByVal firstCan As String, ByVal secondCan As String) As Boolean

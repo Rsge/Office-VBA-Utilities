@@ -4,11 +4,11 @@ Attribute VB_Description = "Fixes wrongly formatted zip codes."
 '@ModuleDescription("Fixes wrongly formatted zip codes.")
 Option Explicit
 
-'@VariableDescription("Path to file for saving names of changed companys.")
+'@VariableDescription("Path to file for saving names of changed companies.")
 Private Const m_savePath As String = "C:\Example\Test.txt"
-Attribute m_savePath.VB_VarDescription = "Path to file for saving names of changed companys."
+Attribute m_savePath.VB_VarDescription = "Path to file for saving names of changed companies."
 '@VariableDescription("Country to check data of.")
-Private Const m_countryToCheck As String = "CANADA"
+Private Const m_countryToCheck As String = "US"
 Attribute m_countryToCheck.VB_VarDescription = "Country to check data of."
 '@VariableDescription("Column with company name.")
 Private Const m_nameColumnName As String = "Name"
@@ -36,7 +36,7 @@ Attribute m_startingRow.VB_VarDescription = "The first row with data."
 Private Const m_checkLength As Long = 2
 Attribute m_checkLength.VB_VarDescription = "How many chars of check cell should be checked."
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 
 '@Description("Gets the cell on a worksheet at a position.")
@@ -57,7 +57,7 @@ Attribute GetTableColumnFromName.VB_Description = "Gets the column in a table fr
     GetTableColumnFromName = table.ListColumns.Item(columnName).Index
 End Function
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 '@EntryPoint
 '@Description("Iterates through entries of a specific country, checks if the zip code is formatted wrongly and corrects it.")

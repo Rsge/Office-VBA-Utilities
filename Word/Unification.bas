@@ -39,7 +39,7 @@ Attribute m_heading1Italic.VB_VarDescription = "If the font of the 'Heading 1' f
 Private Const m_heading1Unterline As Long = wdUnderlineSingle
 Attribute m_heading1Unterline.VB_VarDescription = "How the font of the 'Heading 1' format template is underlined."
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 
 '@Description("Tests if a string ends with another string.")

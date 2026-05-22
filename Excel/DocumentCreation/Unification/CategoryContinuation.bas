@@ -16,7 +16,7 @@ Attribute m_replaceHeaders.VB_VarDescription = "Wether to also replace consecuti
 Private Const m_reverseOrder As Boolean = False
 Attribute m_reverseOrder.VB_VarDescription = "Reverse the continuation order to use the topmost header as a basis and fill the other ones accordingly."
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 '@Description("Adjusts format of header cells.")
 Private Function AdjustHeaderFormat(ByVal cell_ As Range, ByVal changed As Boolean) As Boolean
@@ -48,7 +48,7 @@ Attribute AdjustCategoryFormat.VB_Description = "Adjusts format of category cell
     AdjustCategoryFormat = changed_
 End Function
 
-' ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ '
+' ————————————————————————————————————————————————————— '
 
 '@EntryPoint
 '@Description("Equalizes category names repeated at a later part of the files to ones at top.")

@@ -1,4 +1,4 @@
-﻿'@Folder("SequentiallyNumberedCopies")
+'@Folder("SequentiallyNumberedCopies")
 '@ModuleDescription("Event handler registration & variable clearing.")
 Option Explicit
 
