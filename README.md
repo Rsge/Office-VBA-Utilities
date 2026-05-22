@@ -7,7 +7,7 @@ All documents contain annotations used by [Rubberduck](https://rubberduckvba.com
 I'd also recommmend making a few adjustments to the VBA editor's settings as seen in [this Stackoverflow comment](https://stackoverflow.com/a/667225/17239990).
 
 ### Excel
-* `BasicUtilities` contains modules for automated clearing of specific part with prior confirmation and un-/protecting the document via bindable macro.
+* `BasicUtilities` contains modules for automated clearing of specific part with prior confirmation and un-/protecting the document via bindable macro. It also includes a password brute-force search for MS Office documents. **This shall only be used if you have the express permission of the document’s owner!  Otherwise, using it is illegal under most jurisdictions!** It’s pretty slow and a bit limited anyway, so is only really useful for easy one-word passwords you already have a basic idea of what they are and have just forgotten the exact word.
 * `Finders/DifferingEntriesFinder.bas` lists all entries in the active sheet's first column that aren't present in the first sheet's first column. Also copys results to clipboard.
 * `Finders/EntryEqualizer.bas` deletes all entries in the active sheet's chosen column that aren't present in the first sheet's first column.
 * `Finders/UsedColumnsFinder.bas` lists all columns' headers in a text file, whose content isn't the same in every cell.
