@@ -19,7 +19,8 @@ I'd also recommmend making a few adjustments to the VBA editor's settings as see
 ### Outlook
 Modules with the `.cls` extension have to go into the `ThisOutlookSession` module or have to be called from there to work.
 * `BulkEditContacts.bas` allows for bulk-editing of contacts.
-* `DeleteSentFromSender.cls` deletes all mails of a specific sender address from the Sent folder permanently on Outlook startup.
+* `CopyOnMoveToOtherFolder.cls` copies every e-mail moved to a specified folder to another folder.
+* `DeleteSentFromSender.cls` deletes all mails of a specified sender address from the Sent folder permanently on Outlook startup.
 * `JunkMailBlackWhiteList.bas` force-whitelists mails under specified conditions and blacklists all addresses in a provided (linebreak-separated) text file (because "normal" rules are limited in max number of mails).
 * `MoveFromFolderToFolder.bas` moves all mails from one folder to another reliably one by one.
 * `MoveToCorrectSentFolder.cls` moves each sent email to the correct mailbox' Sent Elements folder. (Because per default they go into the main account's.)\
