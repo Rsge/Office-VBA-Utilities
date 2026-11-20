@@ -27,12 +27,10 @@ Private Const m_nsName As String = "MAPI"
 Attribute m_nsName.VB_VarDescription = "Name of namespace to use."
 
 ' Variables
+'@MemberAttribute VB_VarHelpID, -1
 '@VariableDescription("Items in sent folder with events.")
 Private WithEvents m_sentItems As Outlook.Items
 Attribute m_sentItems.VB_VarDescription = "Items in sent folder with events."
-'@VariableDescription("Default sent items folder.")
-Private m_defaultSentFolder As Outlook.Folder
-Attribute m_defaultSentFolder.VB_VarDescription = "Default sent items folder."
 '@VariableDescription("External sent items folder.")
 Private m_extSentFolder As Outlook.Folder
 Attribute m_extSentFolder.VB_VarDescription = "External sent items folder."
@@ -50,11 +48,12 @@ End Function
 Private Sub Application_Startup()
 Attribute Application_Startup.VB_Description = "On application startup, gets items in Sent folder."
     Dim ns As Outlook.Namespace
-    Set ns = Application.GetNamespace("MAPI")
+    Set ns = Application.GetNamespace(m_nsName)
     Dim extMailbox As Outlook.Folder
     Set extMailbox = ns.Folders.Item(m_extMailboxName)
     Set m_extSentFolder = extMailbox.Folders.Item(m_sentFolderName)
-    Set m_defaultSentFolder = ns.GetDefaultFolder(olFolderSentMail)
+    Dim defaultSentFolder As Outlook.Folder
+    Set defaultSentFolder = ns.GetDefaultFolder(olFolderSentMail)
     Set m_sentItems = m_defaultSentFolder.Items
 End Sub
 
@@ -67,48 +66,7 @@ Attribute m_sentItems_ItemAdd.VB_Description = "On adding an item to the Sent it
         If StartsWith(from, m_senderAddressStart) Then
             On Error Resume Next
             Item.Move m_extSentFolder
+            On Error Goto 0
         End If
     End If
 End Sub
-
-
-''@Description("On sending an item, saves a copy to a different folder and deletes the original.")
-'Private Sub Application_ItemSend(ByVal item As Object, cancel As Boolean)
-'    ' String constants
-'    Const prompt As String = "Are you sure you want to send "
-'    Const questionMark As String = "?"
-'    Const hint As String = "Hint"
-'
-'    On Error Resume Next
-'    Dim ns As Outlook.Namespace
-''    Dim Mailbox As Outlook.Folder
-'    Dim mailbox As Outlook.Recipient
-'    Dim sentItemsFolder As Outlook.Folder
-'    Dim mail As Outlook.MailItem
-'    Dim from As String
-'
-'    Set ns = Application.GetNamespace(NSName)
-'    Set mailbox = ns.Folders.Item(MailboxName)
-''    Set Mailbox = Namespace.CreateRecipient(MailboxName)
-'    Set sentItemsFolder = mailbox.Folders(SentItemsFolderName)
-''    Set SentItemsFolder = Namespace.GetSharedDefaultFolder(Mailbox, olFolderSentMail)
-'    from = item.SentOnBehalfOfName
-''    Debug.Print Item.SendUsingAccount
-''    Debug.Print From
-''    Debug.Print SentItemsFolder
-'
-'    If StartsWith(from, m_senderAddressStart) Then
-''        Set item.SaveSentMessageFolder = sentItemsFolder
-'        Dim copy As Outlook.MailItem
-'        Set copy = item.copy
-'        copy.Move (sentItemsFolder)
-'        item.DeleteAfterSubmit = True
-'    End If
-'
-'    Dim prompt As String
-'    prompt = prompt & item.subject & questionMark
-'    If MsgBox(prompt, vbYesNo + vbQuestion, hint) = vbNo Then
-'        cancel = True
-'    End If
-'    On Error GoTo 0
-'End Sub
